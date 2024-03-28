@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
-public class Collections {
+public class CollectionsEntity {
 
     @Id @GeneratedValue
     private Long id;
