@@ -1,16 +1,37 @@
 package com.e2i1.linkeepserver.domain.collections.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.e2i1.linkeepserver.common.entity.DateEntity;
+import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
+import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
+import com.e2i1.linkeepserver.domain.tags.entity.TagsEntity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
+
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
-public class CollectionsEntity {
+@Table(name = "collections")
+public class CollectionsEntity extends DateEntity {
 
-    @Id @GeneratedValue
-    private Long id;
+    @OneToMany(mappedBy = "collection", cascade = ALL)   // linksEntity도 영속성 컨텍스트에 넣어줌
+    private List<LinksEntity> linkList;
+
+
+    @OneToMany(mappedBy = "collection", cascade = ALL)
+    private List<TagsEntity> tagList;
+
+    @OneToMany(mappedBy = "collection", cascade = ALL)
+    private List<CollaboratorsEntity> collaboratorList;
 
     private String title;
 
@@ -18,17 +39,24 @@ public class CollectionsEntity {
 
     private String imgURL;
 
+    @Enumerated(EnumType.STRING)
     private Access access;
 
     private String color;
 
-    private byte favorite;
+    private Boolean favorite;
 
     private Long numOfLikes;
 
-    private LocalDateTime createdAt;
+    // 연관관계 편의 메서드
+    public void addLink(LinksEntity link) {
+        linkList.add(link);
+        link.setCollection(this);
+    }
 
-    private LocalDateTime updatedAt;
-
+    public void addTag(TagsEntity tag) {
+        tagList.add(tag);
+        tag.setCollection(this);
+    }
 
 }
