@@ -20,15 +20,7 @@ configurations {
 repositories {
     mavenCentral()
 }
-ext {
-    set('springCloudVersion', "2023.0.0")
-}
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -38,9 +30,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    implementation 'mysql:mysql-connector-java:8.0.26'
 //    runtimeOnly 'org.postgresql:postgresql'
-    runtimeOnly ('mysql:mysql-connector-java') //mysql8
+    runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework:spring-webflux'
@@ -49,17 +40,6 @@ dependencies {
 
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-
-    // Spring Cloud Function 을 위한 의존성
-    implementation 'org.springframework.cloud:spring-cloud-function-adapter-aws'
-    implementation 'org.springframework.cloud:spring-cloud-starter-function-web'
-
-    // AWS Lambda 에 배포하기 위한 의존성
-    implementation group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.1'
-    // AWS Lambda 이벤트를 다루기 위한 의존성
-    implementation group: 'com.amazonaws', name: 'aws-lambda-java-events', version: '3.9.0'
-
-    implementation group: 'com.amazonaws.serverless', name: 'aws-serverless-java-container-core', version: '2.0.0'
 
 }
 
