@@ -18,9 +18,11 @@ public class CollectionsController {
     private final CollectionsBusiness collectionsBusiness;
 
     @GetMapping("/collections/search")
-    public ResponseEntity<List<SearchCollectionResDTO>> getCollectionsKeyword(@RequestParam String keyword){
+    public ResponseEntity<List<SearchCollectionResDTO>> getCollectionsKeyword(@RequestParam String search){
         return ResponseEntity.ok(null);
 
     }
+
+
 
 }

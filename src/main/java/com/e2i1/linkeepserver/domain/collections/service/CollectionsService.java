@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CollectionsService {
-//    private final CollaboratorsRepository collaboratorsRepository;
+    private final CollaboratorsRepository collaboratorsRepository;
 }
