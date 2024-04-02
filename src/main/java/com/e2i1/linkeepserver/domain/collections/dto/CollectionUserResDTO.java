@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class SearchCollectionResDTO {
+@NoArgsConstructor
+@Builder
+public class CollectionUserResDTO {
     private String title;
     private String imgUrl;
-    private List<String> color;
-    private int numOfViews;
-    private List<String> tagNames;
+    private String description;
+    List<String> tagList;
+    List<CollectionLinkDTO> linkList;
 }

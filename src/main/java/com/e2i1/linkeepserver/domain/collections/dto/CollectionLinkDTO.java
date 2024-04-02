@@ -4,24 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.BindParam;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class CollectionResDTO {
-    private Long collectionId;
+@NoArgsConstructor
+@Builder
+public class CollectionLinkDTO {
+    private Long linkId;
+    private Long writer;
+    private String url;
+    private Long numOfViews;
     private String title;
     private String description;
-    private String imgUrl;
-    private String access;
-    private List<String> color;
-    private boolean favorite;
-    private Long numOfLikes;
-    private LocalDate createdAt;
     private LocalDate updatedAt;
 }

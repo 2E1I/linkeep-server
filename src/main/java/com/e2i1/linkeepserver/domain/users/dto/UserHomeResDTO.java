@@ -1,4 +1,4 @@
-package com.e2i1.linkeepserver.domain.collections.dto;
+package com.e2i1.linkeepserver.domain.users.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchCollectionResDTO {
-    private String title;
+public class UserHomeResDTO {
+    private String nickname;
     private String imgUrl;
-    private List<String> color;
-    private int numOfViews;
-    private List<String> tagNames;
+    private List<LinkHomeResDTO> linkList;
 }

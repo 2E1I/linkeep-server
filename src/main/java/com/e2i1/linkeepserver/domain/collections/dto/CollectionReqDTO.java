@@ -11,10 +11,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchCollectionResDTO {
+public class CollectionReqDTO {
     private String title;
     private String imgUrl;
+    private String description;
+    private List<String> tags;
+    private String access;
     private List<String> color;
-    private int numOfViews;
-    private List<String> tagNames;
+    private List<Long> collaborators;
 }
