@@ -16,7 +16,7 @@ import java.util.List;
 public class CollectionsController {
     private final CollectionsBusiness collectionsBusiness;
 
-    @GetMapping("/collections")
+    @GetMapping("/collections/search")
     public ResponseEntity<List<SearchCollectionResDTO>> searchCollection(@RequestParam String search){
         return ResponseEntity.ok(null);
 
