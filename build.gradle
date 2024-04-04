@@ -57,3 +57,7 @@ tasks.register('buildZip', Zip) {
         from configurations.runtimeClasspath
     }
 }
+
+jar {
+    enabled = false
+}
