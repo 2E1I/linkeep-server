@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 현재 시간 가져오기
+      # 현재 시간 가져오기-오디에 쓰는거야
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
         id: current-time
