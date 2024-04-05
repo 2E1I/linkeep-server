@@ -58,6 +58,10 @@ tasks.register('buildZip', Zip) {
     }
 }
 
+bootJar {
+    archiveBaseName.set('linkeepServer')
+}
+
 jar {
     enabled = false
 }

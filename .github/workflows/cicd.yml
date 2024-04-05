@@ -53,8 +53,11 @@ jobs:
           echo "$EC2_SSH_PRIVATE_KEY" > ec2_ssh_key
           chmod 600 ec2_ssh_key
           
-          # 패키지 파일을 EC2 인스턴스로 복사
-          scp -o StrictHostKeyChecking=no -i ec2_ssh_key ${{ env.artifact }} $EC2_USER@$EC2_HOST:/home/ec2-user/linkeep-server
+#          scp -i ec2_ssh_key -o StrictHostKeyChecking=no build/libs/linkeepServer-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/linkeep-server
+#          ssh -i ec2_ssh_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.EC2_USERNAME }}/trelloServer.jar > app.log 2>&1 &"
           
+          # 패키지 파일을 EC2 인스턴스로 복사
+          scp -o StrictHostKeyChecking=no -i ec2_ssh_key build/libs/linkeepServer-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ec2-user/linkeep-server
+
           # EC2 인스턴스에서 배포 스크립트 실행
           ssh -o StrictHostKeyChecking=no -i ec2_ssh_key $EC2_USER@$EC2_HOST "cd /home/ec2-user/linkeep-server && ./deploy_script.sh"
