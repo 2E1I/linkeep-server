@@ -68,7 +68,7 @@ jobs:
           chmod 600 ec2_ssh_key
           
           # 패키지 파일을 EC2 인스턴스로 복사
-          scp -o StrictHostKeyChecking=no -i ec2_ssh_key build/libs/linkeepServer-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ec2-user/linkeep-server
+          scp -i ec2_ssh_key -o StrictHostKeyChecking=no build/libs/linkeepServer-0.0.1-SNAPSHOT.jar ${EC2_USER}@${EC2_HOST}:/home/${EC2_USER}/linkeep-server
 
           # EC2 인스턴스에서 배포 스크립트 실행
-          ssh -o StrictHostKeyChecking=no -i ec2_ssh_key $EC2_USER@$EC2_HOST "cd /home/ec2-user/linkeep-server && ./deploy_script.sh"
+          ssh -i ec2_ssh_key -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd /home/${EC2_USER}/linkeep-server && ./deploy_script.sh"
