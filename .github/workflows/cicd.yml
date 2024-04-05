@@ -30,6 +30,18 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
+      # 빌드해서 생긴 JAR 파일을 깃허브 아티팩트로 업로드!!
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: linkeepServer
+          path: build/libs/linkeepServer-0.0.1-SNAPSHOT.jar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       # 현재 시간 가져오기
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
@@ -38,9 +50,11 @@ jobs:
           format: YYYY-MM-DDTHH-mm-ss
           utcOffset: "+09:00"
 
-      # 배포용 패키지 경로 저장
-      - name: Set artifact
-        run: echo "artifact=$(ls ./build/libs)" >> %GITHUB_ENV
+      - name: Download build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: linkeepServer
+          path: build/libs/
 
       - name: EC2 Deploy
         env:
@@ -52,9 +66,6 @@ jobs:
           # SSH Key 파일 생성
           echo "$EC2_SSH_PRIVATE_KEY" > ec2_ssh_key
           chmod 600 ec2_ssh_key
-          
-#          scp -i ec2_ssh_key -o StrictHostKeyChecking=no build/libs/linkeepServer-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/linkeep-server
-#          ssh -i ec2_ssh_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.EC2_USERNAME }}/trelloServer.jar > app.log 2>&1 &"
           
           # 패키지 파일을 EC2 인스턴스로 복사
           scp -o StrictHostKeyChecking=no -i ec2_ssh_key build/libs/linkeepServer-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/ec2-user/linkeep-server
