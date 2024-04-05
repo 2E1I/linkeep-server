@@ -69,6 +69,9 @@ jobs:
           
           # 패키지 파일을 EC2 인스턴스로 복사
           scp -i ec2_ssh_key -o StrictHostKeyChecking=no build/libs/linkeepServer-0.0.1-SNAPSHOT.jar ${EC2_USER}@${EC2_HOST}:/home/${EC2_USER}/linkeep-server
-
-          # EC2 인스턴스에서 배포 스크립트 실행
-          ssh -i ec2_ssh_key -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd /home/${EC2_USER}/linkeep-server && ./deploy_script.sh"
+          
+          # 인스턴스에서 JAR 파일 실행
+          java -jar /home/${EC2_USER}/linkeep-server/linkeepServer-0.0.1-SNAPSHOT.jar
+          EOF
+#          # EC2 인스턴스에서 배포 스크립트 실행
+#          ssh -i ec2_ssh_key -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd /home/${EC2_USER}/linkeep-server && ./deploy_script.sh"
