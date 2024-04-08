@@ -68,4 +68,11 @@ public class UsersEntity extends DateEntity {
         followerList.add(follower);
         follower.setFollowedUser(this);
     }
+
+    // 사용자 이름 변경
+    public UsersEntity update(String nickname) {
+        this.nickname = nickname;
+
+        return this;
+    }
 }
