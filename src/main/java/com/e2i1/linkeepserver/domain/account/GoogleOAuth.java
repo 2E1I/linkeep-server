@@ -5,6 +5,7 @@ import com.e2i1.linkeepserver.domain.account.model.GoogleUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GoogleOAuth implements SocialOAuth {
@@ -56,14 +58,14 @@ public class GoogleOAuth implements SocialOAuth {
                 .map(x->x.getKey()+"="+x.getValue())
                 .collect(Collectors.joining("&"));
         String redirectURL=GOOGLE_SNS_LOGIN_URL+"?"+parameterString;
-        System.out.println("redirectURL = " + redirectURL);
+        log.info("redirectURL = {}", redirectURL);
 
         return redirectURL;
 
     }
 
     /**
-     * 먼저 일회용 코드를 다시 구글로 보내 액세스 토큰을 포함한 JSON String이 담긴 ResponseEntity를 받아dha
+     * 먼저 일회용 코드를 다시 구글로 보내 액세스 토큰을 포함한 JSON String이 담긴 ResponseEntity를 받아옴
      */
     public ResponseEntity<String> requestAccessToken(String code) {
         String GOOGLE_TOKEN_REQUEST_URL="https://oauth2.googleapis.com/token";
@@ -88,7 +90,7 @@ public class GoogleOAuth implements SocialOAuth {
      * responseEntity에 담긴 JSON String을 역직렬화해 자바 객체에 담는다.
      */
     public GoogleOAuthToken getAccessToken(ResponseEntity<String> response) throws JsonProcessingException {
-        System.out.println("response.getBody() = " + response.getBody());
+        log.info("response.getBody() = {}", response.getBody());
         return objectMapper.readValue(response.getBody(),GoogleOAuthToken.class);
     }
 
@@ -106,7 +108,7 @@ public class GoogleOAuth implements SocialOAuth {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity(headers);
         RestTemplate restTemplate=new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(GOOGLE_USERINFO_REQUEST_URL, HttpMethod.GET,request,String.class);
-        System.out.println("response.getBody() = " + response.getBody());
+        log.info("response.getBody() = {} ", response.getBody());
         return response;
     }
 

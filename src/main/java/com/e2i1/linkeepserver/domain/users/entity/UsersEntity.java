@@ -75,4 +75,6 @@ public class UsersEntity extends DateEntity {
 
         return this;
     }
+
+    
 }
