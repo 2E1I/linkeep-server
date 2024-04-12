@@ -1,4 +1,4 @@
-package com.e2i1.linkeepserver.domain.account.model;
+package com.e2i1.linkeepserver.domain.oauth.model;
 
 
 import lombok.AllArgsConstructor;

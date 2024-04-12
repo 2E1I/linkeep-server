@@ -1,7 +1,7 @@
-package com.e2i1.linkeepserver.domain.account;
+package com.e2i1.linkeepserver.domain.oauth;
 
-import com.e2i1.linkeepserver.domain.account.model.GoogleOAuthToken;
-import com.e2i1.linkeepserver.domain.account.model.GoogleUser;
+import com.e2i1.linkeepserver.domain.oauth.model.GoogleOAuthToken;
+import com.e2i1.linkeepserver.domain.oauth.model.GoogleUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

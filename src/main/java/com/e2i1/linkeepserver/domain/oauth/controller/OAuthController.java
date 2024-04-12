@@ -1,7 +1,8 @@
-package com.e2i1.linkeepserver.domain.account;
+package com.e2i1.linkeepserver.domain.oauth.controller;
 
 import com.e2i1.linkeepserver.config.oauth.Constant;
-import com.e2i1.linkeepserver.domain.account.model.GetSocialOAuthResDTO;
+import com.e2i1.linkeepserver.domain.oauth.model.GetSocialOAuthResDTO;
+import com.e2i1.linkeepserver.domain.oauth.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import static com.e2i1.linkeepserver.config.oauth.Constant.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/app/accounts")
-public class AccountController {
+public class OAuthController {
 
     private final OAuthService oAuthService;
 

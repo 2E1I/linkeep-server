@@ -1,12 +1,13 @@
-package com.e2i1.linkeepserver.domain.account;
+package com.e2i1.linkeepserver.domain.oauth.service;
 
 import com.e2i1.linkeepserver.common.error.OAuthErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.config.oauth.Constant;
 import com.e2i1.linkeepserver.config.oauth.Constant.SocialLoginType;
-import com.e2i1.linkeepserver.domain.account.model.GetSocialOAuthResDTO;
-import com.e2i1.linkeepserver.domain.account.model.GoogleOAuthToken;
-import com.e2i1.linkeepserver.domain.account.model.GoogleUser;
+import com.e2i1.linkeepserver.domain.oauth.GoogleOAuth;
+import com.e2i1.linkeepserver.domain.oauth.model.GetSocialOAuthResDTO;
+import com.e2i1.linkeepserver.domain.oauth.model.GoogleOAuthToken;
+import com.e2i1.linkeepserver.domain.oauth.model.GoogleUser;
 import com.e2i1.linkeepserver.domain.token.business.TokenBusiness;
 import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;

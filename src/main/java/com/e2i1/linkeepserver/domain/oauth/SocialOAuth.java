@@ -1,4 +1,4 @@
-package com.e2i1.linkeepserver.domain.account;
+package com.e2i1.linkeepserver.domain.oauth;
 
 public interface SocialOAuth {
     /**

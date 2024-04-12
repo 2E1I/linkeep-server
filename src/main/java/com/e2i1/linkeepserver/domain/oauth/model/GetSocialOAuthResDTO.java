@@ -1,4 +1,4 @@
-package com.e2i1.linkeepserver.domain.account.model;
+package com.e2i1.linkeepserver.domain.oauth.model;
 
 import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import lombok.AllArgsConstructor;
