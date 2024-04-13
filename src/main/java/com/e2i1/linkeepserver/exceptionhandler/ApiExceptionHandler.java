@@ -5,7 +5,9 @@ import com.e2i1.linkeepserver.common.error.ErrorCodeIfs;
 import com.e2i1.linkeepserver.common.error.ErrorResponse;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.support.BeanDefinitionValidationException;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,6 +31,24 @@ public class ApiExceptionHandler {
         return ResponseEntity
                 .status(errorCode.getHttpStatusCode())
                 .body(errorResponse);
+    }
+
+    /**
+     * DTO 등에서 validation 실패 시, 해당 예외 처리하는 핸들러
+     * @NotNull, @NotBlank 등의 검증 실패 시 해당 예외 처리해줌
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(value = BeanDefinitionValidationException.class)
+    public ResponseEntity<ErrorResponse> handlerBeanValidationException(BeanDefinitionValidationException ex) {
+        log.error("", ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorResponse.builder()
+                                .errorMessage(ex.getMessage())
+                                .build()
+                );
     }
 
     // 예상치 못한 예외에 대응하기 위한 Exception handler

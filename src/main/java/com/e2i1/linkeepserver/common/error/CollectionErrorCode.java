@@ -4,13 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * 유저 관련 에러 코드는 1로 시작
+ */
 @Getter
 @AllArgsConstructor
-public enum OAuthErrorCode implements ErrorCodeIfs{
+public enum CollectionErrorCode implements ErrorCodeIfs{
 
-    UNKNOWN_OAUTH_LOGIN(HttpStatus.BAD_REQUEST,"알 수 없는 소셜 로그인 형식"),
-
+    COLLECTION_NOT_FOUND(HttpStatus.NOT_FOUND, "모음집을 찾을 수 없음"),
     ;
+
     private final HttpStatus httpStatusCode;
     private final String description;
 }

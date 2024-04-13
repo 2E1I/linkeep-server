@@ -6,7 +6,5 @@ public interface ErrorCodeIfs {
 
     HttpStatus getHttpStatusCode();
 
-    Integer getErrorCode();
-
     String getDescription();
 }

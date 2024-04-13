@@ -2,7 +2,6 @@ package com.e2i1.linkeepserver.domain.oauth.service;
 
 import com.e2i1.linkeepserver.common.error.OAuthErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
-import com.e2i1.linkeepserver.config.oauth.Constant;
 import com.e2i1.linkeepserver.config.oauth.Constant.SocialLoginType;
 import com.e2i1.linkeepserver.domain.oauth.GoogleOAuth;
 import com.e2i1.linkeepserver.domain.oauth.model.GetSocialOAuthResDTO;
@@ -45,7 +44,7 @@ public class OAuthService {
         response.sendRedirect(redirectURL);
     }
 
-    public GetSocialOAuthResDTO OAuthLogin(Constant.SocialLoginType socialLoginType, String code) throws IOException {
+    public GetSocialOAuthResDTO OAuthLogin(SocialLoginType socialLoginType, String code) throws IOException {
 
         switch (socialLoginType){
             case GOOGLE:{
