@@ -63,10 +63,17 @@ public class OAuthService {
                 String userEmail = googleUser.getEmail();
 
                 // 우리 서버의 DB에 해당 user email 존재하는지 확인
-                UsersEntity user = usersService.findByEmail(userEmail);
-                // 유저가 우리 서버에 없으면 새로 생성 = 자동 회원 가입
+                UsersEntity user = usersService.getUserWithThrow(userEmail);
+
+                // 유저가 우리 서버에 없으면 새로 생성 = 자동 회원 가입 로직
                 if (user == null) {
-                    user = usersService.createUser(googleUser.getName(), userEmail, googleUser.getEmail());
+                    user = UsersEntity.builder()
+                        .nickname(googleUser.getName())
+                        .email(userEmail)
+                        .imgUrl(googleUser.getPicture())
+                        .thumbnailUrl(googleUser.getPicture())
+                        .build();
+                    usersService.register(user);
                 }
 
                 // 토큰 발급

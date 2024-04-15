@@ -1,5 +1,7 @@
 package com.e2i1.linkeepserver.domain.users.service;
 
+import static com.e2i1.linkeepserver.domain.users.entity.UserStatus.REGISTERED;
+
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
@@ -12,21 +14,18 @@ import org.springframework.stereotype.Service;
 public class UsersService {
     private final UsersRepository usersRepository;
 
-    public UsersEntity createUser(String name, String email, String imgUrl) {
-        UsersEntity newUser = UsersEntity.builder()
-                .nickname(name)
-                .email(email)
-                .imgUrl(imgUrl)
-                .build();
-        return usersRepository.save(newUser);
+    public UsersEntity register(UsersEntity user) {
+        return usersRepository.save(user);
     }
 
-    public UsersEntity findById(Long userId) {
-        return usersRepository.findById(userId)
-                .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+    public UsersEntity getUserWithThrow(Long userId) {
+        return usersRepository.findFirstByIdAndStatusOrderByIdDesc(userId, REGISTERED)
+            .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
     }
 
-    public UsersEntity findByEmail(String email) {
-        return usersRepository.findByEmail(email);
+    public UsersEntity getUserWithThrow(String email) {
+        return usersRepository.findFirstByEmailAndStatusOrderByIdDesc(email, REGISTERED)
+            .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
     }
+
 }
