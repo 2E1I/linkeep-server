@@ -1,6 +1,6 @@
 package com.e2i1.linkeepserver.domain.token.helper;
 
-import com.e2i1.linkeepserver.common.error.TokenErrorCode;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.token.dto.TokenDTO;
 import com.e2i1.linkeepserver.domain.token.ifs.TokenHelperIfs;
@@ -58,14 +58,14 @@ public class JwtTokenHelper implements TokenHelperIfs {
         } catch (Exception e) {
             if (e instanceof SignatureException) {
                 // 토큰이 유효하지 않을 때
-                throw new ApiException(TokenErrorCode.INVALID_TOKEN);
+                throw new ApiException(ErrorCode.INVALID_TOKEN);
             } else if (e instanceof ExpiredJwtException) {
                 // 만료된 토큰
-                throw new ApiException(TokenErrorCode.EXPIRED_TOKEN);
+                throw new ApiException(ErrorCode.EXPIRED_TOKEN);
             }
             else {
                 // 그외 에러
-                throw new ApiException(TokenErrorCode.TOKEN_EXCEPTION);
+                throw new ApiException(ErrorCode.TOKEN_EXCEPTION);
             }
         }
     }

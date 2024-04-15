@@ -1,6 +1,6 @@
 package com.e2i1.linkeepserver.domain.oauth.service;
 
-import com.e2i1.linkeepserver.common.error.OAuthErrorCode;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.config.oauth.Constant;
 import com.e2i1.linkeepserver.config.oauth.Constant.SocialLoginType;
@@ -39,7 +39,7 @@ public class OAuthService {
             // 각 소셜 로그인을 요청하면 소셜로그인 페이지로 리다이렉트 해주는 프로세스
             redirectURL = googleOAuth.getOAuthRedirectURL();
         } else {
-            throw new ApiException(OAuthErrorCode.UNKNOWN_OAUTH_LOGIN);
+            throw new ApiException(ErrorCode.UNKNOWN_OAUTH_LOGIN);
         }
 
         response.sendRedirect(redirectURL);
@@ -77,7 +77,7 @@ public class OAuthService {
 
             }
             default:{
-                throw new ApiException(OAuthErrorCode.UNKNOWN_OAUTH_LOGIN);
+                throw new ApiException(ErrorCode.UNKNOWN_OAUTH_LOGIN);
             }
 
         }
