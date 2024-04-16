@@ -1,9 +1,11 @@
 package com.e2i1.linkeepserver.domain.users.controller;
 
+import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.users.business.UsersBusiness;
 import com.e2i1.linkeepserver.domain.users.dto.NicknameResDTO;
 import com.e2i1.linkeepserver.domain.users.dto.ProfileDTO;
 import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
+import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,13 @@ public class UsersController {
         return ResponseEntity.ok(null);
     }
     @GetMapping("/profile")
-    public ResponseEntity<ProfileDTO> getProfile(){
-        return ResponseEntity.ok(null);
+    public ResponseEntity<ProfileDTO> getProfile(@UserSession UsersEntity user){
+        ProfileDTO profile = ProfileDTO.builder()
+            .nickname(user.getNickname())
+            .description(user.getDescription())
+            .imgUrl(user.getImgUrl())
+            .build();
+        return ResponseEntity.ok(profile);
     }
 
     @PostMapping("/profile")
