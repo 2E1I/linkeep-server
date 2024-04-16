@@ -1,11 +1,10 @@
 package com.e2i1.linkeepserver.domain.token.dto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 
 @AllArgsConstructor
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class TokenResDTO {
-    private String accessToken;
     private LocalDateTime accessTokenExpiredAt;
     private String refreshToken;
     private LocalDateTime refreshTokenExpiredAt;

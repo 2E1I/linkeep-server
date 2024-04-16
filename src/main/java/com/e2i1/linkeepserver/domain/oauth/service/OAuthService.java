@@ -1,8 +1,7 @@
 package com.e2i1.linkeepserver.domain.oauth.service;
 
-import com.e2i1.linkeepserver.common.error.OAuthErrorCode;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
-import com.e2i1.linkeepserver.config.oauth.Constant;
 import com.e2i1.linkeepserver.config.oauth.Constant.SocialLoginType;
 import com.e2i1.linkeepserver.domain.oauth.GoogleOAuth;
 import com.e2i1.linkeepserver.domain.oauth.model.GetSocialOAuthResDTO;
@@ -39,13 +38,13 @@ public class OAuthService {
             // 각 소셜 로그인을 요청하면 소셜로그인 페이지로 리다이렉트 해주는 프로세스
             redirectURL = googleOAuth.getOAuthRedirectURL();
         } else {
-            throw new ApiException(OAuthErrorCode.UNKNOWN_OAUTH_LOGIN);
+            throw new ApiException(ErrorCode.UNKNOWN_OAUTH_LOGIN);
         }
 
         response.sendRedirect(redirectURL);
     }
 
-    public GetSocialOAuthResDTO OAuthLogin(Constant.SocialLoginType socialLoginType, String code) throws IOException {
+    public GetSocialOAuthResDTO OAuthLogin(SocialLoginType socialLoginType, String code) throws IOException {
 
         switch (socialLoginType){
             case GOOGLE:{
@@ -63,10 +62,17 @@ public class OAuthService {
                 String userEmail = googleUser.getEmail();
 
                 // 우리 서버의 DB에 해당 user email 존재하는지 확인
-                UsersEntity user = usersService.findByEmail(userEmail);
-                // 유저가 우리 서버에 없으면 새로 생성 = 자동 회원 가입
+                UsersEntity user = usersService.getUserWithThrow(userEmail);
+
+                // 유저가 우리 서버에 없으면 새로 생성 = 자동 회원 가입 로직
                 if (user == null) {
-                    user = usersService.createUser(googleUser.getName(), userEmail, googleUser.getEmail());
+                    user = UsersEntity.builder()
+                        .nickname(googleUser.getName())
+                        .email(userEmail)
+                        .imgUrl(googleUser.getPicture())
+                        .thumbnailUrl(googleUser.getPicture())
+                        .build();
+                    usersService.register(user);
                 }
 
                 // 토큰 발급
@@ -77,7 +83,7 @@ public class OAuthService {
 
             }
             default:{
-                throw new ApiException(OAuthErrorCode.UNKNOWN_OAUTH_LOGIN);
+                throw new ApiException(ErrorCode.UNKNOWN_OAUTH_LOGIN);
             }
 
         }

@@ -1,6 +1,6 @@
 package com.e2i1.linkeepserver.common.exception;
 
-import com.e2i1.linkeepserver.common.error.ErrorCodeIfs;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,11 +8,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ApiException extends RuntimeException{
 
-    private final ErrorCodeIfs errorCodeIfs;
+    private final ErrorCode errorCode;
     private final String errorDescription;
 
-    public ApiException(ErrorCodeIfs errorCodeIfs) {
-        this.errorCodeIfs = errorCodeIfs;
-        this.errorDescription = errorCodeIfs.getDescription();
+    public ApiException(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+        this.errorDescription = errorCode.getDescription();
     }
 }
