@@ -1,7 +1,6 @@
 package com.e2i1.linkeepserver.exceptionhandler;
 
 import com.e2i1.linkeepserver.common.error.ErrorCode;
-import com.e2i1.linkeepserver.common.error.ErrorCodeIfs;
 import com.e2i1.linkeepserver.common.error.ErrorResponse;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,7 @@ public class ApiExceptionHandler {
         log.error("", ex);
 
         // 2. 발생한 예외에서 errorCode 가져와서
-        ErrorCodeIfs errorCode = ex.getErrorCodeIfs();
+        ErrorCode errorCode = ex.getErrorCode();
         // 3. errorResponse 만들기(에러 메시지 내용과 함께)
         ErrorResponse errorResponse = new ErrorResponse(errorCode.getDescription());
 

@@ -1,6 +1,6 @@
 package com.e2i1.linkeepserver.domain.users.service;
 
-import com.e2i1.linkeepserver.common.error.UserErrorCode;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.repository.UsersRepository;
@@ -23,7 +23,7 @@ public class UsersService {
 
     public UsersEntity findById(Long userId) {
         return usersRepository.findById(userId)
-                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
     }
 
     public UsersEntity findByEmail(String email) {
