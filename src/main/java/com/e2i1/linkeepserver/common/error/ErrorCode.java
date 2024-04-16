@@ -1,6 +1,5 @@
 package com.e2i1.linkeepserver.common.error;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

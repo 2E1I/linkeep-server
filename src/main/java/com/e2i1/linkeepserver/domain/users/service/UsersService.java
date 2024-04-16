@@ -1,7 +1,7 @@
 package com.e2i1.linkeepserver.domain.users.service;
 
-import static com.e2i1.linkeepserver.domain.users.entity.UserStatus.REGISTERED;
 
+import static com.e2i1.linkeepserver.domain.users.entity.UserStatus.REGISTERED;
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
@@ -17,6 +17,7 @@ public class UsersService {
     public UsersEntity register(UsersEntity user) {
         return usersRepository.save(user);
     }
+
 
     public UsersEntity getUserWithThrow(Long userId) {
         return usersRepository.findFirstByIdAndStatusOrderByIdDesc(userId, REGISTERED)
