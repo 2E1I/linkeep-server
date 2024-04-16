@@ -4,6 +4,7 @@ import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -20,6 +21,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * → 둘 다 만족하면 resolveArgument() 동작하면서 사용자가 유효한지 체크
  * → RequestContextHolder에서 userId꺼내와서 User 객체 만들어준다
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserSessionResolver implements HandlerMethodArgumentResolver {
@@ -48,6 +50,7 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
         RequestAttributes requestContext = RequestContextHolder.getRequestAttributes();
         Object userId = requestContext.getAttribute("userId", RequestAttributes.SCOPE_REQUEST);
 
+        log.info("userId = {}",Long.parseLong(userId.toString()));
         UsersEntity userEntity = userService.getUserWithThrow(Long.parseLong(userId.toString()));
 
         // 사용자 정보 세팅

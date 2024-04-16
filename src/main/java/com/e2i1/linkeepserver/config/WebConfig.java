@@ -19,7 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
     private final List<String> DEFAULT_EXCLUDE = List.of(
         "/",
         "favicon.ico",
-        "/error"
+        "/error",
+        "/api/users/login"
     );
 
     private final List<String> SWAGGER = List.of(
