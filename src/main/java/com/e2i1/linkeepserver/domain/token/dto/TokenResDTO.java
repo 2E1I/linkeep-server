@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class TokenResDTO {
+    private String accessToken;
     private LocalDateTime accessTokenExpiredAt;
     private String refreshToken;
     private LocalDateTime refreshTokenExpiredAt;

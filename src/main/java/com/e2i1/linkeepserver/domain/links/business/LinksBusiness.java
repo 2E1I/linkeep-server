@@ -7,6 +7,7 @@ import com.e2i1.linkeepserver.domain.links.converter.LinksConverter;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.service.LinksService;
+import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 
 @Business
@@ -21,9 +22,9 @@ public class LinksBusiness {
     /**
      * link 저장하기
      */
-    public LinksEntity save(LinkReqDTO req) {
+    public LinksEntity save(LinkReqDTO req, UsersEntity user) {
         CollectionsEntity collection = collectionsService.findById(req.getCollectionId());
-        LinksEntity linkEntity = linksConverter.toEntity(req, collection);
+        LinksEntity linkEntity = linksConverter.toEntity(req, collection, user);
         return linksService.save(linkEntity);
     }
 }
