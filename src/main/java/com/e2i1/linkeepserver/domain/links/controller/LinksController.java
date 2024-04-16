@@ -35,9 +35,9 @@ public class LinksController {
     }
 
     @GetMapping("/{linkId}")
-    public ResponseEntity<LinkResDTO> getLink(@PathVariable String linkId) {
-
-        return ResponseEntity.ok(null);
+    public ResponseEntity<LinkResDTO> getLink(@PathVariable Long linkId, @UserSession UsersEntity user) {
+        LinkResDTO response = linksBusiness.findOneById(linkId, user.getId());
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/views")
