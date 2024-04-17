@@ -34,8 +34,8 @@ public class LinksEntity extends DateEntity {
     private String url;
     private String description;
 
-    @Column(columnDefinition = "integer default 0", nullable = false)
-    private long numOfViews;
+    @Column(nullable = false)
+    private Long numOfViews;
 
     public void updateView() {
         this.numOfViews += 1L;

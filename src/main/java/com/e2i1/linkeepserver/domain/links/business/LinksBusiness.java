@@ -1,6 +1,7 @@
 package com.e2i1.linkeepserver.domain.links.business;
 
 import com.e2i1.linkeepserver.common.annotation.Business;
+import com.e2i1.linkeepserver.domain.collaborators.service.CollaboratorsService;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
 import com.e2i1.linkeepserver.domain.links.converter.LinksConverter;
@@ -18,14 +19,23 @@ public class LinksBusiness {
 
     private final LinksService linksService;
     private final LinksConverter linksConverter;
+
     private final CollectionsService collectionsService;
 
+    private final CollaboratorsService collaboratorsService;
 
     /**
      * link 저장하기
+     * 해당 컬렉션에 권한 있는지 확인 후 저장하기
      */
     public LinksEntity save(LinkReqDTO req, UsersEntity user) {
-        CollectionsEntity collection = collectionsService.findById(req.getCollectionId());
+        /*
+        내가 해당 collection의 작업자일 때만 링크 저장 가능
+        만약 해당 collection이 존재하지 않거나, 내가 collection의 작업자가 아니라면 예외가 발생한다
+         */
+        CollectionsEntity collection = collectionsService.findByIdWithThrow(req.getCollectionId());
+        collaboratorsService.findByUserIdAndCollectionIdWithThrow(user.getId(), collection.getId());
+
         LinksEntity linkEntity = linksConverter.toEntity(req, collection, user);
         return linksService.save(linkEntity);
     }
