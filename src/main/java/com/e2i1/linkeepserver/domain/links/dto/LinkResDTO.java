@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -17,5 +17,5 @@ public class LinkResDTO {
     private Long numOfViews;
     private String title;
     private String description;
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 }

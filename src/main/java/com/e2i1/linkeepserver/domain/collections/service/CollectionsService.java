@@ -1,6 +1,6 @@
 package com.e2i1.linkeepserver.domain.collections.service;
 
-import com.e2i1.linkeepserver.common.error.CollectionErrorCode;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.collaborators.repository.CollaboratorsRepository;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
@@ -20,7 +20,7 @@ public class CollectionsService {
         return collectionsRepository.findById(collectionId)
                 .orElseThrow(() -> {
                     log.error("Collection Not Found!! collectionId = {}", collectionId);
-                    return new ApiException(CollectionErrorCode.COLLECTION_NOT_FOUND);
+                    return new ApiException(ErrorCode.COLLECTION_NOT_FOUND);
                 });
     }
 }

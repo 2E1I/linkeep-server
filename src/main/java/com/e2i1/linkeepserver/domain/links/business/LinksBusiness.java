@@ -5,8 +5,10 @@ import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
 import com.e2i1.linkeepserver.domain.links.converter.LinksConverter;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
+import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.service.LinksService;
+import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 
 @Business
@@ -21,9 +23,19 @@ public class LinksBusiness {
     /**
      * link 저장하기
      */
-    public LinksEntity save(LinkReqDTO req) {
+    public LinksEntity save(LinkReqDTO req, UsersEntity user) {
         CollectionsEntity collection = collectionsService.findById(req.getCollectionId());
-        LinksEntity linkEntity = linksConverter.toEntity(req, collection);
+        LinksEntity linkEntity = linksConverter.toEntity(req, collection, user);
         return linksService.save(linkEntity);
+    }
+
+    public LinkResDTO findOneById(Long linkId, Long userId) {
+        LinksEntity link = linksService.findOneByIdAndUserId(linkId);
+
+        // 현재 로그인된 유저의 링크가 아닐 경우에만 조회 수 증가
+        if (!userId.equals(link.getUser().getId())) {
+            link.updateView();
+        }
+        return linksConverter.toResponse(link);
     }
 }

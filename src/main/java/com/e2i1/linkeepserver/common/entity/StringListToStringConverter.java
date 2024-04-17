@@ -29,7 +29,8 @@ public class StringListToStringConverter implements AttributeConverter<List<Stri
 
         // PostgreSQL 배열 문자열을 List로 변환
         dbData = dbData.substring(1, dbData.length() - 1); // 양쪽 중괄호 제거
-        return Arrays.asList(dbData.split(",")).stream()
+
+        return Arrays.stream(dbData.split(","))
                 .map(s -> s.replace("\"", "")) // 쌍따옴표 제거
                 .collect(Collectors.toList());
     }
