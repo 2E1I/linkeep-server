@@ -15,7 +15,7 @@ public class LinksConverter {
     public LinksEntity toEntity(LinkReqDTO req, CollectionsEntity collection, UsersEntity user) {
 
         return LinksEntity.builder()
-                .title(req.getDescription())
+                .title(req.getTitle())
                 .url(req.getUrl())
                 .description(req.getDescription())
                 .collection(collection)
