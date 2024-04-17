@@ -4,6 +4,7 @@ import com.e2i1.linkeepserver.common.annotation.Converter;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
+import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,14 @@ public class LinksConverter {
                 .writer(link.getUser().getId())
                 .updatedAt(link.getUpdateAt())
                 .build();
+    }
+
+    public SearchLinkResDTO toSearchResponse(LinksEntity link) {
+        return SearchLinkResDTO.builder()
+            .title(link.getTitle())
+            .url(link.getUrl())
+            .description(link.getDescription())
+            .numOfViews(link.getNumOfViews())
+            .build();
     }
 }

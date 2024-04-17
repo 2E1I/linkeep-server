@@ -4,6 +4,7 @@ import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.repository.LinksRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,7 @@ public class LinksService {
     }
 
 
+    public List<LinksEntity> searchLinks(String searchTerm) {
+        return linksRepository.findByTitleContainingOrDescriptionContaining(searchTerm, searchTerm);
+    }
 }

@@ -7,35 +7,47 @@ import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/links")
 public class LinksController {
+
     private final LinksBusiness linksBusiness;
 
     @GetMapping()
-    public ResponseEntity<SearchLinkResDTO> searchLink(@RequestParam("search") String search) {
-
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<SearchLinkResDTO>> searchLink(
+        @RequestParam("search") String searchTerm) {
+        log.info("search term is {}", searchTerm);
+        List<SearchLinkResDTO> searchLinks = linksBusiness.searchLinks(searchTerm);
+        return ResponseEntity.ok(searchLinks);
     }
 
     @PostMapping()
-    public ResponseEntity<String> saveLink(@RequestBody @Valid LinkReqDTO linkReqDTO, @UserSession UsersEntity user) {
+    public ResponseEntity<String> saveLink(@RequestBody @Valid LinkReqDTO linkReqDTO,
+        @UserSession UsersEntity user) {
         log.info("{}", linkReqDTO);
         linksBusiness.save(linkReqDTO, user);
         return ResponseEntity.ok("success");
     }
 
     @GetMapping("/{linkId}")
-    public ResponseEntity<LinkResDTO> getLink(@PathVariable Long linkId, @UserSession UsersEntity user) {
+    public ResponseEntity<LinkResDTO> getLink(@PathVariable Long linkId,
+        @UserSession UsersEntity user) {
         LinkResDTO response = linksBusiness.findOneById(linkId, user.getId());
         return ResponseEntity.ok(response);
     }

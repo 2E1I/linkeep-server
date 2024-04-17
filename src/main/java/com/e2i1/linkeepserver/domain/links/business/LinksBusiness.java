@@ -7,9 +7,12 @@ import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
 import com.e2i1.linkeepserver.domain.links.converter.LinksConverter;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
+import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.service.LinksService;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +28,7 @@ public class LinksBusiness {
     private final CollaboratorsService collaboratorsService;
 
     /**
-     * link 저장하기
-     * 해당 컬렉션에 권한 있는지 확인 후 저장하기
+     * link 저장하기 해당 컬렉션에 권한 있는지 확인 후 저장하기
      */
     public LinksEntity save(LinkReqDTO req, UsersEntity user) {
         /*
@@ -41,9 +43,7 @@ public class LinksBusiness {
     }
 
     /**
-     * link 단건 조회
-     * 현재 로그인된 유저가 생성한 link가 아닌 경우, link 조회수 1증가
-     * 즉, 자기가 만든 link는 아무리 조회해도 조회수 증가 안함
+     * link 단건 조회 현재 로그인된 유저가 생성한 link가 아닌 경우, link 조회수 1증가 즉, 자기가 만든 link는 아무리 조회해도 조회수 증가 안함
      */
     @Transactional
     public LinkResDTO findOneById(Long linkId, Long userId) {
@@ -56,5 +56,18 @@ public class LinksBusiness {
             link.updateView();
         }
         return linksConverter.toResponse(link);
+    }
+
+    // TODO : 검색어를 공백 기준으로 나누고 이들이 모두 존재하는 레코드들을 리턴하도록 메서드 수정하기
+
+    /**
+     * 링크 title, description을 조회해 해당 검색어 들어있는 링크 목록 가져오기
+     */
+    public List<SearchLinkResDTO> searchLinks(String searchTerm) {
+        List<LinksEntity> linkList = linksService.searchLinks(searchTerm);
+
+        return linkList.stream()
+            .map(linksConverter::toSearchResponse)
+            .collect(Collectors.toList());
     }
 }
