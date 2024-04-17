@@ -10,6 +10,7 @@ import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.service.LinksService;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Business
 @RequiredArgsConstructor
@@ -29,11 +30,19 @@ public class LinksBusiness {
         return linksService.save(linkEntity);
     }
 
+    /**
+     * link 단건 조회
+     * 현재 로그인된 유저가 생성한 link가 아닌 경우, link 조회수 1증가
+     * 즉, 자기가 만든 link는 아무리 조회해도 조회수 증가 안함
+     */
+    @Transactional
     public LinkResDTO findOneById(Long linkId, Long userId) {
         LinksEntity link = linksService.findOneByIdAndUserId(linkId);
 
         // 현재 로그인된 유저의 링크가 아닐 경우에만 조회 수 증가
         if (!userId.equals(link.getUser().getId())) {
+            // link 객체는 linksService를 통해서 가져온거라 현재 영속성 컨텍스트 안에 있음
+            // 이렇게 수정만해도 transaction 끝날 때, dirty checking을 통해 자동으로 DB에 수정사항 반영된다.
             link.updateView();
         }
         return linksConverter.toResponse(link);
