@@ -49,8 +49,8 @@ public class UsersEntity extends DateEntity {
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
-    
-    
+
+
     // 연관관계 편의 메서드
 
     public void addCollaborator(CollaboratorsEntity collaborator) {
@@ -80,5 +80,5 @@ public class UsersEntity extends DateEntity {
         return this;
     }
 
-    
+
 }

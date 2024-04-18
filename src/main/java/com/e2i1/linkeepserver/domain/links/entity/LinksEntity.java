@@ -3,10 +3,8 @@ package com.e2i1.linkeepserver.domain.links.entity;
 import com.e2i1.linkeepserver.common.entity.DateEntity;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +34,12 @@ public class LinksEntity extends DateEntity {
     private String title;
     private String url;
     private String description;
-    private String numOfViews;
+
+    @Column(nullable = false)
+    private Long numOfViews;
+
+    public void updateView() {
+        this.numOfViews += 1L;
+    }
 
 }

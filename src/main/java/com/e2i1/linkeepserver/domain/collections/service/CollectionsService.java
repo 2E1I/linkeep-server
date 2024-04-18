@@ -16,7 +16,7 @@ public class CollectionsService {
     private final CollaboratorsRepository collaboratorsRepository;
     private final CollectionsRepository collectionsRepository;
 
-    public CollectionsEntity findById(Long collectionId) {
+    public CollectionsEntity findByIdWithThrow(Long collectionId) {
         return collectionsRepository.findById(collectionId)
                 .orElseThrow(() -> {
                     log.error("Collection Not Found!! collectionId = {}", collectionId);
