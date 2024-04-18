@@ -2,6 +2,7 @@ package com.e2i1.linkeepserver.domain.links.entity;
 
 import com.e2i1.linkeepserver.common.entity.DateEntity;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
+import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,6 +28,10 @@ public class LinksEntity extends DateEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "collection_id")
     private CollectionsEntity collection;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private UsersEntity user;
 
     private String title;
     private String url;
