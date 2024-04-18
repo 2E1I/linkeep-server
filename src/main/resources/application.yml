@@ -15,10 +15,3 @@ logging:
     org.hibernate.SQL: debug
 #    org.hibernate.orm.jdbc.bind: trace
 
-token:
-  secret:
-    key : linkeepServerJwtTokenSecretKey!!
-  access-token:
-    plus-hour: 1
-  refresh-token:
-    plus-hour: 12
