@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -22,6 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "links")
 public class LinksEntity extends DateEntity {
 
+    @Setter
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "collection_id")
     private CollectionsEntity collection;
@@ -30,9 +32,5 @@ public class LinksEntity extends DateEntity {
     private String url;
     private String description;
     private String numOfViews;
-
-    public void setCollection(CollectionsEntity collection) {
-        this.collection = collection;
-    }
 
 }

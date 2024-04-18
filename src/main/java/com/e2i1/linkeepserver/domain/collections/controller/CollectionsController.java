@@ -38,21 +38,23 @@ public class CollectionsController {
     }
 
     @GetMapping("/collections/{collectionId}")
-    public ResponseEntity<CollectionUserResDTO> getCollection(@PathVariable String collectionId){
+    public ResponseEntity<CollectionUserResDTO> getCollection(@PathVariable Long collectionId){
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(collectionsBusiness.getCollection(collectionId));
 
-    }
-
-    @GetMapping("/collections/like")
-    public ResponseEntity<HashMap<String,Long>> getUserLikeCollectionList(){
-        HashMap<String,Long> result = new HashMap<>();
-        result.put("numOfLikes", 22L);
-        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/collections/like")
-    public ResponseEntity<CollectionResDTO> countLike(@RequestBody Long collectionId){
+    public ResponseEntity<HashMap<String,Long>> countLike(@RequestBody Long collectionId){
+        HashMap<String,Long> result = new HashMap<>();
+        Long numOfLikes = 5L;
+        result.put("numOfLikes", numOfLikes);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/collections/like")
+    public ResponseEntity<CollectionResDTO> getUserLikeCollectionList(){
+
         return ResponseEntity.ok(null);
     }
 

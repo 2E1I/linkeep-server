@@ -4,6 +4,7 @@ import com.e2i1.linkeepserver.common.entity.DateEntity;
 import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
 import com.e2i1.linkeepserver.domain.friends.entity.FriendsEntity;
 import com.e2i1.linkeepserver.domain.likeothers.entity.LikeOthersEntity;
+import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public class UsersEntity extends DateEntity {
     @OneToMany(mappedBy = "followedUser", cascade = ALL)
     private Set<FriendsEntity> followerList;   // 나를 팔로우한 유저 리스트
 
+    @OneToMany(mappedBy = "user", cascade = ALL)
+    private List<LinksEntity> linkList;
+
     private String nickname;
     private String description;
     private String email;
@@ -68,4 +72,13 @@ public class UsersEntity extends DateEntity {
         followerList.add(follower);
         follower.setFollowedUser(this);
     }
+
+    // 사용자 이름 변경
+    public UsersEntity update(String nickname) {
+        this.nickname = nickname;
+
+        return this;
+    }
+
+    
 }
