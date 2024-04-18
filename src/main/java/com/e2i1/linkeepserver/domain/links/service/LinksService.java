@@ -22,8 +22,9 @@ public class LinksService {
     }
 
 
-    public List<LinksEntity> findByCollections(CollectionsEntity collections){
+    public List<LinksEntity> findByCollections(CollectionsEntity collections) {
         return linksRepository.findLinksEntitiesByCollection(collections);
+    }
 
     public LinksEntity findOneByIdAndUserId(Long linkId) {
         return linksRepository.findFirstByIdOrderByIdDesc(linkId)

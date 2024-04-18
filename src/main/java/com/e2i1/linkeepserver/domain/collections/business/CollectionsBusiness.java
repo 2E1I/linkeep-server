@@ -28,7 +28,7 @@ public class CollectionsBusiness {
   private final LinksConverter linksConverter;
 
   public CollectionUserResDTO getCollection(Long id) {
-    CollectionsEntity collection = collectionsService.findById(id);
+    CollectionsEntity collection = collectionsService.findByIdWithThrow(id);
     List<LinksEntity> linkList = linksService.findByCollections(collection);
     List<CollectionLinkDTO> linkDTOList = linkList.stream().map(linksConverter::toCollectionLinkDTO)
         .toList();
