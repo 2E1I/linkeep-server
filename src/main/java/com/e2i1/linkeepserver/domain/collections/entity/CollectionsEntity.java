@@ -1,6 +1,7 @@
 package com.e2i1.linkeepserver.domain.collections.entity;
 
 import com.e2i1.linkeepserver.common.entity.DateEntity;
+import com.e2i1.linkeepserver.common.entity.StringListToStringConverter;
 import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.tags.entity.TagsEntity;
@@ -42,7 +43,8 @@ public class CollectionsEntity extends DateEntity {
     @Enumerated(EnumType.STRING)
     private Access access;
 
-    private String color;
+    @Convert(converter = StringListToStringConverter.class)
+    private List<String> color;
 
     private Boolean favorite;
 

@@ -1,20 +1,36 @@
 spring:
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/linkeep_dev;MODE=PostgreSQL
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/linkeep_dev;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
 #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
 
+  OAuth2:
+    google:
+      url: https://accounts.google.com/o/oauth2/v2/auth
+      client-id: 798754484325-jia46g1tn3v41kic0r1htrkcboj6mvc0.apps.googleusercontent.com
+      client-secret: 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
+      callback-url: http://localhost:8080/app/accounts/auth/google/callback
+      scope: https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile
+
 logging:
   level:
     org.hibernate.SQL: debug
 #    org.hibernate.orm.jdbc.bind: trace
+
+token:
+  secret:
+    key : linkeepServerJwtTokenSecretKey!!
+  access-token:
+    plus-hour: 1
+  refresh-token:
+    plus-hour: 12
