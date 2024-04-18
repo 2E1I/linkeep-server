@@ -3,6 +3,7 @@ package com.e2i1.linkeepserver.domain.links.entity;
 import com.e2i1.linkeepserver.common.entity.DateEntity;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
