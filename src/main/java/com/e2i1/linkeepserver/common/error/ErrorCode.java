@@ -27,6 +27,12 @@ public enum ErrorCode{
 
     // 모음집 관련 에러 코드
     COLLECTION_NOT_FOUND(HttpStatus.NOT_FOUND, "모음집을 찾을 수 없음"),
+
+    // 링크 관련 에러 코드
+    LINK_NOT_FOUND(HttpStatus.NOT_FOUND, "링크를 찾을 수 없음"),
+
+    // collaborator 관련 에러 코드
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 유저는 모음집에 접근할 수 없음"),
     ;
 
     private final HttpStatus httpStatusCode;
