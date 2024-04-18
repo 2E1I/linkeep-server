@@ -38,3 +38,5 @@ out/
 src/main/resources/db-application.properties
 src/main/resources/application.properties
 src/main/resources/application-oauth.properties
+src/main/java/com/e2i1/linkeepserver/domain/oauth
+src/main/java/com/e2i1/linkeepserver/config/oauth
