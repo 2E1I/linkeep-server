@@ -10,11 +10,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class LinksService {
+
     private final LinksRepository linksRepository;
 
     public LinksEntity save(LinksEntity link) {
@@ -28,11 +27,11 @@ public class LinksService {
 
     public LinksEntity findOneByIdAndUserId(Long linkId) {
         return linksRepository.findFirstByIdOrderByIdDesc(linkId)
-                .orElseThrow(() -> new ApiException(ErrorCode.LINK_NOT_FOUND));
+            .orElseThrow(() -> new ApiException(ErrorCode.LINK_NOT_FOUND));
     }
 
 
-    public List<LinksEntity> searchLinks(String searchTerm) {
-        return linksRepository.findByTitleContainingOrDescriptionContaining(searchTerm, searchTerm);
+    public List<LinksEntity> searchLinks(String keyword) {
+        return linksRepository.findByTitleOrDescriptionContainingKeyword(keyword);
     }
 }

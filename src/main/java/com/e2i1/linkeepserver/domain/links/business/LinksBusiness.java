@@ -63,8 +63,11 @@ public class LinksBusiness {
     /**
      * 링크 title, description을 조회해 해당 검색어 들어있는 링크 목록 가져오기
      */
-    public List<SearchLinkResDTO> searchLinks(String searchTerm) {
-        List<LinksEntity> linkList = linksService.searchLinks(searchTerm);
+    public List<SearchLinkResDTO> searchLinks(String keyword) {
+        // 검색어를 공백 제외하고 하나의 문자열로 변환
+        keyword = keyword.replaceAll("\\s+", "").toLowerCase();
+
+        List<LinksEntity> linkList = linksService.searchLinks(keyword);
 
         return linkList.stream()
             .map(linksConverter::toSearchResponse)
