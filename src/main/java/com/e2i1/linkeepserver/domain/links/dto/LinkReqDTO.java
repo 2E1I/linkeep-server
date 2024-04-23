@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LinkReqDTO {
+
     private String title;
 
-    @NotBlank(message = "URL은 필수 입력입니다.")
+    @NotBlank(message = "URL 입력은 필수 입력입니다.")
     private String url;
+
     private String description;
 
     @NotBlank(message = "저장할 모음집을 선택하세요.")
