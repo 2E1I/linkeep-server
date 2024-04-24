@@ -14,5 +14,7 @@ public class SearchLinkResDTO {
     private String url;
     private String description;
     private Long numOfViews;
+    private Long linkId;
+    private Long writer;
 
 }
