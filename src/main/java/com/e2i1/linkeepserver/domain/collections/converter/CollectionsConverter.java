@@ -45,7 +45,7 @@ public class CollectionsConverter {
             .createdAt(collection.getCreatedAt())
             .favorite(collection.getFavorite())
             .updatedAt(collection.getUpdateAt())
-            .access(collection.getAccess()).build();
+            .access(collection.getAccess().getDescription()).build();
     }
 
     public CollectionsEntity toEntity(CollectionReqDTO req) {

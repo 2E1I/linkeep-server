@@ -20,7 +20,7 @@ public class CollectionResDTO {
     private String title;
     private String description;
     private String imgUrl;
-    private Access access;
+    private String access;
     private List<String> color;
     private boolean favorite;
     private Long numOfLikes;
