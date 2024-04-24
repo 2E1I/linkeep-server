@@ -23,4 +23,8 @@ public class CollectionsService {
                     return new ApiException(ErrorCode.COLLECTION_NOT_FOUND);
                 });
     }
+
+  public void insert(CollectionsEntity collection) {
+      collectionsRepository.save(collection);
+  }
 }

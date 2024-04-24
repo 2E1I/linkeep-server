@@ -1,5 +1,6 @@
 package com.e2i1.linkeepserver.domain.collections.dto;
 
+import com.e2i1.linkeepserver.domain.collections.entity.Access;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class CollectionReqDTO {
     private String imgUrl;
     private String description;
     private List<String> tags;
-    private String access;
+    private Access access;
     private List<String> color;
     private List<Long> collaborators;
 }
