@@ -16,4 +16,8 @@ public class TagsService {
     public List<TagsEntity> findByCollection(CollectionsEntity collection){
         return tagsRepository.findTagsEntitiesByCollection(collection);
     }
+
+  public void insert(TagsEntity tag) {
+      tagsRepository.save(tag);
+  }
 }

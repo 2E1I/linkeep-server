@@ -33,6 +33,7 @@ public enum ErrorCode{
 
     // collaborator 관련 에러 코드
     ACCESS_DENIED(64030,HttpStatus.FORBIDDEN, "해당 유저는 모음집에 접근할 수 없음"),
+    COLLABORATOR_NOT_FOUND(64040,HttpStatus.NOT_FOUND,"사용자가 참여한 모음집을 찾을 수 없음")
     ;
     private final int errorCode;
     private final HttpStatus httpStatusCode;

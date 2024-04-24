@@ -1,5 +1,7 @@
 package com.e2i1.linkeepserver.domain.collections.dto;
 
+import com.e2i1.linkeepserver.domain.collections.entity.Access;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,6 @@ public class CollectionResDTO {
     private List<String> color;
     private boolean favorite;
     private Long numOfLikes;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
