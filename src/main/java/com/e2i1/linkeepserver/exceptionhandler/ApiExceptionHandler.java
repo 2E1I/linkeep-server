@@ -55,6 +55,6 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         return ResponseEntity
                 .status(ErrorCode.SERVER_ERROR.getHttpStatusCode())
-                .body(new ErrorResponse("system error"));
+                .body(new ErrorResponse(ex.getMessage()));
     }
 }
