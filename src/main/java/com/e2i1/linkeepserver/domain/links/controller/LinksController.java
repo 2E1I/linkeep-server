@@ -7,13 +7,11 @@ import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,9 +29,9 @@ public class LinksController {
 
     @GetMapping()
     public ResponseEntity<List<SearchLinkResDTO>> searchLink(
-        @RequestParam("search") String searchTerm) {
-        log.info("search term is {}", searchTerm);
-        List<SearchLinkResDTO> searchLinks = linksBusiness.searchLinks(searchTerm);
+        @RequestParam("search") String keyword) {
+        log.info("search keyword = {}", keyword);
+        List<SearchLinkResDTO> searchLinks = linksBusiness.searchLinks(keyword);
         return ResponseEntity.ok(searchLinks);
     }
 
@@ -52,10 +50,4 @@ public class LinksController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/views")
-    public ResponseEntity<HashMap<String, Long>> plusView(@RequestBody Long linkId) {
-        HashMap<String, Long> result = new HashMap<>();
-        result.put("numOfViews", 22L);
-        return ResponseEntity.ok(result);
-    }
 }
