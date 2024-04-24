@@ -7,8 +7,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 public class ErrorResponse {
+
+    private int errorCode;
+
     private String errorMessage;
 }
