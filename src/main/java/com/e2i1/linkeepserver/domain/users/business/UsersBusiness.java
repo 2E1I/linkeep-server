@@ -15,6 +15,7 @@ import com.e2i1.linkeepserver.domain.users.service.UsersService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Business
 @RequiredArgsConstructor
@@ -25,10 +26,12 @@ public class UsersBusiness {
     private final TokenBusiness tokenBusiness;
     private final LinksBusiness linksBusiness;
 
+    @Transactional
     public TokenResDTO login(LoginReqDTO loginReqDTO) {
         UsersEntity user = usersService.getUser(loginReqDTO.getEmail());
 
         // 로그인 시, 해당 유저 없으면 자동 회원가입 진행
+        // TODO : 유저 닉네임 랜덤 설정
         if (user == null) {
             UsersEntity newUser = usersConverter.toEntity(loginReqDTO);
             user = usersService.register(newUser);
@@ -36,14 +39,6 @@ public class UsersBusiness {
 
         // 토큰 발행
         return tokenBusiness.issueToken(user);
-    }
-
-    public ProfileDTO getProfile(UsersEntity user) {
-        return ProfileDTO.builder()
-            .nickname(user.getNickname())
-            .description(user.getDescription())
-            .imgUrl(user.getImgUrl())
-            .build();
     }
 
     public UserHomeResDTO getUserHome(UsersEntity user) {
@@ -63,5 +58,17 @@ public class UsersBusiness {
         return nicknameList.stream()
             .map(usersConverter::toNicknameResponse)
             .collect(Collectors.toList());
+    }
+
+    public ProfileDTO getProfile(UsersEntity user) {
+        return ProfileDTO.builder()
+            .nickname(user.getNickname())
+            .description(user.getDescription())
+            .imgUrl(user.getImgUrl())
+            .build();
+    }
+
+    public void editProfile(ProfileDTO profile, UsersEntity user) {
+        usersService.editProfile(profile, user);
     }
 }

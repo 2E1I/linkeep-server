@@ -10,11 +10,13 @@ import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -42,7 +44,9 @@ public class UsersController {
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<String> editProfile(@Valid @RequestBody ProfileDTO profile) {
+    public ResponseEntity<String> editProfile(@Valid @RequestBody ProfileDTO profile, @UserSession UsersEntity user) {
+        log.info("========= 수정할 프로필 정보 : {}", profile);
+        usersBusiness.editProfile(profile, user);
         return ResponseEntity.ok("success");
     }
 
