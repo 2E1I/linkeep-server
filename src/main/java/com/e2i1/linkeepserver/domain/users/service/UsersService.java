@@ -9,6 +9,7 @@ import com.e2i1.linkeepserver.domain.users.dto.ProfileDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.repository.UsersRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,15 @@ public class UsersService {
 
     public List<UsersEntity> searchNicknames(String search) {
         return usersRepository.findByNicknameContaining(search);
+    }
+
+    /**
+     * @Param nickname과 중복되는 nickname이 DB에 존재하면 true
+     * nickname이 unique하면 false 리턴
+     */
+    public Boolean isDuplicatedNickname(String nickname) {
+        Optional<UsersEntity> user = usersRepository.findByNickname(nickname);
+        return user.isPresent();
     }
 
     @Transactional

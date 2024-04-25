@@ -71,4 +71,13 @@ public class UsersBusiness {
     public void editProfile(ProfileDTO profile, UsersEntity user) {
         usersService.editProfile(profile, user);
     }
+
+    /**
+     * nickname이 유니크하면 true
+     * 유니크하지 않으면 false
+     */
+    public Boolean validateDuplicatedNickname(String nickname) {
+        Boolean isDuplicated = usersService.isDuplicatedNickname(nickname);
+        return !isDuplicated;
+    }
 }

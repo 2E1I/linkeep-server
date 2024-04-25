@@ -50,6 +50,13 @@ public class UsersController {
         return ResponseEntity.ok("success");
     }
 
+    @GetMapping("/check-duplicated-nickname")
+    public ResponseEntity<Boolean> isDuplicatedNickName(@RequestParam String nickname) {
+        Boolean result = usersBusiness.validateDuplicatedNickname(nickname);
+
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<TokenResDTO> login(@RequestBody LoginReqDTO loginReqDTO) {
         TokenResDTO response = usersBusiness.login(loginReqDTO);

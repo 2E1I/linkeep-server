@@ -16,4 +16,5 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
 
     List<UsersEntity> findByNicknameContaining(String search);
 
+    Optional<UsersEntity> findByNickname(String nickname);
 }
