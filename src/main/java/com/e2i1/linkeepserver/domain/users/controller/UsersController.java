@@ -22,8 +22,10 @@ public class UsersController {
     private final UsersBusiness usersBusiness;
 
     @GetMapping("/home")
-    public ResponseEntity<UserHomeResDTO> getUserHome() {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<UserHomeResDTO> getUserHome(@UserSession UsersEntity user) {
+        UserHomeResDTO home = usersBusiness.getUserHome(user);
+
+        return ResponseEntity.ok(home);
     }
 
     @GetMapping("/nicknames")
@@ -33,11 +35,8 @@ public class UsersController {
 
     @GetMapping("/profile")
     public ResponseEntity<ProfileDTO> getProfile(@UserSession UsersEntity user) {
-        ProfileDTO profile = ProfileDTO.builder()
-                .nickname(user.getNickname())
-                .description(user.getDescription())
-                .imgUrl(user.getImgUrl())
-                .build();
+        ProfileDTO profile = usersBusiness.getProfile(user);
+
         return ResponseEntity.ok(profile);
     }
 

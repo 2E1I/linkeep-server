@@ -21,4 +21,5 @@ public interface LinksRepository extends JpaRepository<LinksEntity, Long> {
 
     List<LinksEntity> findLinksEntitiesByCollection(CollectionsEntity collectionsEntity);
 
+    List<LinksEntity> findByUserIdOrderByUpdateAtDesc(Long userId);
 }
