@@ -30,7 +30,8 @@ public class UsersController {
 
     @GetMapping("/nicknames")
     public ResponseEntity<List<NicknameResDTO>> getNicknameList(@RequestParam String search) {
-        return ResponseEntity.ok(null);
+        List<NicknameResDTO> nicknameList = usersBusiness.searchNicknames(search);
+        return ResponseEntity.ok(nicknameList);
     }
 
     @GetMapping("/profile")

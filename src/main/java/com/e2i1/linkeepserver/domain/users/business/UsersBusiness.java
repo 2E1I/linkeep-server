@@ -7,11 +7,13 @@ import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import com.e2i1.linkeepserver.domain.users.converter.UsersConverter;
 import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.dto.LoginReqDTO;
+import com.e2i1.linkeepserver.domain.users.dto.NicknameResDTO;
 import com.e2i1.linkeepserver.domain.users.dto.ProfileDTO;
 import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 @Business
@@ -53,5 +55,13 @@ public class UsersBusiness {
             .imgUrl(user.getImgUrl())
             .linkList(linkHomeList)
             .build();
+    }
+
+    public List<NicknameResDTO> searchNicknames(String search) {
+        List<UsersEntity> nicknameList = usersService.searchNicknames(search);
+
+        return nicknameList.stream()
+            .map(usersConverter::toNicknameResponse)
+            .collect(Collectors.toList());
     }
 }

@@ -5,6 +5,7 @@ import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.repository.UsersRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,4 +34,7 @@ public class UsersService {
         return usersRepository.findByEmailAndStatusOrderByIdDesc(email, REGISTERED);
     }
 
+    public List<UsersEntity> searchNicknames(String search) {
+        return usersRepository.findByNicknameContaining(search);
+    }
 }
