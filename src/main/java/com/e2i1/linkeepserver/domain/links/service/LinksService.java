@@ -16,8 +16,8 @@ public class LinksService {
 
     private final LinksRepository linksRepository;
 
-    public LinksEntity save(LinksEntity link) {
-        return linksRepository.save(link);
+    public void save(LinksEntity link) {
+        linksRepository.save(link);
     }
 
 
@@ -25,7 +25,7 @@ public class LinksService {
         return linksRepository.findLinksEntitiesByCollection(collections);
     }
 
-    public LinksEntity findOneByIdAndUserId(Long linkId) {
+    public LinksEntity findOneById(Long linkId) {
         return linksRepository.findFirstByIdOrderByIdDesc(linkId)
             .orElseThrow(() -> new ApiException(ErrorCode.LINK_NOT_FOUND));
     }
@@ -33,5 +33,9 @@ public class LinksService {
 
     public List<LinksEntity> searchLinks(String keyword) {
         return linksRepository.findByTitleOrDescriptionContainingKeyword(keyword);
+    }
+
+    public List<LinksEntity> findByUserId(Long userId) {
+        return linksRepository.findByUserIdOrderByUpdateAtDesc(userId);
     }
 }

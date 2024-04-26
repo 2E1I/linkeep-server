@@ -74,10 +74,20 @@ public class UsersEntity extends DateEntity {
     }
 
     // 사용자 이름 변경
-    public UsersEntity update(String nickname) {
-        this.nickname = nickname;
+    public void update(String nickname, String imgUrl, String description) {
+        if (nickname != null) {
+            this.nickname = nickname;
+        }
 
-        return this;
+        if ("DELETE".equals(imgUrl)) {
+            this.imgUrl = null;  // 이미지 URL을 null로 설정하여 이미지 삭제 처리
+        } else if (imgUrl != null) {
+            this.imgUrl = imgUrl;
+        }
+
+        if (description != null) {
+            this.description = description;
+        }
     }
 
 
