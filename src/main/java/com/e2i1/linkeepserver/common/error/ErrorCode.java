@@ -33,7 +33,15 @@ public enum ErrorCode{
 
     // collaborator 관련 에러 코드
     ACCESS_DENIED(64030,HttpStatus.FORBIDDEN, "해당 유저는 모음집에 접근할 수 없음"),
-    COLLABORATOR_NOT_FOUND(64040,HttpStatus.NOT_FOUND,"사용자가 참여한 모음집을 찾을 수 없음")
+    COLLABORATOR_NOT_FOUND(64040,HttpStatus.NOT_FOUND,"사용자가 참여한 모음집을 찾을 수 없음"),
+
+    // S3 관련 에러 코드
+    EMPTY_FILE_EXCEPTION(74000, HttpStatus.BAD_REQUEST, "빈 파일입니다."),
+    NO_FILE_EXTENTION(74001, HttpStatus.BAD_REQUEST, "확장자가 없습니다."),
+    INVALID_FILE_EXTENTION(74002, HttpStatus.BAD_REQUEST, "부적절한 이미지 확장자입니다."),
+    IO_EXCEPTION_ON_IMAGE_UPLOAD(75000, HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드 중 에러가 발생했습니다."),
+    PUT_OBJECT_EXCEPTION(75001, HttpStatus.INTERNAL_SERVER_ERROR, "S3에 이미지 업로드 중 에러가 발생했습니다."),
+    IO_EXCEPTION_ON_IMAGE_DELETE(75002, HttpStatus.INTERNAL_SERVER_ERROR, "이미지 삭제 중 에러가 발생했습니다."),
     ;
     private final int errorCode;
     private final HttpStatus httpStatusCode;
