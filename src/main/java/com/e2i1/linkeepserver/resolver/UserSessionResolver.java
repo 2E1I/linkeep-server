@@ -51,19 +51,7 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
         Object userId = requestContext.getAttribute("userId", RequestAttributes.SCOPE_REQUEST);
 
         log.info("userId = {}",Long.parseLong(userId.toString()));
-        UsersEntity userEntity = userService.getUserWithThrow(Long.parseLong(userId.toString()));
 
-        // 사용자 정보 세팅
-        return UsersEntity.builder()
-            .Id(userEntity.getId())
-            .nickname(userEntity.getNickname())
-            .email(userEntity.getEmail())
-            .description(userEntity.getDescription())
-            .imgUrl(userEntity.getImgUrl())
-            .thumbnailUrl(userEntity.getThumbnailUrl())
-            .status(userEntity.getStatus())
-            .createdAt(userEntity.getCreatedAt())
-            .updateAt(userEntity.getUpdateAt())
-            .build();
+        return userService.getUserWithThrow(Long.parseLong(userId.toString()));
     }
 }

@@ -7,6 +7,7 @@ import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
+import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 
@@ -60,4 +61,14 @@ public class LinksConverter {
             .writer(link.getUser().getId())
             .build();
     }
+
+    public LinkHomeResDTO toLinkHomeResponse(LinksEntity link) {
+        return LinkHomeResDTO.builder()
+            .id(link.getId())
+            .title(link.getTitle())
+            .url(link.getUrl())
+            .updatedAt(link.getUpdateAt())
+            .build();
+    }
+
 }
