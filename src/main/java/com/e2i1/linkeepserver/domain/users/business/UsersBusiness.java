@@ -53,15 +53,16 @@ public class UsersBusiness {
                 Random random = new Random();
                 int randomNum1 = random.nextInt(WORD_NUM);
                 int randomNum2 = random.nextInt(WORD_NUM);
+                int randomNum3 = random.nextInt(WORD_NUM) + 1;
 
                 // 랜덤 닉네임 만들기
-                nickname = ADJECTIVES.get(randomNum1) + " " + NOUNS.get(randomNum2);
+                nickname = ADJECTIVES.get(randomNum1) + " " + NOUNS.get(randomNum2) + randomNum3;
 
                 // 닉네임 존재하는지 확인
-                UsersEntity findUser = usersService.getUserByNickname(nickname);
+                Boolean isDuplicated = usersService.isDuplicatedNickname(nickname);
 
                 // 존재하지 않으면 해당 닉네임으로 저장
-                if (findUser == null) {
+                if (!isDuplicated) {
                     break;
                 }
 
