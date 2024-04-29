@@ -37,6 +37,10 @@ public class UsersService {
         return usersRepository.findByEmailAndStatusOrderByIdDesc(email, REGISTERED);
     }
 
+    public UsersEntity getUserByNickname(String nickname) {
+        return usersRepository.findByNicknameAndStatus(nickname, REGISTERED);
+    }
+
     public List<UsersEntity> searchNicknames(String search) {
         return usersRepository.findByNicknameContaining(search);
     }
