@@ -37,6 +37,9 @@ public class LinksEntity extends DateEntity {
 
     private Long numOfViews;
 
+    @Version
+    private Long version;
+
     public void updateView() {
         this.numOfViews += 1L;
     }
