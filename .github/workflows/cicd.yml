@@ -6,6 +6,25 @@ on:
     branches: [ main ]
 
 jobs:
+  cleanup_before_build:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Cleanup Old Artifacts
+          uses: actions/github-script@v5
+          with:
+            script: |
+              const artifacts = await github.rest.actions.listArtifactsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              for (const artifact of artifacts.data.artifacts.filter(a => a.name.startsWith('linkeepServer'))) {
+                console.log(`Deleting artifact: ${artifact.name} (ID: ${artifact.id})`);
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id
+                });
+              }
   build:
     runs-on: ubuntu-latest # 실행 환경 지정
 
