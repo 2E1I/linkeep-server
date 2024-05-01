@@ -37,15 +37,20 @@ public class UsersService {
         return usersRepository.findByEmailAndStatusOrderByIdDesc(email, REGISTERED);
     }
 
+
+  public UsersEntity findById(Long userId) {
+        return  usersRepository.findById(userId).orElseThrow(()-> new ApiException(ErrorCode.USER_NOT_FOUND));
+  }
+
     public List<UsersEntity> searchNicknames(String search) {
-        return usersRepository.findByNicknameContaining(search);
+        return usersRepository.findByNicknameContainingAndStatus(search, REGISTERED);
     }
 
     /**
      * @Param nickname과 중복되는 nickname이 DB에 존재하면 true nickname이 unique하면 false 리턴
      */
     public Boolean isDuplicatedNickname(String nickname) {
-        Optional<UsersEntity> user = usersRepository.findByNickname(nickname);
+        Optional<UsersEntity> user = usersRepository.findByNicknameAndStatus(nickname, REGISTERED);
         return user.isPresent();
     }
 
@@ -56,4 +61,5 @@ public class UsersService {
         // 메서드 끝나면 transactional 종료되어 수정된 유저 정보가 DB에 반영된다
         // user는 UserSessionResolver에서 getUserWithThrow로 가져온 user 객체임 -> 즉, 영속성 컨텍스트 안에 있음 -> dirty checking 가능
     }
+
 }

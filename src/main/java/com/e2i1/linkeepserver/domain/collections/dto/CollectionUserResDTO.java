@@ -15,6 +15,7 @@ public class CollectionUserResDTO {
     private String title;
     private String imgUrl;
     private String description;
-    List<String> tagList;
-    List<CollectionLinkDTO> linkList;
+    private boolean isLike;
+    private List<String> tagList;
+    private List<CollectionLinkDTO> linkList;
 }
