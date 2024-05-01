@@ -28,4 +28,8 @@ public class CollaboratorsService {
     public void insert(CollaboratorsEntity collaborator) {
         collaboratorsRepository.save(collaborator);
     }
+
+    public List<CollaboratorsEntity> findByCollection(CollectionsEntity collection) {
+        return collaboratorsRepository.findByCollection(collection).orElseThrow(()->new ApiException(ErrorCode.COLLABORATOR_NOT_FOUND));
+    }
 }

@@ -21,7 +21,7 @@ public class CollectionsController {
     private final CollectionsBusiness collectionsBusiness;
 
     @GetMapping("/collections/search")
-    public ResponseEntity<List<SearchCollectionResDTO>> searchCollection(@RequestParam String search){
+    public ResponseEntity<List<CollectionResDTO>> searchCollection(@RequestParam String search,@UserSession UsersEntity user){
         return ResponseEntity.ok(null);
 
     }
@@ -45,25 +45,25 @@ public class CollectionsController {
     }
 
     @GetMapping("/collections/{collectionId}")
-    public ResponseEntity<CollectionUserResDTO> getCollection(@PathVariable Long collectionId){
+    public ResponseEntity<CollectionUserResDTO> getCollection(@PathVariable Long collectionId, @UserSession UsersEntity user){
 
-        return ResponseEntity.ok(collectionsBusiness.getCollection(collectionId));
+        return ResponseEntity.ok(collectionsBusiness.getCollection(collectionId, user));
 
     }
 
     @PostMapping("/collections/like")
-    public ResponseEntity<HashMap<String,Long>> countLike(@RequestBody CollectionLikeReqDTO likecollection){
+    public ResponseEntity<HashMap<String,Long>> countLike(@RequestBody CollectionLikeReqDTO likecollection,@UserSession UsersEntity user){
         HashMap<String,Long> result = new HashMap<>();
-        Long numOfLikes = collectionsBusiness.updateNumOfLikes(likecollection.getCollectionId());
+        Long numOfLikes = collectionsBusiness.updateNumOfLikes(likecollection.getCollectionId(),user);
         result.put("numOfLikes", numOfLikes);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/collections/like")
-    public ResponseEntity<CollectionResDTO> getUserLikeCollectionList(){
+    public ResponseEntity<List<CollectionResDTO>> getUserLikeCollectionList(@UserSession UsersEntity user){
 
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(collectionsBusiness.getUserLikeCollection(user));
     }
 
 }

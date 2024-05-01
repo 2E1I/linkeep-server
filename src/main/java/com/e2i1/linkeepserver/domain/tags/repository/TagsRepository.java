@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface TagsRepository extends JpaRepository<TagsEntity,Long> {
     public List<TagsEntity> findTagsEntitiesByCollection(CollectionsEntity collection);
+
+    List<String> findTagNameBycollection(CollectionsEntity collection);
 }

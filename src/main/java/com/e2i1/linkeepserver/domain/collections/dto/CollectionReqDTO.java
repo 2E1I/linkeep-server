@@ -18,6 +18,6 @@ public class CollectionReqDTO {
     private String description;
     private List<String> tags;
     private Access access;
-    private List<String> color;
+    private List<Integer> color;
     private List<Long> collaborators;
 }

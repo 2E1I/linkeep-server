@@ -18,11 +18,7 @@ public class CollectionTests {
   private CollectionsBusiness collectionsBusiness;
 
 
-  @Test
-  void 모음집_조회() {
-    CollectionUserResDTO result = collectionsBusiness.getCollection(2L);
-    System.out.println(result);
-  }
+
 
 
 }

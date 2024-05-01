@@ -44,7 +44,7 @@ public class CollectionsEntity extends DateEntity {
     private Access access;
 
     @Convert(converter = StringListToStringConverter.class)
-    private List<String> color;
+    private List<Integer> color;
 
     private Boolean favorite;
 
