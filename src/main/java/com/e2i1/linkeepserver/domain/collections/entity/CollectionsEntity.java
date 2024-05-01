@@ -43,8 +43,8 @@ public class CollectionsEntity extends DateEntity {
     @Enumerated(EnumType.STRING)
     private Access access;
 
-    @Convert(converter = StringListToStringConverter.class)
-    private List<Integer> color;
+
+    private int color;
 
     private Boolean favorite;
 

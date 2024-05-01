@@ -22,7 +22,7 @@ public class CollectionResDTO {
     private String description;
     private String imgUrl;
     private String access;
-    private List<Integer> color;
+    private int color;
     private boolean isLike;
     private Long numOfLikes;
     private LocalDateTime createdAt;

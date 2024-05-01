@@ -24,6 +24,6 @@ public class CollectionReqDTO {
     private Access access;
 
     @NotNull
-    private List<String> color;
+    private int color;
     private List<Long> collaborators;
 }

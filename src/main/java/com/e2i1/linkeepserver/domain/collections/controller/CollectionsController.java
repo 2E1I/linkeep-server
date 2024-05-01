@@ -62,7 +62,6 @@ public class CollectionsController {
     @GetMapping("/collections/like")
     public ResponseEntity<List<CollectionResDTO>> getUserLikeCollectionList(@UserSession UsersEntity user){
 
-
         return ResponseEntity.ok(collectionsBusiness.getUserLikeCollection(user));
     }
 

@@ -17,6 +17,6 @@ public interface LikeOthersRepository extends JpaRepository<LikeOthersEntity,Lon
 
   Optional<LikeOthersEntity> findByUser(UsersEntity user);
 
-  @Query("select l.collection from LikeOthersEntity l where l.user =: user")
+  @Query("select l.collection from LikeOthersEntity l where l.user =:user")
   Optional<List<CollectionsEntity>> findCollectionByUser(@Param("user") UsersEntity user);
 }

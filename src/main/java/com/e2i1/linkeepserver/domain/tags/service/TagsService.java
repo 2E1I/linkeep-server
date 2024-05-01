@@ -22,6 +22,6 @@ public class TagsService {
   }
 
   public List<String> findTagNameByCollection(CollectionsEntity collection) {
-      return tagsRepository.findTagNameBycollection(collection);
+      return tagsRepository.findTagNameByCollection(collection);
   }
 }
