@@ -6,26 +6,6 @@ on:
     branches: [ main ]
 
 jobs:
-  cleanup_before_build:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Cleanup Old Artifacts
-          uses: actions/github-script@v5
-          with:
-            github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # PAT 사용
-            script: |
-              const artifacts = await github.rest.actions.listArtifactsForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              });
-              for (const artifact of artifacts.data.artifacts.filter(a => a.name.startsWith('linkeepServer'))) {
-                console.log(`Deleting artifact: ${artifact.name} (ID: ${artifact.id})`);
-                await github.rest.actions.deleteArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: artifact.id
-                });
-              }
   build:
     runs-on: ubuntu-latest # 실행 환경 지정
 
@@ -92,23 +72,3 @@ jobs:
 #          java -jar /home/${EC2_USER}/linkeep-server/linkeepServer-0.0.1-SNAPSHOT.jar
 #          # EC2 인스턴스에서 배포 스크립트 실행
 #          ssh -i ec2_ssh_key -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd /home/${EC2_USER}/linkeep-server && ./deploy_script.sh"
-
-  cleanup_artifacts:
-      needs: [build, deploy]
-      runs-on: ubuntu-latest
-      steps:
-        - name: Cleanup Old Artifacts
-          uses: actions/github-script@v5
-          with:
-            script: |
-              const artifacts = await github.rest.actions.listArtifactsForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              });
-              for (const artifact of artifacts.data.artifacts.filter(a => a.name.startsWith('linkeepServer') && a.id !== ${{ needs.build.outputs.artifact_id }})) {
-                await github.rest.actions.deleteArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: artifact.id
-                });
-              }
