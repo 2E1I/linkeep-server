@@ -73,12 +73,21 @@ public class UsersEntity extends DateEntity {
         follower.setFollowedUser(this);
     }
 
-    // 사용자 이름 변경
-    public UsersEntity update(String nickname) {
-        this.nickname = nickname;
+    // 프로필 변경
+    public void update(String nickname, String imgUrl, String description) {
+        if (nickname != null) {
+            this.nickname = nickname;
+        }
+        
+        // 삭제하려는 경우에는 null, 이미지 수정하는 경우에는 새로운 imgUrl, 변경사항 없는 경우 기존 imgUrl이 들어온다
+        this.imgUrl = imgUrl;
 
-        return this;
+        if (description != null) {
+            this.description = description;
+        }
     }
+
+    
 
 
 }

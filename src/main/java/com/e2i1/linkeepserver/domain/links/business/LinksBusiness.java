@@ -1,6 +1,8 @@
 package com.e2i1.linkeepserver.domain.links.business;
 
 import com.e2i1.linkeepserver.common.annotation.Business;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
+import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.collaborators.service.CollaboratorsService;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
@@ -10,6 +12,7 @@ import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.service.LinksService;
+import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +33,8 @@ public class LinksBusiness {
     /**
      * link 저장하기 해당 컬렉션에 권한 있는지 확인 후 저장하기
      */
-    public LinksEntity save(LinkReqDTO req, UsersEntity user) {
+    @Transactional
+    public void save(LinkReqDTO req, UsersEntity user) {
         /*
         내가 해당 collection의 작업자일 때만 링크 저장 가능
         만약 해당 collection이 존재하지 않거나, 내가 collection의 작업자가 아니라면 예외가 발생한다
@@ -39,26 +43,31 @@ public class LinksBusiness {
         collaboratorsService.findByUserIdAndCollectionIdWithThrow(user.getId(), collection.getId());
 
         LinksEntity linkEntity = linksConverter.toEntity(req, collection, user);
-        return linksService.save(linkEntity);
+        linksService.save(linkEntity);
     }
 
     /**
-     * link 단건 조회 현재 로그인된 유저가 생성한 link가 아닌 경우, link 조회수 1증가 즉, 자기가 만든 link는 아무리 조회해도 조회수 증가 안함
+     * link 단건 조회
+     * 현재 로그인된 유저가 생성한 link가 아닌 경우, link 조회수 1증가
+     * 즉, 자기가 만든 link는 아무리 조회해도 조회수 증가 안함
      */
-    @Transactional
     public LinkResDTO findOneById(Long linkId, Long userId) {
-        LinksEntity link = linksService.findOneByIdAndUserId(linkId);
 
-        // 현재 로그인된 유저의 링크가 아닐 경우에만 조회 수 증가
-        if (!userId.equals(link.getUser().getId())) {
-            // link 객체는 linksService를 통해서 가져온거라 현재 영속성 컨텍스트 안에 있음
-            // 이렇게 수정만해도 transaction 끝날 때, dirty checking을 통해 자동으로 DB에 수정사항 반영된다.
-            link.updateView();
+        while (true) {
+            try {
+                LinksEntity link = linksService.findOneById(linkId, userId);
+                return linksConverter.toResponse(link);
+            } catch (Exception e) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    throw new ApiException(ErrorCode.SERVER_ERROR, ex);
+                }
+            }
         }
-        return linksConverter.toResponse(link);
+
     }
 
-    // TODO : 검색어를 공백 기준으로 나누고 이들이 모두 존재하는 레코드들을 리턴하도록 메서드 수정하기
 
     /**
      * 링크 title, description을 조회해 해당 검색어 들어있는 링크 목록 가져오기
@@ -71,6 +80,18 @@ public class LinksBusiness {
 
         return linkList.stream()
             .map(linksConverter::toSearchResponse)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 유저가 저장한 모든 link list 불러오기
+     * 최신 순으로 정렬해서
+     */
+    public List<LinkHomeResDTO> findByUserId(Long userId) {
+        List<LinksEntity> linkList = linksService.findByUserId(userId);
+
+        return linkList.stream()
+            .map(linksConverter::toLinkHomeResponse)
             .collect(Collectors.toList());
     }
 }

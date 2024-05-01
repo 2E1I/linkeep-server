@@ -1,20 +1,17 @@
 package com.e2i1.linkeepserver.domain.users.dto;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkHomeResDTO {
+public class EditProfileImageReqDTO {
 
-    private Long id;
-    private String title;
-    private String url;
-    private String description;
-    private LocalDateTime updatedAt;
+    private MultipartFile image;
+
 }

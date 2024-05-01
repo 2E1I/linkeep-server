@@ -25,7 +25,7 @@ public class ApiExceptionHandler {
         // 2. 발생한 예외에서 errorCode 가져와서
         ErrorCode errorCode = ex.getErrorCode();
         // 3. errorResponse 만들기(에러 메시지 내용과 함께)
-        ErrorResponse errorResponse = new ErrorResponse(errorCode.getDescription());
+        ErrorResponse errorResponse = new ErrorResponse(errorCode.getErrorCode(), errorCode.getDescription());
 
         return ResponseEntity
                 .status(errorCode.getHttpStatusCode())
@@ -34,9 +34,7 @@ public class ApiExceptionHandler {
 
     /**
      * DTO 등에서 validation 실패 시, 해당 예외 처리하는 핸들러
-     * @NotNull, @NotBlank 등의 검증 실패 시 해당 예외 처리해줌
-     * @param ex
-     * @return
+     * NotNull, NotBlank 등의 애노테이션 검증 실패 시 해당 예외 처리해줌
      */
     @ExceptionHandler(value = BeanDefinitionValidationException.class)
     public ResponseEntity<ErrorResponse> handlerBeanValidationException(BeanDefinitionValidationException ex) {
@@ -45,6 +43,7 @@ public class ApiExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(
                         ErrorResponse.builder()
+                                .errorCode(40000)
                                 .errorMessage(ex.getMessage())
                                 .build()
                 );
@@ -55,6 +54,6 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         return ResponseEntity
                 .status(ErrorCode.SERVER_ERROR.getHttpStatusCode())
-                .body(new ErrorResponse(ex.getMessage()));
+                .body(new ErrorResponse(500, ex.getMessage()));
     }
 }
