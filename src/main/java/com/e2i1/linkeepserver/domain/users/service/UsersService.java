@@ -38,14 +38,14 @@ public class UsersService {
     }
 
     public List<UsersEntity> searchNicknames(String search) {
-        return usersRepository.findByNicknameContaining(search);
+        return usersRepository.findByNicknameContainingAndStatus(search, REGISTERED);
     }
 
     /**
      * @Param nickname과 중복되는 nickname이 DB에 존재하면 true nickname이 unique하면 false 리턴
      */
     public Boolean isDuplicatedNickname(String nickname) {
-        Optional<UsersEntity> user = usersRepository.findByNickname(nickname);
+        Optional<UsersEntity> user = usersRepository.findByNicknameAndStatus(nickname, REGISTERED);
         return user.isPresent();
     }
 

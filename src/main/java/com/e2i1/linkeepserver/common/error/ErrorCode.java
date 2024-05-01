@@ -42,6 +42,12 @@ public enum ErrorCode{
     IO_EXCEPTION_ON_IMAGE_UPLOAD(75000, HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드 중 에러가 발생했습니다."),
     PUT_OBJECT_EXCEPTION(75001, HttpStatus.INTERNAL_SERVER_ERROR, "S3에 이미지 업로드 중 에러가 발생했습니다."),
     IO_EXCEPTION_ON_IMAGE_DELETE(75002, HttpStatus.INTERNAL_SERVER_ERROR, "이미지 삭제 중 에러가 발생했습니다."),
+
+    // 랜덤 닉네임 생성 관련 에러 코드
+    RETRY_EXCEEDED(85000, HttpStatus.INTERNAL_SERVER_ERROR, "랜덤 닉네임 생성 재시도 횟수를 초과했습니다."),
+
+
+
     ;
     private final int errorCode;
     private final HttpStatus httpStatusCode;
