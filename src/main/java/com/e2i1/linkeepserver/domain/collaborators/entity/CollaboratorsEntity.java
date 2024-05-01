@@ -7,6 +7,7 @@ import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -17,6 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Getter
 @Table(name = "collaborators")
 public class CollaboratorsEntity extends BaseEntity {
 

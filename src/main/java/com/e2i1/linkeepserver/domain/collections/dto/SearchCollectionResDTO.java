@@ -14,7 +14,7 @@ import java.util.List;
 public class SearchCollectionResDTO {
     private String title;
     private String imgUrl;
-    private List<String> color;
+    private int color;
     private int numOfViews;
     private List<String> tagNames;
 }

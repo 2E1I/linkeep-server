@@ -1,6 +1,7 @@
 package com.e2i1.linkeepserver.domain.collections.converter;
 
 import com.e2i1.linkeepserver.common.annotation.Converter;
+import com.e2i1.linkeepserver.domain.collaborators.dto.CollaboratorResDTO;
 import com.e2i1.linkeepserver.domain.collections.business.CollectionsBusiness;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionLinkDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionReqDTO;
@@ -19,13 +20,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CollectionsConverter {
 
-    public CollectionUserResDTO toCollectionUserResDTO(CollectionsEntity collection, List<CollectionLinkDTO> linkList, List<String> tagsList){
+    public CollectionUserResDTO toCollectionUserResDTO(CollectionsEntity collection, List<CollectionLinkDTO> linkList, List<String> tagsList, boolean isLike){
         CollectionUserResDTO userResDTO = CollectionUserResDTO.builder()
                 .title(collection.getTitle())
                 .imgUrl(collection.getImgURL())
                 .description(collection.getDescription())
                 .linkList(linkList)
                 .tagList(tagsList)
+                .isLike(isLike)
                 .build();
         return userResDTO;
     }
@@ -35,7 +37,7 @@ public class CollectionsConverter {
             collection.getTitle()).build();
     }
 
-    public CollectionResDTO toCollectionResDTO(CollectionsEntity collection){
+    public CollectionResDTO toCollectionResDTO(CollectionsEntity collection,boolean isLike, List<String> tagList, List<CollaboratorResDTO> collaboratorList){
         return CollectionResDTO.builder().collectionId(collection.getId())
             .numOfLikes(collection.getNumOfLikes())
             .color(collection.getColor())
@@ -43,9 +45,11 @@ public class CollectionsConverter {
             .description(collection.getDescription())
             .imgUrl(collection.getImgURL())
             .createdAt(collection.getCreatedAt())
-            .favorite(collection.getFavorite())
+            .isLike(isLike)
             .updatedAt(collection.getUpdateAt())
-            .access(collection.getAccess().getDescription()).build();
+            .access(collection.getAccess().getDescription())
+            .collaboratorList(collaboratorList)
+            .tagList(tagList).build();
     }
 
     public CollectionsEntity toEntity(CollectionReqDTO req) {
@@ -56,6 +60,7 @@ public class CollectionsConverter {
             .title(req.getTitle())
             .favorite(false)
             .imgURL(req.getImgUrl())
+            .numOfLikes(0L)
             .build();
     }
 }

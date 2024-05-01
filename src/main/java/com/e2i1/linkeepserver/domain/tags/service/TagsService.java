@@ -20,4 +20,8 @@ public class TagsService {
   public void insert(TagsEntity tag) {
       tagsRepository.save(tag);
   }
+
+  public List<String> findTagNameByCollection(CollectionsEntity collection) {
+      return tagsRepository.findTagNameByCollection(collection);
+  }
 }
