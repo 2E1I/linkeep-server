@@ -1,6 +1,8 @@
 package com.e2i1.linkeepserver.domain.links.business;
 
 import com.e2i1.linkeepserver.common.annotation.Business;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
+import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.collaborators.service.CollaboratorsService;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
@@ -49,17 +51,21 @@ public class LinksBusiness {
      * 현재 로그인된 유저가 생성한 link가 아닌 경우, link 조회수 1증가
      * 즉, 자기가 만든 link는 아무리 조회해도 조회수 증가 안함
      */
-    @Transactional
     public LinkResDTO findOneById(Long linkId, Long userId) {
-        LinksEntity link = linksService.findOneById(linkId);
 
-        // 현재 로그인된 유저의 링크가 아닐 경우에만 조회 수 증가
-        if (!userId.equals(link.getUser().getId())) {
-            // link 객체는 linksService를 통해서 가져온거라 현재 영속성 컨텍스트 안에 있음
-            // 이렇게 수정만해도 transaction 끝날 때, dirty checking을 통해 자동으로 DB에 수정사항 반영된다.
-            link.updateView();
+        while (true) {
+            try {
+                LinksEntity link = linksService.findOneById(linkId, userId);
+                return linksConverter.toResponse(link);
+            } catch (Exception e) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    throw new ApiException(ErrorCode.SERVER_ERROR, ex);
+                }
+            }
         }
-        return linksConverter.toResponse(link);
+
     }
 
 
