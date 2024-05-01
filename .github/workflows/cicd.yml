@@ -12,6 +12,7 @@ jobs:
         - name: Cleanup Old Artifacts
           uses: actions/github-script@v5
           with:
+            github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # PAT 사용
             script: |
               const artifacts = await github.rest.actions.listArtifactsForRepo({
                 owner: context.repo.owner,
