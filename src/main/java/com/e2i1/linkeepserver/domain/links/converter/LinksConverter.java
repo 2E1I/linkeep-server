@@ -67,6 +67,7 @@ public class LinksConverter {
             .id(link.getId())
             .title(link.getTitle())
             .url(link.getUrl())
+            .description(link.getDescription())
             .updatedAt(link.getUpdateAt())
             .build();
     }
