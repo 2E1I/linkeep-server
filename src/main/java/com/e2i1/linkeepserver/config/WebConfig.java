@@ -20,7 +20,8 @@ public class WebConfig implements WebMvcConfigurer {
         "/",
         "favicon.ico",
         "/error",
-        "/api/users/login"
+        "/api/users/login",
+        "/api/users/register"
     );
 
     private final List<String> SWAGGER = List.of(

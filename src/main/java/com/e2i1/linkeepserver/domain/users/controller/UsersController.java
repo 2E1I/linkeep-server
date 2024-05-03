@@ -5,8 +5,10 @@ import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import com.e2i1.linkeepserver.domain.users.business.UsersBusiness;
 import com.e2i1.linkeepserver.domain.users.dto.EditProfileReqDTO;
 import com.e2i1.linkeepserver.domain.users.dto.LoginReqDTO;
+import com.e2i1.linkeepserver.domain.users.dto.LoginResDTO;
 import com.e2i1.linkeepserver.domain.users.dto.NicknameResDTO;
 import com.e2i1.linkeepserver.domain.users.dto.ProfileResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.SignupReqDTO;
 import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
@@ -65,8 +67,18 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResDTO> login(@RequestBody LoginReqDTO loginReqDTO) {
-        TokenResDTO response = usersBusiness.login(loginReqDTO);
+    public ResponseEntity<LoginResDTO> login(@RequestBody LoginReqDTO loginReqDTO) {
+        LoginResDTO response = usersBusiness.login(loginReqDTO);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<TokenResDTO> signup(
+        @RequestPart(value = "image", required = false) MultipartFile imgFile,
+        @RequestPart SignupReqDTO signupInfo
+    ) {
+        TokenResDTO response = usersBusiness.signup(signupInfo, imgFile);
 
         return ResponseEntity.ok(response);
     }

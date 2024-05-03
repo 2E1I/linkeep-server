@@ -24,6 +24,7 @@ public enum ErrorCode{
 
     // 유저 관련 에러 코드
     USER_NOT_FOUND(34040,HttpStatus.NOT_FOUND,  "사용자를 찾을 수 없음"),
+    NICKNAME_DUPLICATED(34000,HttpStatus.BAD_REQUEST,  "닉네임이 중복됩니다."),
 
     // 모음집 관련 에러 코드
     COLLECTION_NOT_FOUND(44040,HttpStatus.NOT_FOUND, "모음집을 찾을 수 없음"),
