@@ -83,5 +83,13 @@ public class UsersController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("authorization-token") String token,
+        @UserSession UsersEntity user) {
+        usersBusiness.logout(token, user);
+
+        return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+
 
 }

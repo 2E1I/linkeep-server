@@ -12,6 +12,8 @@ import com.e2i1.linkeepserver.domain.image.service.S3ImageService;
 import com.e2i1.linkeepserver.domain.links.business.LinksBusiness;
 import com.e2i1.linkeepserver.domain.token.business.TokenBusiness;
 import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
+import com.e2i1.linkeepserver.domain.token.entity.BlackList;
+import com.e2i1.linkeepserver.domain.token.service.TokenService;
 import com.e2i1.linkeepserver.domain.users.converter.UsersConverter;
 import com.e2i1.linkeepserver.domain.users.dto.EditProfileReqDTO;
 import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
@@ -41,6 +43,7 @@ public class UsersBusiness {
     private final LinksBusiness linksBusiness;
 
     private final S3ImageService s3ImageService;
+    private final TokenService tokenService;
 
     @Transactional
     public LoginResDTO login(LoginReqDTO loginReqDTO) {
@@ -138,6 +141,20 @@ public class UsersBusiness {
 
     }
 
+    /**
+     * 로그아웃 로직
+     * 현재 유저에게 발급한 token을 blacklist에 저장해서 다시 사용하지 못하도록
+     */
+    public void logout(String token, UsersEntity user) {
+        Long userID = tokenBusiness.validationAccessToken(token);
+        if (!user.getId().equals(userID)) {
+            throw new ApiException(ErrorCode.ACCESS_DENIED, "로그인한 유저의 ID와 token의 유저 ID가 다릅니다.");
+        }
+
+        // 해당 token을 blackList에 저장
+        tokenService.saveBlackList(BlackList.builder().invalidToken(token).build());
+    }
+
 
     /**
      * nickname이 유니크하면 true 유니크하지 않으면 false
@@ -182,4 +199,6 @@ public class UsersBusiness {
 
         return nickname;
     }
+
+
 }
