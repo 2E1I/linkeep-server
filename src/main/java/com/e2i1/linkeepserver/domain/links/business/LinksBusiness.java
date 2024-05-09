@@ -17,6 +17,8 @@ import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 @Business
@@ -87,11 +89,19 @@ public class LinksBusiness {
      * 유저가 저장한 모든 link list 불러오기
      * 최신 순으로 정렬해서
      */
-    public List<LinkHomeResDTO> findByUserId(Long userId) {
-        List<LinksEntity> linkList = linksService.findByUserId(userId);
+    public List<LinkHomeResDTO> findByUserId(Long userId, Long lastId, int size) {
+        Pageable pageable = PageRequest.of(0, size);
+        List<LinksEntity> linkList = linksService.findByUserId(userId, lastId, pageable);
 
         return linkList.stream()
             .map(linksConverter::toLinkHomeResponse)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * 다음에 조회될 링크가 있는지 여부
+     */
+    public Boolean hasNext(Long id) {
+        return linksService.hasNext(id);
     }
 }

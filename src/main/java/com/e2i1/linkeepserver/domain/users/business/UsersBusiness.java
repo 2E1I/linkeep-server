@@ -91,14 +91,20 @@ public class UsersBusiness {
         return tokenBusiness.issueToken(newUser);
     }
 
-    public UserHomeResDTO getUserHome(UsersEntity user) {
-        // user의 모든 link를 최신순으로 가져오기
-        List<LinkHomeResDTO> linkHomeList = linksBusiness.findByUserId(user.getId());
-
+    public UserHomeResDTO getUserHome(Long lastId, Integer size, UsersEntity user) {
+        if (lastId == null) {
+            lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
+        }
+        // lastId부터 size만큼 링크 가져오기
+        List<LinkHomeResDTO> linkHomeList = linksBusiness.findByUserId(user.getId(), lastId, size);
+        
+        // 가져온 링크들의 마지막 id 값을 가지고 다음에 조회할 링크 있는지 확인
+        Boolean hasNext = linksBusiness.hasNext(linkHomeList.get(linkHomeList.size()-1).getId());
         return UserHomeResDTO.builder()
             .nickname(user.getNickname())
             .imgUrl(user.getImgUrl())
             .linkList(linkHomeList)
+            .hasNext(hasNext)
             .build();
     }
 
