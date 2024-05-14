@@ -28,4 +28,12 @@ public class LikeOthersService {
     return likeOthersRepository.findCollectionByUser(user).orElseThrow(() -> new ApiException(
         ErrorCode.COLLABORATOR_NOT_FOUND));
   }
+
+  public void deleteLike(LikeOthersEntity likeOther) {
+    likeOthersRepository.delete(likeOther);
+  }
+
+  public LikeOthersEntity findByCollectionAndUser(CollectionsEntity collection, UsersEntity user) {
+    return likeOthersRepository.findByCollectionAndUser(collection,user).orElseThrow(() -> new ApiException(ErrorCode.LIKE_NOT_FOUND));
+  }
 }

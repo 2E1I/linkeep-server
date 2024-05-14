@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CollectionLikeReqDTO {
   private long collectionId;
-
+  private boolean flag;
 }

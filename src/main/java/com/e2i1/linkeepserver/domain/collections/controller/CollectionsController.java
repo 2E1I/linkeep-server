@@ -48,13 +48,12 @@ public class CollectionsController {
     public ResponseEntity<CollectionUserResDTO> getCollection(@PathVariable Long collectionId, @UserSession UsersEntity user){
 
         return ResponseEntity.ok(collectionsBusiness.getCollection(collectionId, user));
-
     }
 
     @PostMapping("/collections/like")
-    public ResponseEntity<HashMap<String,Long>> countLike(@RequestBody CollectionLikeReqDTO likecollection,@UserSession UsersEntity user){
+    public ResponseEntity<HashMap<String,Long>> countLike(@RequestBody CollectionLikeReqDTO likeCollection,@UserSession UsersEntity user){
         HashMap<String,Long> result = new HashMap<>();
-        Long numOfLikes = collectionsBusiness.updateNumOfLikes(likecollection.getCollectionId(),user);
+        Long numOfLikes = collectionsBusiness.updateNumOfLikes(likeCollection.getCollectionId(),user, likeCollection.isFlag());
         result.put("numOfLikes", numOfLikes);
         return ResponseEntity.ok(result);
     }
