@@ -61,8 +61,11 @@ public class CollectionsEntity extends DateEntity {
         tag.setCollection(this);
     }
 
-    public void updateLikes(){
+    public void addLikes(){
         this.numOfLikes += 1L;
     }
 
+    public void deleteLikes() {
+        this.numOfLikes -=1L;
+    }
 }

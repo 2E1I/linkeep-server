@@ -47,6 +47,8 @@ public enum ErrorCode{
     RETRY_EXCEEDED(85000, HttpStatus.INTERNAL_SERVER_ERROR, "랜덤 닉네임 생성 재시도 횟수를 초과했습니다."),
 
 
+    //좋아요 관련 에러 코드
+    LIKE_NOT_FOUND(94040,HttpStatus.NOT_FOUND,"사용자가 모음집을 좋아요한 기록이 없습니다.")
 
     ;
     private final int errorCode;
