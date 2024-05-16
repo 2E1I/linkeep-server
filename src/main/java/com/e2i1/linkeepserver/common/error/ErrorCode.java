@@ -49,9 +49,11 @@ public enum ErrorCode{
 
 
     //좋아요 관련 에러 코드
-    LIKE_NOT_FOUND(94040,HttpStatus.NOT_FOUND,"사용자가 모음집을 좋아요한 기록이 없습니다.")
+    LIKE_NOT_FOUND(94040,HttpStatus.NOT_FOUND,"사용자가 모음집을 좋아요한 기록이 없습니다."),
 
-    ;
+    //친구 관련 에러 코드
+    FRINEDS_NOT_FOUND(104040, HttpStatus.NOT_FOUND, "해당 사용자와 친구가 아닙니다.");
+
     private final int errorCode;
     private final HttpStatus httpStatusCode;
     private final String description;

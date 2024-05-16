@@ -62,4 +62,7 @@ public class UsersService {
         // user는 UserSessionResolver에서 getUserWithThrow로 가져온 user 객체임 -> 즉, 영속성 컨텍스트 안에 있음 -> dirty checking 가능
     }
 
+  public UsersEntity findByNickName(String nickName) {
+      return usersRepository.findByNickname(nickName);
+  }
 }
