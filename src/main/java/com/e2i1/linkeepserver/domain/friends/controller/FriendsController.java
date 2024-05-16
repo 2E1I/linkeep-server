@@ -3,6 +3,8 @@ package com.e2i1.linkeepserver.domain.friends.controller;
 import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.friends.business.FriendsBusiness;
 import com.e2i1.linkeepserver.domain.friends.dto.FriendReqDTO;
+import com.e2i1.linkeepserver.domain.friends.dto.FriendStatusReqDTO;
+import com.e2i1.linkeepserver.domain.friends.dto.FriendStatusResDTO;
 import com.e2i1.linkeepserver.domain.friends.dto.FriendsResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import java.util.List;
@@ -35,10 +37,9 @@ public class FriendsController {
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<HashMap<String,String>> isFollow(@RequestBody Long userId){
-        HashMap<String,String> result = new HashMap<>();
-        result.put("isFollowing","Y");
-        return ResponseEntity.ok(result);
+    public ResponseEntity<FriendStatusResDTO> isFollow(@RequestBody FriendStatusReqDTO reqDTO, @UserSession UsersEntity user){
+
+        return ResponseEntity.ok(friendsBusiness.changeStatus(reqDTO.getUserId(),user));
     }
 
 

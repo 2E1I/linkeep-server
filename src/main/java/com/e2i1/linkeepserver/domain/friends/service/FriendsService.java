@@ -1,5 +1,7 @@
 package com.e2i1.linkeepserver.domain.friends.service;
 
+import com.e2i1.linkeepserver.common.error.ErrorCode;
+import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.friends.entity.FriendsEntity;
 import com.e2i1.linkeepserver.domain.friends.repository.FriendsRepository;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
@@ -19,4 +21,10 @@ public class FriendsService {
   public FriendsEntity insertFriend(FriendsEntity friend) {
     return friendsRepository.save(friend);
   }
+
+  public FriendsEntity findByFollowedUserAndFollowingUser(UsersEntity followee, UsersEntity follower) {
+    return friendsRepository.findByFollowedUserAndFollowingUser(followee,follower).orElseThrow(() -> new ApiException(ErrorCode.FRINEDS_NOT_FOUND));
+  }
+
+
 }

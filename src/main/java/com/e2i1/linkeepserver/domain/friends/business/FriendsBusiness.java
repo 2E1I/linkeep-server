@@ -3,12 +3,14 @@ package com.e2i1.linkeepserver.domain.friends.business;
 import com.e2i1.linkeepserver.common.annotation.Business;
 import com.e2i1.linkeepserver.domain.collaborators.service.CollaboratorsService;
 import com.e2i1.linkeepserver.domain.friends.converter.FriendsConverter;
+import com.e2i1.linkeepserver.domain.friends.dto.FriendStatusResDTO;
 import com.e2i1.linkeepserver.domain.friends.dto.FriendsResDTO;
 import com.e2i1.linkeepserver.domain.friends.entity.FriendsEntity;
 import com.e2i1.linkeepserver.domain.friends.service.FriendsService;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +46,12 @@ public class FriendsBusiness {
         UsersEntity followedUser = usersService.findByNickName(nickName);
         FriendsEntity friend = friendsConverter.toFriendsEntity(followedUser,followingUser);
         friendsService.insertFriend(friend);
+    }
+
+    public FriendStatusResDTO changeStatus(long userId, UsersEntity follower ) {
+        UsersEntity followee = usersService.findById(userId);
+        FriendsEntity friend = friendsService.findByFollowedUserAndFollowingUser(followee,follower);
+        friend.updateStatus();
+        return friendsConverter.toFriendStatusResDTO(friend.getIsFollowing());
     }
 }

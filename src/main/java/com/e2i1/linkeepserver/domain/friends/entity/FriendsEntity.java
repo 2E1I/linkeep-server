@@ -39,4 +39,7 @@ public class FriendsEntity extends DateEntity {
     public void setFollowedUser(UsersEntity usersEntity) {
         followedUser = usersEntity;
     }
+    public void updateStatus(){
+      this.isFollowing = !this.isFollowing;
+    }
 }
