@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.Repository;
 
 public interface FriendsRepository extends JpaRepository<FriendsEntity,Long> {
-  public List<FriendsEntity> findByFollowedUser(UsersEntity user);
+  public List<FriendsEntity> findByFollowedUserAndIsFollowing(UsersEntity user,boolean isFollow);
+  public List<FriendsEntity> findByFollowingUserAndIsFollowing(UsersEntity user,boolean isFollow);
   Optional <FriendsEntity> findByFollowedUserAndFollowingUser(UsersEntity followee, UsersEntity follower);
 
 }

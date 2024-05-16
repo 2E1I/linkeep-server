@@ -16,6 +16,7 @@ import java.util.Set;
 
 import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Business
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class FriendsBusiness {
 
 
     public List<FriendsResDTO> getFollowers(UsersEntity user) {
-        List<FriendsEntity> FriendsList = user.getFollowerList();
+        List<FriendsEntity> FriendsList = friendsService.getFollowers(user);
         return FriendsList.stream().map(friend -> {
             long cnt = collaboratorsService.countCollection(friend.getFollowingUser());
             return friendsConverter.toFriendsResDTO(friend.getFollowingUser(), cnt);
@@ -36,7 +37,7 @@ public class FriendsBusiness {
     }
 
     public List<FriendsResDTO> getFollowings(UsersEntity user) {
-        List<FriendsEntity> FriendsList = user.getFollowingList();
+        List<FriendsEntity> FriendsList = friendsService.getFollowings(user);
         for(FriendsEntity f : FriendsList)
             System.out.println(f.getId());
         return FriendsList.stream().map(friend -> {
@@ -54,6 +55,7 @@ public class FriendsBusiness {
         friendsService.insertFriend(friend);
     }
 
+    @Transactional
     public FriendStatusResDTO changeStatus(long userId, UsersEntity follower ) {
         UsersEntity followee = usersService.findById(userId);
         FriendsEntity friend = friendsService.findByFollowedUserAndFollowingUser(followee,follower);

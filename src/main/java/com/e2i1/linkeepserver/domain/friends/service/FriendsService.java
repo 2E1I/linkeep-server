@@ -15,9 +15,12 @@ public class FriendsService {
     private final FriendsRepository friendsRepository;
 
   public List<FriendsEntity> getFollowers(UsersEntity user) {
-    return friendsRepository.findByFollowedUser(user);
+    return friendsRepository.findByFollowedUserAndIsFollowing(user,true);
   }
 
+  public List<FriendsEntity> getFollowings(UsersEntity user) {
+    return friendsRepository.findByFollowingUserAndIsFollowing(user,true);
+  }
   public FriendsEntity insertFriend(FriendsEntity friend) {
     return friendsRepository.save(friend);
   }
