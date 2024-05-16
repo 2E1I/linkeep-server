@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FriendsResDTO {
-    private String nickName;
-    private Long userId;
-    private Long numOfCollections;
+public class FriendStatusResDTO {
+  private boolean followStatus;
 }

@@ -20,4 +20,9 @@ public interface CollaboratorsRepository extends JpaRepository<CollaboratorsEnti
     Optional<List<UsersEntity>> findCollaboratorsByCollection(@Param("collection") CollectionsEntity collection);
 
     Optional<List<CollaboratorsEntity>> findByCollection(CollectionsEntity collection);
+
+    @Query("select count(*) from CollaboratorsEntity where user=:user")
+    long countCollectionByUser(@Param("user") UsersEntity user);
+
+    long countCollaboratorsEntitiesByUser(UsersEntity user);
 }

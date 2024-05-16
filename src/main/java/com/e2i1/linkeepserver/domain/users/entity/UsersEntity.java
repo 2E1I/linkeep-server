@@ -33,10 +33,10 @@ public class UsersEntity extends DateEntity {
     private List<LikeOthersEntity> likeOthersList;
 
     @OneToMany(mappedBy = "followingUser", cascade = ALL)
-    private Set<FriendsEntity> followingList;  // 내가 팔로우한 유저 리스트
+    private List<FriendsEntity> followingList;  // 내가 팔로우한 유저 리스트
 
     @OneToMany(mappedBy = "followedUser", cascade = ALL)
-    private Set<FriendsEntity> followerList;   // 나를 팔로우한 유저 리스트
+    private List<FriendsEntity> followerList;   // 나를 팔로우한 유저 리스트
 
     @OneToMany(mappedBy = "user", cascade = ALL)
     private List<LinksEntity> linkList;

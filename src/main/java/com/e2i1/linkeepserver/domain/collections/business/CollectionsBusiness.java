@@ -58,9 +58,8 @@ public class CollectionsBusiness {
     List<TagsEntity> tagList = tagsService.findByCollection(collection);
     List<String> tagDTOList = tagList.stream().map(TagsEntity::getTagName)
         .collect(Collectors.toList());
-    CollectionUserResDTO result = collectionsConverter.toCollectionUserResDTO(collection,
+      return collectionsConverter.toCollectionUserResDTO(collection,
         linkDTOList, tagDTOList,isLike);
-    return result;
   }
   public List<CollectionResDTO> getUserCollection(UsersEntity user){
     List<CollectionsEntity> collectionList = collaboratorsService.findCollectionByUser(user);
