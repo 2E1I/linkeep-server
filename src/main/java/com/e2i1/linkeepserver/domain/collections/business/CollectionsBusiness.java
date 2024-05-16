@@ -83,11 +83,20 @@ public class CollectionsBusiness {
   }
 
   @Transactional
-  public Long updateNumOfLikes(Long collectionId,UsersEntity user){
+  public Long updateNumOfLikes(Long collectionId,UsersEntity user, boolean isFlag){
     CollectionsEntity collection = collectionsService.findByIdWithThrow(collectionId);
-    LikeOthersEntity likeOther = likeOthersConverter.toLikeOthersEntity(collection,user);
-    likeOthersService.updateLike(likeOther);
-    collection.updateLikes();
+
+    if(isFlag){
+      LikeOthersEntity likeOther = likeOthersConverter.toLikeOthersEntity(collection,user);
+      likeOthersService.updateLike(likeOther);
+      collection.addLikes();
+    }
+    else{
+      LikeOthersEntity likeOther = likeOthersService.findByCollectionAndUser(collection,user);
+      likeOthersService.deleteLike(likeOther);
+      collection.deleteLikes();
+
+    }
 
     return collection.getNumOfLikes();
   }

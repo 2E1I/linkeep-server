@@ -24,6 +24,7 @@ public enum ErrorCode{
 
     // 유저 관련 에러 코드
     USER_NOT_FOUND(34040,HttpStatus.NOT_FOUND,  "사용자를 찾을 수 없음"),
+    NICKNAME_DUPLICATED(34000,HttpStatus.BAD_REQUEST,  "닉네임이 중복됩니다."),
 
     // 모음집 관련 에러 코드
     COLLECTION_NOT_FOUND(44040,HttpStatus.NOT_FOUND, "모음집을 찾을 수 없음"),
@@ -47,6 +48,8 @@ public enum ErrorCode{
     RETRY_EXCEEDED(85000, HttpStatus.INTERNAL_SERVER_ERROR, "랜덤 닉네임 생성 재시도 횟수를 초과했습니다."),
 
 
+    //좋아요 관련 에러 코드
+    LIKE_NOT_FOUND(94040,HttpStatus.NOT_FOUND,"사용자가 모음집을 좋아요한 기록이 없습니다.")
 
     ;
     private final int errorCode;
