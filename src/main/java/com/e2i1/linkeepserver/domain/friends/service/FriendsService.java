@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class FriendsService {
-    private FriendsRepository friendsRepository;
+    private final FriendsRepository friendsRepository;
 
   public List<FriendsEntity> getFollowers(UsersEntity user) {
     return friendsRepository.findByFollowedUser(user);

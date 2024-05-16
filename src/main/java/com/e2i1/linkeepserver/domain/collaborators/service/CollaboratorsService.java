@@ -36,6 +36,6 @@ public class CollaboratorsService {
     }
 
     public long countCollection(UsersEntity user) {
-        return collaboratorsRepository.countCollectionByUser(user);
+        return collaboratorsRepository.countCollaboratorsEntitiesByUser(user);
     }
 }
