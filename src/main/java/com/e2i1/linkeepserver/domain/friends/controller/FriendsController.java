@@ -2,6 +2,7 @@ package com.e2i1.linkeepserver.domain.friends.controller;
 
 import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.friends.business.FriendsBusiness;
+import com.e2i1.linkeepserver.domain.friends.dto.FriendReqDTO;
 import com.e2i1.linkeepserver.domain.friends.dto.FriendsResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import java.util.List;
@@ -28,7 +29,8 @@ public class FriendsController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> insertFriend(@RequestBody String nickName){
+    public ResponseEntity<String> insertFriend(@RequestBody FriendReqDTO friendReqDTO, @UserSession UsersEntity user){
+        friendsBusiness.insertFollow(friendReqDTO.getNickname(), user);
         return ResponseEntity.ok("success");
     }
 

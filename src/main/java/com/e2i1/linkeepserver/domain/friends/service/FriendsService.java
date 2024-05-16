@@ -15,4 +15,8 @@ public class FriendsService {
   public List<FriendsEntity> getFollowers(UsersEntity user) {
     return friendsRepository.findByFollowedUser(user);
   }
+
+  public FriendsEntity insertFriend(FriendsEntity friend) {
+    return friendsRepository.save(friend);
+  }
 }

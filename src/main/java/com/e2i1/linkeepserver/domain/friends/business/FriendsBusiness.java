@@ -25,9 +25,8 @@ public class FriendsBusiness {
     public List<FriendsResDTO> getFollowers(UsersEntity user) {
         List<FriendsEntity> FriendsList = new ArrayList<>(user.getFollowingList());
         return FriendsList.stream().map(friend -> {
-            String nickName = friend.getFollowedUser().getNickname();
             long cnt = collaboratorsService.findCollectionByUser(friend.getFollowedUser()).size();
-            return friendsConverter.toFriendsResDTO(nickName, cnt);
+            return friendsConverter.toFriendsResDTO(friend.getFollowedUser(), cnt);
         }).toList();
 
     }
@@ -35,10 +34,15 @@ public class FriendsBusiness {
     public List<FriendsResDTO> getFollowings(UsersEntity user) {
         List<FriendsEntity> FriendsList = new ArrayList<>(user.getFollowerList());
         return FriendsList.stream().map(friend -> {
-            String nickName = friend.getFollowingUser().getNickname();
             long cnt = collaboratorsService.findCollectionByUser(friend.getFollowingUser()).size();
-            return friendsConverter.toFriendsResDTO(nickName, cnt);
+            return friendsConverter.toFriendsResDTO(friend.getFollowingUser(), cnt);
         }).toList();
 
+    }
+
+    public void insertFollow(String nickName, UsersEntity followingUser) {
+        UsersEntity followedUser = usersService.findByNickName(nickName);
+        FriendsEntity friend = friendsConverter.toFriendsEntity(followedUser,followingUser);
+        friendsService.insertFriend(friend);
     }
 }
