@@ -8,9 +8,11 @@ import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CollaboratorsService {
     private final CollaboratorsRepository collaboratorsRepository;
@@ -31,5 +33,9 @@ public class CollaboratorsService {
 
     public List<CollaboratorsEntity> findByCollection(CollectionsEntity collection) {
         return collaboratorsRepository.findByCollection(collection).orElseThrow(()->new ApiException(ErrorCode.COLLABORATOR_NOT_FOUND));
+    }
+
+    public long countCollection(UsersEntity user) {
+        return collaboratorsRepository.countCollectionByUser(user);
     }
 }

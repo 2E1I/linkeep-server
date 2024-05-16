@@ -21,7 +21,7 @@ import java.util.List;
 public class CollectionsConverter {
 
     public CollectionUserResDTO toCollectionUserResDTO(CollectionsEntity collection, List<CollectionLinkDTO> linkList, List<String> tagsList, boolean isLike){
-        CollectionUserResDTO userResDTO = CollectionUserResDTO.builder()
+        return CollectionUserResDTO.builder()
                 .title(collection.getTitle())
                 .imgUrl(collection.getImgURL())
                 .description(collection.getDescription())
@@ -29,7 +29,6 @@ public class CollectionsConverter {
                 .tagList(tagsList)
                 .isLike(isLike)
                 .build();
-        return userResDTO;
     }
 
     public CollectionTitleResDTO toCollectionTitleResDTO(CollectionsEntity collection){

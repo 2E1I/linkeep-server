@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 
 @Business
@@ -25,19 +27,23 @@ public class FriendsBusiness {
 
 
     public List<FriendsResDTO> getFollowers(UsersEntity user) {
-        List<FriendsEntity> FriendsList = new ArrayList<>(user.getFollowingList());
+        List<FriendsEntity> FriendsList = user.getFollowerList();
         return FriendsList.stream().map(friend -> {
-            long cnt = collaboratorsService.findCollectionByUser(friend.getFollowedUser()).size();
-            return friendsConverter.toFriendsResDTO(friend.getFollowedUser(), cnt);
+            long cnt = collaboratorsService.countCollection(friend.getFollowingUser());
+            return friendsConverter.toFriendsResDTO(friend.getFollowingUser(), cnt);
         }).toList();
 
     }
 
     public List<FriendsResDTO> getFollowings(UsersEntity user) {
-        List<FriendsEntity> FriendsList = new ArrayList<>(user.getFollowerList());
+        List<FriendsEntity> FriendsList = user.getFollowingList();
+        for(FriendsEntity f : FriendsList)
+            System.out.println(f.getId());
         return FriendsList.stream().map(friend -> {
-            long cnt = collaboratorsService.findCollectionByUser(friend.getFollowingUser()).size();
-            return friendsConverter.toFriendsResDTO(friend.getFollowingUser(), cnt);
+            long cnt = collaboratorsService.countCollection(friend.getFollowedUser());
+            System.out.println(friend.getFollowedUser()+" : "+cnt);
+
+            return friendsConverter.toFriendsResDTO(friend.getFollowedUser(), cnt);
         }).toList();
 
     }
