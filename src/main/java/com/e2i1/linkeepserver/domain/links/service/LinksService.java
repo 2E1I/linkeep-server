@@ -1,13 +1,14 @@
 package com.e2i1.linkeepserver.domain.links.service;
 
 
-import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
+import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.repository.LinksRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,11 @@ public class LinksService {
         return linksRepository.findByTitleOrDescriptionContainingKeyword(keyword);
     }
 
-    public List<LinksEntity> findByUserId(Long userId) {
-        return linksRepository.findByUserIdOrderByUpdateAtDesc(userId);
+    public List<LinksEntity> findByUserId(Long userId, Long lastId, Pageable pageable) {
+        return linksRepository.findByUserIdAndIdLessThanOrderByIdDesc(userId, lastId, pageable);
+    }
+
+    public Boolean hasNext(Long id) {
+        return linksRepository.existsByIdLessThan(id);
     }
 }
