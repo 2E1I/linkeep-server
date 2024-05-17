@@ -21,7 +21,8 @@ public class WebConfig implements WebMvcConfigurer {
         "favicon.ico",
         "/error",
         "/api/users/login",
-        "/api/users/register"
+        "/api/users/register",
+        "/api/users/check-duplicated-nickname"
     );
 
     private final List<String> SWAGGER = List.of(
