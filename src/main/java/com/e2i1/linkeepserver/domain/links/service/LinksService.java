@@ -43,15 +43,12 @@ public class LinksService {
     }
 
 
-    public List<LinksEntity> searchLinks(String keyword) {
-        return linksRepository.findByTitleOrDescriptionContainingKeyword(keyword);
+    public List<LinksEntity> searchLinks(String keyword, Long view, Long lastId, Pageable pageable) {
+        return linksRepository.findByTitleOrDescriptionContainingKeyword(keyword, view, lastId, pageable);
     }
 
     public List<LinksEntity> findByUserId(Long userId, Long lastId, Pageable pageable) {
         return linksRepository.findByUserIdAndIdLessThanOrderByIdDesc(userId, lastId, pageable);
     }
 
-    public Boolean hasNext(Long id) {
-        return linksRepository.existsByIdLessThan(id);
-    }
 }

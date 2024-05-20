@@ -97,9 +97,10 @@ public class UsersBusiness {
         }
         // lastId부터 size만큼 링크 가져오기
         List<LinkHomeResDTO> linkHomeList = linksBusiness.findByUserId(user.getId(), lastId, size);
-        
-        // 가져온 링크들의 마지막 id 값을 가지고 다음에 조회할 링크 있는지 확인
-        Boolean hasNext = linksBusiness.hasNext(linkHomeList.get(linkHomeList.size()-1).getId());
+
+        boolean hasNext = linkHomeList.size() > size;
+        if (hasNext) linkHomeList = linkHomeList.subList(0, size);
+
         return UserHomeResDTO.builder()
             .nickname(user.getNickname())
             .imgUrl(user.getImgUrl())
