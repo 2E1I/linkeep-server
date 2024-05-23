@@ -1,5 +1,7 @@
 package com.e2i1.linkeepserver.domain.links.business;
 
+import static com.e2i1.linkeepserver.common.constant.PageConst.*;
+
 import com.e2i1.linkeepserver.common.annotation.Business;
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
@@ -9,12 +11,15 @@ import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
 import com.e2i1.linkeepserver.domain.links.converter.LinksConverter;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
+import com.e2i1.linkeepserver.domain.links.dto.SearchLinkDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.service.LinksService;
 import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +36,9 @@ public class LinksBusiness {
     private final CollectionsService collectionsService;
 
     private final CollaboratorsService collaboratorsService;
+
+    // 사전에 정규 표현식 컴파일 해놓고 재사용하기
+    final Pattern BLANK_PATTERN = Pattern.compile("\\s+");
 
     /**
      * link 저장하기 해당 컬렉션에 권한 있는지 확인 후 저장하기
@@ -74,15 +82,36 @@ public class LinksBusiness {
     /**
      * 링크 title, description을 조회해 해당 검색어 들어있는 링크 목록 가져오기
      */
-    public List<SearchLinkResDTO> searchLinks(String keyword) {
+    public SearchLinkResDTO searchLinks(String keyword, Long view, Long lastId, Integer size) {
         // 검색어를 공백 제외하고 하나의 문자열로 변환
-        keyword = keyword.replaceAll("\\s+", "").toLowerCase();
+        keyword = BLANK_PATTERN.matcher(keyword).replaceAll("").toLowerCase();
 
-        List<LinksEntity> linkList = linksService.searchLinks(keyword);
+        // size 없으면 default size 값 넣기
+        size = Optional.ofNullable(size).orElseGet(() -> Integer.valueOf(DEFAULT_PAGE_SIZE));
+        Pageable pageable = PageRequest.of(0, size + 1);
 
-        return linkList.stream()
+        // lastId, view가 null인 경우는 첫 페이징 조회시
+        lastId = Optional.ofNullable(lastId).orElse(Long.MAX_VALUE);
+        view = Optional.ofNullable(view).orElse(Long.MAX_VALUE);
+
+        // lastId보다 작은 링크를 size+1 개수만큼 가져오기
+        // size+1 인 이유 : 다음 페이지가 있는지 확인하기 위해
+        List<LinksEntity> linkList = linksService.searchLinks(keyword, view, lastId, pageable);
+        
+        // size+1개 만큼 데이터를 못가져왔다면 마지막 페이지인 것
+        boolean hasNext = linkList.size() > size;
+        if (hasNext) {
+            linkList = linkList.subList(0, size);
+        }
+
+        List<SearchLinkDTO> searchLinkList = linkList.stream()
             .map(linksConverter::toSearchResponse)
             .collect(Collectors.toList());
+
+        return SearchLinkResDTO.builder()
+            .searchLinkList(searchLinkList)
+            .hasNext(hasNext)
+            .build();
     }
 
     /**
@@ -90,7 +119,7 @@ public class LinksBusiness {
      * 최신 순으로 정렬해서
      */
     public List<LinkHomeResDTO> findByUserId(Long userId, Long lastId, int size) {
-        Pageable pageable = PageRequest.of(0, size);
+        Pageable pageable = PageRequest.of(0, size+1);
         List<LinksEntity> linkList = linksService.findByUserId(userId, lastId, pageable);
 
         return linkList.stream()
@@ -98,10 +127,4 @@ public class LinksBusiness {
             .collect(Collectors.toList());
     }
 
-    /**
-     * 다음에 조회될 링크가 있는지 여부
-     */
-    public Boolean hasNext(Long id) {
-        return linksService.hasNext(id);
-    }
 }

@@ -16,5 +16,6 @@ public class LinkHomeResDTO {
     private String title;
     private String url;
     private String description;
+    private Long numOfViews;
     private LocalDateTime updatedAt;
 }

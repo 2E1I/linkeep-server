@@ -1,5 +1,7 @@
 package com.e2i1.linkeepserver.domain.links.controller;
 
+import static com.e2i1.linkeepserver.common.constant.PageConst.DEFAULT_PAGE_SIZE;
+
 import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.links.business.LinksBusiness;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
@@ -7,7 +9,6 @@ import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,14 @@ public class LinksController {
     private final LinksBusiness linksBusiness;
 
     @GetMapping()
-    public ResponseEntity<List<SearchLinkResDTO>> searchLink(
-        @RequestParam("search") String keyword) {
+    public ResponseEntity<SearchLinkResDTO> searchLink(
+        @RequestParam(value = "search") String keyword,
+        @RequestParam(value = "view", required = false) Long view,
+        @RequestParam(value = "lastId", required = false) Long lastId,
+        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size
+    ) {
         log.info("search keyword = {}", keyword);
-        List<SearchLinkResDTO> searchLinks = linksBusiness.searchLinks(keyword);
+        SearchLinkResDTO searchLinks = linksBusiness.searchLinks(keyword, view, lastId, size);
         return ResponseEntity.ok(searchLinks);
     }
 
