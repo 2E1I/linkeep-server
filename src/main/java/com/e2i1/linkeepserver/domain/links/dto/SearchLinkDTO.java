@@ -1,6 +1,5 @@
 package com.e2i1.linkeepserver.domain.links.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchLinkResDTO {
-
-    List<SearchLinkDTO> searchLinkList;
-    Boolean hasNext;
+public class SearchLinkDTO {
+    private String title;
+    private String url;
+    private String description;
+    private Long numOfViews;
+    private Long linkId;
+    private Long writer;
 
 }
