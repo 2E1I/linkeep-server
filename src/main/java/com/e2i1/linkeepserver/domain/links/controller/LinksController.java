@@ -33,10 +33,11 @@ public class LinksController {
         @RequestParam(value = "search") String keyword,
         @RequestParam(value = "view", required = false) Long view,
         @RequestParam(value = "lastId", required = false) Long lastId,
-        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size
+        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size,
+        @UserSession UsersEntity user
     ) {
         log.info("search keyword = {}", keyword);
-        SearchLinkResDTO searchLinks = linksBusiness.searchLinks(keyword, view, lastId, size);
+        SearchLinkResDTO searchLinks = linksBusiness.searchLinks(user.getId(), keyword, view, lastId, size);
         return ResponseEntity.ok(searchLinks);
     }
 
