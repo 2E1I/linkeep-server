@@ -4,10 +4,11 @@ import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.error.ErrorResponse;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.support.BeanDefinitionValidationException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -36,20 +37,26 @@ public class ApiExceptionHandler {
      * DTO 등에서 validation 실패 시, 해당 예외 처리하는 핸들러
      * NotNull, NotBlank 등의 애노테이션 검증 실패 시 해당 예외 처리해줌
      */
-    @ExceptionHandler(value = BeanDefinitionValidationException.class)
-    public ResponseEntity<ErrorResponse> handlerBeanValidationException(BeanDefinitionValidationException ex) {
-        log.error("", ex);
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
+        MethodArgumentNotValidException ex) {
+        log.error("Method argument not valid exception", ex);
+
+        FieldError fieldError = ex.getBindingResult().getFieldError();
+        String errorMessage = (fieldError != null) ? fieldError.getDefaultMessage() : "Validation error";
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(
                         ErrorResponse.builder()
                                 .errorCode(40000)
-                                .errorMessage(ex.getMessage())
+                                .errorMessage(errorMessage)
                                 .build()
                 );
     }
 
     // 예상치 못한 예외에 대응하기 위한 Exception handler
+    // TODO : 최종 어플리케이션 배포 시, ex.getMessage() 대신 "SERVER ERROR"로 수정
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         return ResponseEntity
