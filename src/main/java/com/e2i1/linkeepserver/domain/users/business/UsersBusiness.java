@@ -15,15 +15,9 @@ import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import com.e2i1.linkeepserver.domain.token.entity.BlackList;
 import com.e2i1.linkeepserver.domain.token.service.TokenService;
 import com.e2i1.linkeepserver.domain.users.converter.UsersConverter;
-import com.e2i1.linkeepserver.domain.users.dto.EditProfileReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LoginReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LoginResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.NicknameResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.ProfileResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.SignupReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.*;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
+import com.e2i1.linkeepserver.domain.users.service.RecentSearchService;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
 import java.util.List;
 import java.util.Random;
@@ -44,6 +38,8 @@ public class UsersBusiness {
 
     private final S3ImageService s3ImageService;
     private final TokenService tokenService;
+
+    private final RecentSearchService recentSearchService;
 
     @Transactional
     public LoginResDTO login(LoginReqDTO loginReqDTO) {
@@ -205,6 +201,16 @@ public class UsersBusiness {
         }
 
         return nickname;
+    }
+
+    public RecentSearchResDTO getRecentSearch(Long userID) {
+        return RecentSearchResDTO.builder()
+                .recentSearchList(recentSearchService.getRecentSearch(userID))
+                .build();
+    }
+
+    public void deleteRecentKeyword(Long userId, int index) {
+        recentSearchService.deleteRecentSearch(userId, index);
     }
 
 

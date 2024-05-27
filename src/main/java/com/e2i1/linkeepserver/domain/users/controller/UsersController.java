@@ -5,28 +5,14 @@ import static com.e2i1.linkeepserver.common.constant.PageConst.DEFAULT_PAGE_SIZE
 import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import com.e2i1.linkeepserver.domain.users.business.UsersBusiness;
-import com.e2i1.linkeepserver.domain.users.dto.EditProfileReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LoginReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LoginResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.NicknameResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.ProfileResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.SignupReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.*;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -99,6 +85,23 @@ public class UsersController {
         usersBusiness.logout(token, user);
 
         return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+
+    @GetMapping("/recent-search")
+    public ResponseEntity<RecentSearchResDTO> recentSearch(@UserSession UsersEntity user) {
+        RecentSearchResDTO response = usersBusiness.getRecentSearch(user.getId());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/recent-search")
+    public ResponseEntity<String> deleteRecentSearch(
+            @RequestParam int index,
+            @UserSession UsersEntity user) {
+
+        usersBusiness.deleteRecentKeyword(user.getId(), index);
+
+        return ResponseEntity.ok("success");
     }
 
 

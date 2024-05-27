@@ -26,7 +26,7 @@ public class FriendsService {
   }
 
   public FriendsEntity findByFollowedUserAndFollowingUser(UsersEntity followee, UsersEntity follower) {
-    return friendsRepository.findByFollowedUserAndFollowingUser(followee,follower).orElseThrow(() -> new ApiException(ErrorCode.FRINEDS_NOT_FOUND));
+    return friendsRepository.findByFollowedUserAndFollowingUser(followee,follower).orElseThrow(() -> new ApiException(ErrorCode.FRIENDS_NOT_FOUND));
   }
 
 

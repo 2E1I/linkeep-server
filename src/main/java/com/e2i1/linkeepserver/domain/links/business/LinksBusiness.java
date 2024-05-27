@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import com.e2i1.linkeepserver.domain.users.service.RecentSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,8 @@ public class LinksBusiness {
     private final CollectionsService collectionsService;
 
     private final CollaboratorsService collaboratorsService;
+
+    private final RecentSearchService recentSearchService;
 
     // 사전에 정규 표현식 컴파일 해놓고 재사용하기
     final Pattern BLANK_PATTERN = Pattern.compile("\\s+");
@@ -82,7 +86,10 @@ public class LinksBusiness {
     /**
      * 링크 title, description을 조회해 해당 검색어 들어있는 링크 목록 가져오기
      */
-    public SearchLinkResDTO searchLinks(String keyword, Long view, Long lastId, Integer size) {
+    public SearchLinkResDTO searchLinks(Long userId, String keyword, Long view, Long lastId, Integer size) {
+        // redis에 유저의 최근 검색어 목록에 검색어 저장하기
+        recentSearchService.addSearchTerm(userId, keyword);
+
         // 검색어를 공백 제외하고 하나의 문자열로 변환
         keyword = BLANK_PATTERN.matcher(keyword).replaceAll("").toLowerCase();
 
