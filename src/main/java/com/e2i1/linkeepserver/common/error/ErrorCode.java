@@ -52,8 +52,12 @@ public enum ErrorCode{
     LIKE_NOT_FOUND(94040,HttpStatus.NOT_FOUND,"사용자가 모음집을 좋아요한 기록이 없습니다."),
 
     //친구 관련 에러 코드
-    FRINEDS_NOT_FOUND(104040, HttpStatus.NOT_FOUND, "해당 사용자와 친구가 아닙니다.");
+    FRIENDS_NOT_FOUND(104040, HttpStatus.NOT_FOUND, "해당 사용자와 친구가 아닙니다."),
 
+    // 최근 검색 목록 관련 에러 코드
+    INDEX_OUT_OF_RANGE(114000, HttpStatus.BAD_REQUEST, "인덱스 범위를 벗어난 요청입니다."),
+
+    ;
     private final int errorCode;
     private final HttpStatus httpStatusCode;
     private final String description;
