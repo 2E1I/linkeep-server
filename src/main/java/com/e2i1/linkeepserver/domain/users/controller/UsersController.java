@@ -101,7 +101,14 @@ public class UsersController {
 
         usersBusiness.deleteRecentKeyword(user.getId(), index);
 
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok("최근 검색어 삭제 완료했습니다.");
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<String> deleteUser(@UserSession UsersEntity user) {
+        usersBusiness.deleteUser(user.getId());
+
+        return ResponseEntity.ok("링킵 서비스 회원 탈퇴 처리가 되었습니다.");
     }
 
 
