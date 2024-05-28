@@ -20,9 +20,6 @@ public class CollectionReqDTO {
     @NotNull
     private String title;
 
-    @Schema(description = "모음집 대표 이미지 URL", type = "string", example = "http://example.com/image.jpg")
-    private String imgUrl;
-
     @Schema(description = "모음집 설명", type = "string", example = "이 모음집은 제 모음집입니다.")
     private String description;
 
