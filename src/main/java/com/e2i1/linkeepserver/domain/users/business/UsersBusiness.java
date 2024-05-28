@@ -214,4 +214,7 @@ public class UsersBusiness {
     }
 
 
+    public void deleteUser(Long userId) {
+        usersService.deleteUser(userId);
+    }
 }
