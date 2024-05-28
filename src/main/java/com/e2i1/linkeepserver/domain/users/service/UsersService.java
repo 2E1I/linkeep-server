@@ -76,9 +76,9 @@ public class UsersService {
         user.delete();
     }
 
-    public void deleteUnregisteredUsersForOneYear() {
+    public int deleteUnregisteredUsersForOneYear() {
         LocalDateTime cutoffDate = LocalDateTime.now().minusYears(1).with(LocalTime.MAX); // 1년 전의 하루 끝 시간으로 설정
 
-        usersRepository.deleteUnregisteredUsersForOneYear(cutoffDate);
+        return usersRepository.deleteUnregisteredUsersForOneYear(cutoffDate);
     }
 }

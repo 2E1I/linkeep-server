@@ -27,5 +27,5 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     @Transactional
     @Modifying
     @Query("DELETE FROM UsersEntity u WHERE u.status = 'UNREGISTERED' AND u.updateAt < :oneYearAgo")
-    void deleteUnregisteredUsersForOneYear(LocalDateTime oneYearAgo);
+    int deleteUnregisteredUsersForOneYear(LocalDateTime oneYearAgo);
 }
