@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +63,13 @@ public class UsersService {
         // user는 UserSessionResolver에서 getUserWithThrow로 가져온 user 객체임 -> 즉, 영속성 컨텍스트 안에 있음 -> dirty checking 가능
     }
 
-  public UsersEntity findByNickName(String nickName) {
+    public UsersEntity findByNickName(String nickName) {
       return usersRepository.findByNickname(nickName);
   }
+
+    @Transactional
+    public void deleteUser(Long userId) {
+        UsersEntity user = usersRepository.findById(userId).orElseThrow();
+        user.delete();
+    }
 }
