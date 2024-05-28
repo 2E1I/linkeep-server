@@ -51,14 +51,14 @@ public class CollectionsConverter {
             .tagList(tagList).build();
     }
 
-    public CollectionsEntity toEntity(CollectionReqDTO req) {
+    public CollectionsEntity toEntity(CollectionReqDTO req,String imgUrl) {
         return CollectionsEntity.builder()
             .access(req.getAccess())
             .color(req.getColor())
             .description(req.getDescription())
             .title(req.getTitle())
             .favorite(false)
-            .imgURL(req.getImgUrl())
+            .imgURL(imgUrl)
             .numOfLikes(0L)
             .build();
     }
