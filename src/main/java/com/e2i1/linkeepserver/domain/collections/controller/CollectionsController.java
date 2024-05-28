@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -32,9 +33,9 @@ public class CollectionsController {
     }
 
     @PostMapping("/collections")
-    public ResponseEntity<String> insertCollection(@Valid @RequestBody CollectionReqDTO collectionReqDTO, @UserSession UsersEntity user){
+    public ResponseEntity<String> insertCollection(@RequestPart(value = "image", required = false) MultipartFile imgFile,@Valid @RequestPart CollectionReqDTO collectionReqDTO, @UserSession UsersEntity user){
         log.info("{}",collectionReqDTO);
-        collectionsBusiness.insert(collectionReqDTO,user);
+        collectionsBusiness.insert(imgFile,collectionReqDTO,user);
         return ResponseEntity.ok("success");
     }
 

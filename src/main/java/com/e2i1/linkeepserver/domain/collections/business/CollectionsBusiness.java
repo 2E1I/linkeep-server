@@ -14,6 +14,7 @@ import com.e2i1.linkeepserver.domain.collections.dto.CollectionTitleResDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionUserResDTO;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
+import com.e2i1.linkeepserver.domain.image.service.S3ImageService;
 import com.e2i1.linkeepserver.domain.likeothers.converter.LikeOthersConverter;
 import com.e2i1.linkeepserver.domain.likeothers.entity.LikeOthersEntity;
 import com.e2i1.linkeepserver.domain.likeothers.service.LikeOthersService;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Business
 @RequiredArgsConstructor
@@ -48,6 +50,7 @@ public class CollectionsBusiness {
   private final UsersService usersService;
   private final LikeOthersService likeOthersService;
   private final LikeOthersConverter likeOthersConverter;
+  private final S3ImageService s3ImageService;
 
   public CollectionUserResDTO getCollection(Long id, UsersEntity user) {
     CollectionsEntity collection = collectionsService.findByIdWithThrow(id);
@@ -101,9 +104,13 @@ public class CollectionsBusiness {
   }
 
   @Transactional
-  public void insert(CollectionReqDTO req, UsersEntity user){
+  public void insert(MultipartFile imgFile, CollectionReqDTO req, UsersEntity user){
+    String imgUrl = null;
+    if (imgFile != null && !imgFile.isEmpty()) {
+      imgUrl = s3ImageService.upload(imgFile);
+    }
 
-    CollectionsEntity collection = collectionsConverter.toEntity(req);
+    CollectionsEntity collection = collectionsConverter.toEntity(req,imgUrl);
     collectionsService.insert(collection);
     CollaboratorsEntity owner = collaboratorsConverter.toEntity(collection,user, Role.OWNER);
     collaboratorsService.insert(owner);
