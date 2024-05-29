@@ -9,12 +9,8 @@ import com.e2i1.linkeepserver.domain.friends.entity.FriendsEntity;
 import com.e2i1.linkeepserver.domain.friends.service.FriendsService;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
-import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -6,6 +6,8 @@ import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,18 +17,24 @@ import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 @NoArgsConstructor(access = PROTECTED)
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@Builder
+@AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Getter
 @Table(name = "collaborators")
-public class CollaboratorsEntity extends BaseEntity {
+public class CollaboratorsEntity {
+
+    @EmbeddedId
+    private CollaboratorsId id;
 
     @ManyToOne(fetch = LAZY)
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private UsersEntity user;
 
     @ManyToOne(fetch = LAZY)
+    @MapsId("collectionId")
     @JoinColumn(name = "collection_id")
     private CollectionsEntity collection;
 
