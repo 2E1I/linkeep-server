@@ -1,8 +1,5 @@
 package com.e2i1.linkeepserver;
 
-import com.e2i1.linkeepserver.domain.collections.business.CollectionsBusiness;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionResDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionUserResDTO;
 import com.e2i1.linkeepserver.domain.friends.entity.FriendsEntity;
 import com.e2i1.linkeepserver.domain.users.business.UsersBusiness;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
@@ -10,7 +7,6 @@ import com.e2i1.linkeepserver.domain.users.service.UsersService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 

@@ -2,16 +2,12 @@ package com.e2i1.linkeepserver.domain.collections.converter;
 
 import com.e2i1.linkeepserver.common.annotation.Converter;
 import com.e2i1.linkeepserver.domain.collaborators.dto.CollaboratorResDTO;
-import com.e2i1.linkeepserver.domain.collections.business.CollectionsBusiness;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionLinkDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionReqDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionResDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionTitleResDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionUserResDTO;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
-import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
-import com.e2i1.linkeepserver.domain.tags.entity.TagsEntity;
-import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
