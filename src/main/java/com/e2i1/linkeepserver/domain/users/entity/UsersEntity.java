@@ -51,27 +51,6 @@ public class UsersEntity extends DateEntity {
     private UserStatus status;
 
 
-    // 연관관계 편의 메서드
-
-    public void addCollaborator(CollaboratorsEntity collaborator) {
-        collaboratorList.add(collaborator);
-        collaborator.setUsersEntity(this);
-    }
-
-    public void addLikeOthers(LikeOthersEntity likeOthers) {
-        likeOthersList.add(likeOthers);
-        likeOthers.setUsersEntity(this);
-    }
-
-    public void addFollowing(FriendsEntity following) {
-        followingList.add(following);
-        following.setFollowingUser(this);
-    }
-
-    public void addFollower(FriendsEntity follower) {
-        followerList.add(follower);
-        follower.setFollowedUser(this);
-    }
 
     // 프로필 변경
     public void update(String nickname, String imgUrl, String description) {
