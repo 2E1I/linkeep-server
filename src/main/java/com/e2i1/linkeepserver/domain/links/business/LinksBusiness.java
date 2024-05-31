@@ -9,6 +9,7 @@ import com.e2i1.linkeepserver.domain.collaborators.service.CollaboratorsService;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
 import com.e2i1.linkeepserver.domain.links.converter.LinksConverter;
+import com.e2i1.linkeepserver.domain.links.dto.LinkEditReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkDTO;
@@ -58,6 +59,34 @@ public class LinksBusiness {
 
         LinksEntity linkEntity = linksConverter.toEntity(req, collection, user);
         linksService.save(linkEntity);
+    }
+
+    @Transactional
+    public void editLink(Long userId, Long linkId, LinkEditReqDTO editReq) {
+        LinksEntity link = validateLinkOwner(userId, linkId);
+
+        // editReq 바탕으로 링크 수정하기
+        link.editLink(editReq.getTitle(), editReq.getDescription(), editReq.getUrl());
+    }
+
+    @Transactional
+    public void deleteLink(Long userId, Long linkId) {
+        LinksEntity link = validateLinkOwner(userId, linkId);
+
+        linksService.deleteLink(link);
+    }
+
+    /**
+     * 링크 주인인지 검증, 주인 아니면 예외 던짐
+     */
+    private LinksEntity validateLinkOwner(Long userId, Long linkId) {
+        LinksEntity link = linksService.findOneById(linkId, userId);
+
+        // 링크 주인인지 검증
+        if (!link.getUser().getId().equals(userId)) {
+            throw new ApiException(ErrorCode.LINK_ACCESS_DENIED);
+        }
+        return link;
     }
 
     /**
@@ -133,5 +162,6 @@ public class LinksBusiness {
             .map(linksConverter::toLinkHomeResponse)
             .collect(Collectors.toList());
     }
+
 
 }

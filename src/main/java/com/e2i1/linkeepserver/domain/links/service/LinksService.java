@@ -51,4 +51,7 @@ public class LinksService {
         return linksRepository.findByUserIdAndIdLessThanOrderByIdDesc(userId, lastId, pageable);
     }
 
+    public void deleteLink(LinksEntity link) {
+        linksRepository.delete(link);
+    }
 }
