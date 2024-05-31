@@ -25,8 +25,12 @@ public class ApiExceptionHandler {
 
         // 2. 발생한 예외에서 errorCode 가져와서
         ErrorCode errorCode = ex.getErrorCode();
+        String errorDescription = ex.getErrorDescription();
+        if (errorDescription == null) {
+            errorDescription = errorCode.getDescription();
+        }
         // 3. errorResponse 만들기(에러 메시지 내용과 함께)
-        ErrorResponse errorResponse = new ErrorResponse(errorCode.getErrorCode(), errorCode.getDescription());
+        ErrorResponse errorResponse = new ErrorResponse(errorCode.getErrorCode(), errorDescription);
 
         return ResponseEntity
                 .status(errorCode.getHttpStatusCode())

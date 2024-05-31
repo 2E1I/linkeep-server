@@ -31,6 +31,7 @@ public enum ErrorCode{
 
     // 링크 관련 에러 코드
     LINK_NOT_FOUND(54040,HttpStatus.NOT_FOUND, "링크를 찾을 수 없음"),
+    LINK_ACCESS_DENIED(54030, HttpStatus.FORBIDDEN, "해당 유저는 링크에 접근할 권한이 없음"),
 
     // collaborator 관련 에러 코드
     ACCESS_DENIED(64030,HttpStatus.FORBIDDEN, "해당 유저는 모음집에 접근할 수 없음"),
