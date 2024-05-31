@@ -4,6 +4,7 @@ import static com.e2i1.linkeepserver.common.constant.PageConst.DEFAULT_PAGE_SIZE
 
 import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.links.business.LinksBusiness;
+import com.e2i1.linkeepserver.domain.links.dto.LinkEditReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
@@ -12,7 +13,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +57,23 @@ public class LinksController {
         @UserSession UsersEntity user) {
         LinkResDTO response = linksBusiness.findOneById(linkId, user.getId());
         return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{linkId}")
+    public ResponseEntity<String> editLink(@PathVariable Long linkId,
+        @RequestBody @Valid LinkEditReqDTO editReq,
+        @UserSession UsersEntity user) {
+        linksBusiness.editLink(user.getId(), linkId, editReq);
+
+        return ResponseEntity.ok("success");
+    }
+
+    @DeleteMapping("/{linkId}")
+    public ResponseEntity<String> deleteLink(@PathVariable Long linkId,
+        @UserSession UsersEntity user) {
+        linksBusiness.deleteLink(user.getId(), linkId);
+
+        return ResponseEntity.ok("success");
     }
 
 }
