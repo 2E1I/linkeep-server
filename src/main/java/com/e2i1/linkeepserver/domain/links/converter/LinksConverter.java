@@ -30,6 +30,7 @@ public class LinksConverter {
     public CollectionLinkDTO toCollectionLinkDTO(LinksEntity link) {
         return CollectionLinkDTO.builder()
             .linkId(link.getId())
+            .title(link.getTitle())
             .description(link.getDescription())
             .numOfViews(link.getNumOfViews())
             .url(link.getUrl())
