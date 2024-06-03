@@ -6,8 +6,10 @@ import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.likeothers.entity.LikeOthersEntity;
 import com.e2i1.linkeepserver.domain.likeothers.repository.LikeOthersRepository;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -24,8 +26,8 @@ public class LikeOthersService {
     likeOthersRepository.save(likeOther);
   }
 
-  public List<CollectionsEntity> findCollectionByUser(UsersEntity user) {
-    return likeOthersRepository.findCollectionByUser(user).orElseThrow(() -> new ApiException(
+  public List<CollectionsEntity> findCollectionByUser(Long lastId, UsersEntity user, Pageable pageable) {
+    return likeOthersRepository.findCollectionByUser(lastId,user,pageable).orElseThrow(() -> new ApiException(
         ErrorCode.COLLABORATOR_NOT_FOUND));
   }
 

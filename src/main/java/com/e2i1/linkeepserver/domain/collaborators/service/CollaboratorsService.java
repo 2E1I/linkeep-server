@@ -9,6 +9,7 @@ import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,5 +38,11 @@ public class CollaboratorsService {
 
     public long countCollection(UsersEntity user) {
         return collaboratorsRepository.countCollaboratorsEntitiesByUser(user);
+    }
+
+    public List<CollectionsEntity> findCollectionByUserAndLastId(Long lastId, UsersEntity user,
+        Pageable pageable) {
+        return collaboratorsRepository.findByUserAndCollectionIdLessThanOrderByCollectionIdDesc(user,lastId,pageable)
+            .orElseThrow(() -> new ApiException(ErrorCode.COLLABORATOR_NOT_FOUND));
     }
 }
