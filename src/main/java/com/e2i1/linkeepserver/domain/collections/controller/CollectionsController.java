@@ -63,9 +63,10 @@ public class CollectionsController {
     }
 
     @GetMapping("/collections/like")
-    public ResponseEntity<List<CollectionResDTO>> getUserLikeCollectionList(@UserSession UsersEntity user){
+    public ResponseEntity<CollectionResPagingDTO> getUserLikeCollectionList(@RequestParam(value = "lastId", required = false) Long lastId,
+        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size, @UserSession UsersEntity user){
 
-        return ResponseEntity.ok(collectionsBusiness.getUserLikeCollection(user));
+        return ResponseEntity.ok(collectionsBusiness.getUserLikeCollection(lastId, size, user));
     }
 
 }

@@ -86,7 +86,7 @@ public class CollectionsBusiness {
 
     boolean hasNext = collectionResList.size() > size;
     if (hasNext) collectionResList = collectionResList.subList(0, size);
-    return CollectionResPagingDTO.builder().collectionResList(collectionResList).hasNext(hasNext).build();
+    return collectionsConverter.toCollectionResPagingDTO(collectionResList,hasNext);
   }
 
   public List<CollectionTitleResDTO> getTitle(UsersEntity user){
@@ -138,10 +138,15 @@ public class CollectionsBusiness {
 
   }
 
-  public List<CollectionResDTO> getUserLikeCollection(UsersEntity user) {
-    List<CollectionsEntity> collectionList = likeOthersService.findCollectionByUser(user);
+  public CollectionResPagingDTO getUserLikeCollection(Long lastId, Integer size, UsersEntity user) {
 
-    return collectionList.stream().map(collectionsEntity -> {
+    if (lastId == null) {
+      lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
+    }
+    Pageable pageable = PageRequest.of(0, size+1);
+    List<CollectionsEntity> collectionList = likeOthersService.findCollectionByUser(lastId,user,pageable);
+
+    List<CollectionResDTO> collectionResList =  collectionList.stream().map(collectionsEntity -> {
       List<String> tagList = tagsService.findTagNameByCollection(collectionsEntity);
       List<CollaboratorsEntity> collaboratorList = collaboratorsService.findByCollection(collectionsEntity);
       List<CollaboratorResDTO> collaboratorRoleList = collaboratorList.stream().map(collaborators -> {
@@ -150,5 +155,9 @@ public class CollectionsBusiness {
       boolean isLike = likeOthersService.getIsLike(collectionsEntity,user);
       return collectionsConverter.toCollectionResDTO(collectionsEntity,isLike,tagList,collaboratorRoleList);
     }).collect(Collectors.toList());
+
+    boolean hasNext = collectionResList.size() > size;
+    if (hasNext) collectionResList = collectionResList.subList(0, size);
+    return collectionsConverter.toCollectionResPagingDTO(collectionResList,hasNext);
   }
 }
