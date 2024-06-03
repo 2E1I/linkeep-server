@@ -14,6 +14,7 @@ public class UsersConverter {
         return UsersEntity.builder()
             .email(signupInfo.getEmail())
             .nickname(signupInfo.getNickname())
+            .description(signupInfo.getDescription())
             .imgUrl(imgUrl)
             .status(UserStatus.REGISTERED)
             .build();

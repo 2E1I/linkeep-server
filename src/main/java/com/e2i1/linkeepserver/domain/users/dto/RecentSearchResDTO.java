@@ -1,18 +1,16 @@
-package com.e2i1.linkeepserver.domain.links.dto;
+package com.e2i1.linkeepserver.domain.users.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchLinkResDTO {
-
-    List<SearchLinkDTO> searchLinkList;
-    Boolean hasNext;
-
+public class RecentSearchResDTO {
+    private List<String> recentSearchList;
 }

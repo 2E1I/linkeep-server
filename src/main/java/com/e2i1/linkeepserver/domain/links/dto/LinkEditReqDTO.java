@@ -1,21 +1,22 @@
-package com.e2i1.linkeepserver.domain.users.dto;
+package com.e2i1.linkeepserver.domain.links.dto;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkHomeResDTO {
+public class LinkEditReqDTO {
 
-    private Long id;
     private String title;
-    private String url;
+
     private String description;
-    private Long numOfViews;
-    private LocalDateTime updatedAt;
+
+    @URL(message = "유효한 URL 형식이 아닙니다.")
+    private String url;
+
 }

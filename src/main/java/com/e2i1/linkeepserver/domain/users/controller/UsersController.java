@@ -1,23 +1,18 @@
 package com.e2i1.linkeepserver.domain.users.controller;
 
+import static com.e2i1.linkeepserver.common.constant.PageConst.DEFAULT_PAGE_SIZE;
+
 import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import com.e2i1.linkeepserver.domain.users.business.UsersBusiness;
-import com.e2i1.linkeepserver.domain.users.dto.EditProfileReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LoginReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LoginResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.NicknameResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.ProfileResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.SignupReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.*;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -29,8 +24,9 @@ public class UsersController {
     private final UsersBusiness usersBusiness;
 
     @GetMapping("/home")
-    public ResponseEntity<UserHomeResDTO> getUserHome(@UserSession UsersEntity user) {
-        UserHomeResDTO home = usersBusiness.getUserHome(user);
+    public ResponseEntity<UserHomeResDTO> getUserHome(@RequestParam(value = "lastId", required = false) Long lastId,
+        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size, @UserSession UsersEntity user) {
+        UserHomeResDTO home = usersBusiness.getUserHome(lastId, size, user);
 
         return ResponseEntity.ok(home);
     }
@@ -89,6 +85,30 @@ public class UsersController {
         usersBusiness.logout(token, user);
 
         return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+
+    @GetMapping("/recent-search")
+    public ResponseEntity<RecentSearchResDTO> recentSearch(@UserSession UsersEntity user) {
+        RecentSearchResDTO response = usersBusiness.getRecentSearch(user.getId());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/recent-search")
+    public ResponseEntity<String> deleteRecentSearch(
+            @RequestParam int index,
+            @UserSession UsersEntity user) {
+
+        usersBusiness.deleteRecentKeyword(user.getId(), index);
+
+        return ResponseEntity.ok("최근 검색어 삭제 완료했습니다.");
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<String> deleteUser(@UserSession UsersEntity user) {
+        usersBusiness.deleteUser(user.getId());
+
+        return ResponseEntity.ok("링킵 서비스 회원 탈퇴 처리가 되었습니다.");
     }
 
 

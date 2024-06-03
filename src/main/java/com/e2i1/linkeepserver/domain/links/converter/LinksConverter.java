@@ -5,7 +5,7 @@ import com.e2i1.linkeepserver.domain.collections.dto.CollectionLinkDTO;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
-import com.e2i1.linkeepserver.domain.links.dto.SearchLinkResDTO;
+import com.e2i1.linkeepserver.domain.links.dto.SearchLinkDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
@@ -52,8 +52,8 @@ public class LinksConverter {
             .build();
     }
 
-    public SearchLinkResDTO toSearchResponse(LinksEntity link) {
-        return SearchLinkResDTO.builder()
+    public SearchLinkDTO toSearchResponse(LinksEntity link) {
+        return SearchLinkDTO.builder()
             .title(link.getTitle())
             .url(link.getUrl())
             .description(link.getDescription())
@@ -69,6 +69,7 @@ public class LinksConverter {
             .title(link.getTitle())
             .url(link.getUrl())
             .description(link.getDescription())
+            .numOfViews(link.getNumOfViews())
             .updatedAt(link.getUpdateAt())
             .build();
     }

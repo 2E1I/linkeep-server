@@ -15,15 +15,9 @@ import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import com.e2i1.linkeepserver.domain.token.entity.BlackList;
 import com.e2i1.linkeepserver.domain.token.service.TokenService;
 import com.e2i1.linkeepserver.domain.users.converter.UsersConverter;
-import com.e2i1.linkeepserver.domain.users.dto.EditProfileReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LoginReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.LoginResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.NicknameResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.ProfileResDTO;
-import com.e2i1.linkeepserver.domain.users.dto.SignupReqDTO;
-import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.*;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
+import com.e2i1.linkeepserver.domain.users.service.RecentSearchService;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
 import java.util.List;
 import java.util.Random;
@@ -44,6 +38,8 @@ public class UsersBusiness {
 
     private final S3ImageService s3ImageService;
     private final TokenService tokenService;
+
+    private final RecentSearchService recentSearchService;
 
     @Transactional
     public LoginResDTO login(LoginReqDTO loginReqDTO) {
@@ -91,14 +87,21 @@ public class UsersBusiness {
         return tokenBusiness.issueToken(newUser);
     }
 
-    public UserHomeResDTO getUserHome(UsersEntity user) {
-        // user의 모든 link를 최신순으로 가져오기
-        List<LinkHomeResDTO> linkHomeList = linksBusiness.findByUserId(user.getId());
+    public UserHomeResDTO getUserHome(Long lastId, Integer size, UsersEntity user) {
+        if (lastId == null) {
+            lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
+        }
+        // lastId부터 size만큼 링크 가져오기
+        List<LinkHomeResDTO> linkHomeList = linksBusiness.findByUserId(user.getId(), lastId, size);
+
+        boolean hasNext = linkHomeList.size() > size;
+        if (hasNext) linkHomeList = linkHomeList.subList(0, size);
 
         return UserHomeResDTO.builder()
             .nickname(user.getNickname())
             .imgUrl(user.getImgUrl())
             .linkList(linkHomeList)
+            .hasNext(hasNext)
             .build();
     }
 
@@ -200,5 +203,18 @@ public class UsersBusiness {
         return nickname;
     }
 
+    public RecentSearchResDTO getRecentSearch(Long userID) {
+        return RecentSearchResDTO.builder()
+                .recentSearchList(recentSearchService.getRecentSearch(userID))
+                .build();
+    }
 
+    public void deleteRecentKeyword(Long userId, int index) {
+        recentSearchService.deleteRecentSearch(userId, index);
+    }
+
+
+    public void deleteUser(Long userId) {
+        usersService.deleteUser(userId);
+    }
 }

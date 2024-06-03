@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.PROTECTED;
@@ -64,6 +63,10 @@ public class UsersEntity extends DateEntity {
         if (description != null) {
             this.description = description;
         }
+    }
+
+    public void delete() {
+        this.status = UserStatus.UNREGISTERED;
     }
 
     
