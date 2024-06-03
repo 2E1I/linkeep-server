@@ -1,5 +1,7 @@
 package com.e2i1.linkeepserver.domain.collections.controller;
 
+import static com.e2i1.linkeepserver.common.constant.PageConst.DEFAULT_PAGE_SIZE;
+
 import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.collections.business.CollectionsBusiness;
 import com.e2i1.linkeepserver.domain.collections.dto.*;
@@ -28,8 +30,9 @@ public class CollectionsController {
     }
 
     @GetMapping("/collections")
-    public ResponseEntity<List<CollectionResDTO>> getUserCollectionList(@UserSession UsersEntity user){
-        return ResponseEntity.ok(collectionsBusiness.getUserCollection(user));
+    public ResponseEntity<CollectionResPagingDTO> getUserCollectionList(@RequestParam(value = "lastId", required = false) Long lastId,
+        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size, @UserSession UsersEntity user){
+        return ResponseEntity.ok(collectionsBusiness.getUserCollection(lastId, size, user));
     }
 
     @PostMapping("/collections")

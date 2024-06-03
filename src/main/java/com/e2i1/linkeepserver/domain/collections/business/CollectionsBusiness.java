@@ -10,6 +10,7 @@ import com.e2i1.linkeepserver.domain.collections.converter.CollectionsConverter;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionLinkDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionReqDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionResDTO;
+import com.e2i1.linkeepserver.domain.collections.dto.CollectionResPagingDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionTitleResDTO;
 import com.e2i1.linkeepserver.domain.collections.dto.CollectionUserResDTO;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
@@ -32,6 +33,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,10 +67,14 @@ public class CollectionsBusiness {
       return collectionsConverter.toCollectionUserResDTO(collection,
         linkDTOList, tagDTOList,isLike);
   }
-  public List<CollectionResDTO> getUserCollection(UsersEntity user){
-    List<CollectionsEntity> collectionList = collaboratorsService.findCollectionByUser(user);
+  public CollectionResPagingDTO getUserCollection(Long lastId, Integer size, UsersEntity user){
+    if (lastId == null) {
+      lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
+    }
+    Pageable pageable = PageRequest.of(0, size+1);
+    List<CollectionsEntity> collectionList = collaboratorsService.findCollectionByUserAndLastId(lastId,user,pageable);
 
-    return collectionList.stream().map(collectionsEntity -> {
+    List<CollectionResDTO> collectionResList =  collectionList.stream().map(collectionsEntity -> {
       List<String> tagList = tagsService.findTagNameByCollection(collectionsEntity);
       List<CollaboratorsEntity> collaboratorList = collaboratorsService.findByCollection(collectionsEntity);
       List<CollaboratorResDTO> collaboratorRoleList = collaboratorList.stream().map(collaborators -> {
@@ -76,6 +83,10 @@ public class CollectionsBusiness {
       boolean isLike = likeOthersService.getIsLike(collectionsEntity,user);
       return collectionsConverter.toCollectionResDTO(collectionsEntity,isLike,tagList,collaboratorRoleList);
     }).collect(Collectors.toList());
+
+    boolean hasNext = collectionResList.size() > size;
+    if (hasNext) collectionResList = collectionResList.subList(0, size);
+    return CollectionResPagingDTO.builder().collectionResList(collectionResList).hasNext(hasNext).build();
   }
 
   public List<CollectionTitleResDTO> getTitle(UsersEntity user){
