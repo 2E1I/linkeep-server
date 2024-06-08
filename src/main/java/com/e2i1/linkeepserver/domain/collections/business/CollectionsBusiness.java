@@ -97,7 +97,7 @@ public class CollectionsBusiness {
   public Long updateNumOfLikes(Long collectionId,UsersEntity user, boolean isFlag){
     CollectionsEntity collection = collectionsService.findByIdWithThrow(collectionId);
 
-    if(isFlag){
+    if(!isFlag){
       LikeOthersEntity likeOther = likeOthersConverter.toLikeOthersEntity(collection,user);
       likeOthersService.updateLike(likeOther);
       collection.addLikes();
