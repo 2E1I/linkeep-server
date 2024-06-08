@@ -67,12 +67,9 @@ public class CollectionsBusiness {
       return collectionsConverter.toCollectionUserResDTO(collection,
         linkDTOList, tagDTOList,isLike);
   }
-  public CollectionResPagingDTO getUserCollection(Long lastId, Integer size, UsersEntity user){
-    if (lastId == null) {
-      lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
-    }
-    Pageable pageable = PageRequest.of(0, size+1);
-    List<CollectionsEntity> collectionList = collaboratorsService.findCollectionByUserAndLastId(lastId,user,pageable);
+  public List<CollectionResDTO> getUserCollection(UsersEntity user){
+
+    List<CollectionsEntity> collectionList = collaboratorsService.findCollectionByUser(user);
 
     List<CollectionResDTO> collectionResList =  collectionList.stream().map(collectionsEntity -> {
       List<String> tagList = tagsService.findTagNameByCollection(collectionsEntity);
@@ -84,9 +81,10 @@ public class CollectionsBusiness {
       return collectionsConverter.toCollectionResDTO(collectionsEntity,isLike,tagList,collaboratorRoleList);
     }).collect(Collectors.toList());
 
-    boolean hasNext = collectionResList.size() > size;
-    if (hasNext) collectionResList = collectionResList.subList(0, size);
-    return collectionsConverter.toCollectionResPagingDTO(collectionResList,hasNext);
+    return collectionResList;
+//    boolean hasNext = collectionResList.size() > size;
+//    if (hasNext) collectionResList = collectionResList.subList(0, size);
+//    return collectionsConverter.toCollectionResPagingDTO(collectionResList,hasNext);
   }
 
   public List<CollectionTitleResDTO> getTitle(UsersEntity user){
@@ -99,7 +97,7 @@ public class CollectionsBusiness {
   public Long updateNumOfLikes(Long collectionId,UsersEntity user, boolean isFlag){
     CollectionsEntity collection = collectionsService.findByIdWithThrow(collectionId);
 
-    if(isFlag){
+    if(!isFlag){
       LikeOthersEntity likeOther = likeOthersConverter.toLikeOthersEntity(collection,user);
       likeOthersService.updateLike(likeOther);
       collection.addLikes();
