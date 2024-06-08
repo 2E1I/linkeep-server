@@ -30,9 +30,8 @@ public class CollectionsController {
     }
 
     @GetMapping("/collections")
-    public ResponseEntity<CollectionResPagingDTO> getUserCollectionList(@RequestParam(value = "lastId", required = false) Long lastId,
-        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size, @UserSession UsersEntity user){
-        return ResponseEntity.ok(collectionsBusiness.getUserCollection(lastId, size, user));
+    public ResponseEntity<List<CollectionResDTO>> getUserCollectionList(@UserSession UsersEntity user){
+        return ResponseEntity.ok(collectionsBusiness.getUserCollection(user));
     }
 
     @PostMapping("/collections")
