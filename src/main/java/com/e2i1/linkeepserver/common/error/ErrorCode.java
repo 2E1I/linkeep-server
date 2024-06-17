@@ -28,6 +28,8 @@ public enum ErrorCode{
 
     // 모음집 관련 에러 코드
     COLLECTION_NOT_FOUND(44040,HttpStatus.NOT_FOUND, "모음집을 찾을 수 없음"),
+    COLLECTION_UNAUTHORIZED(44010,HttpStatus.UNAUTHORIZED,"해당 모음집에 권한이 없습니다."),
+
 
     // 링크 관련 에러 코드
     LINK_NOT_FOUND(54040,HttpStatus.NOT_FOUND, "링크를 찾을 수 없음"),

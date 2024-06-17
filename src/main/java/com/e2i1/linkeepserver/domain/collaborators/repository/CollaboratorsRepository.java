@@ -1,6 +1,7 @@
 package com.e2i1.linkeepserver.domain.collaborators.repository;
 
 import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
+import com.e2i1.linkeepserver.domain.collaborators.entity.Role;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import java.util.List;
@@ -27,7 +28,7 @@ public interface CollaboratorsRepository extends JpaRepository<CollaboratorsEnti
 
     long countCollaboratorsEntitiesByUser(UsersEntity user);
 
-
+    CollaboratorsEntity findCollaboratorsEntityByCollectionIdAndRole(Long collection_id, Role role);
 
     @Query("select collection from CollaboratorsEntity where user =:user and collection.id <:lastId order by collection.id desc")
     Optional<List<CollectionsEntity>>  findByUserAndCollectionIdLessThanOrderByCollectionIdDesc(UsersEntity user, Long lastId, Pageable pageable);

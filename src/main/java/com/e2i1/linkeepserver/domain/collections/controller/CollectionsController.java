@@ -67,5 +67,10 @@ public class CollectionsController {
 
         return ResponseEntity.ok(collectionsBusiness.getUserLikeCollection(lastId, size, user));
     }
+    @DeleteMapping("/collections")
+    public ResponseEntity<String> deleteCollection(@UserSession UsersEntity user, @RequestParam Long collectionId){
+        collectionsBusiness.deleteCollection(user.getId(),collectionId);
+        return ResponseEntity.ok("success");
+    }
 
 }
