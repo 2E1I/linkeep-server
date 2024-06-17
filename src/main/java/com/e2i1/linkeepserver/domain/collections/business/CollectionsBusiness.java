@@ -1,6 +1,8 @@
 package com.e2i1.linkeepserver.domain.collections.business;
 
 import com.e2i1.linkeepserver.common.annotation.Business;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
+import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.collaborators.converter.CollaboratorsConverter;
 import com.e2i1.linkeepserver.domain.collaborators.dto.CollaboratorResDTO;
 import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
@@ -27,6 +29,7 @@ import com.e2i1.linkeepserver.domain.tags.entity.TagsEntity;
 import com.e2i1.linkeepserver.domain.tags.service.TagsService;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
@@ -157,5 +160,16 @@ public class CollectionsBusiness {
     boolean hasNext = collectionResList.size() > size;
     if (hasNext) collectionResList = collectionResList.subList(0, size);
     return collectionsConverter.toCollectionResPagingDTO(collectionResList,hasNext);
+  }
+
+  public void deleteCollection(Long userId, Long collectionId) {
+    Long ownerId = collaboratorsService.findCollectionOwner(collectionId);
+    if(Objects.equals(ownerId, userId)){
+      collectionsService.deleteCollection(collectionId);
+    }
+    else{
+      throw new ApiException(ErrorCode.COLLECTION_UNAUTHORIZED);
+    }
+
   }
 }
