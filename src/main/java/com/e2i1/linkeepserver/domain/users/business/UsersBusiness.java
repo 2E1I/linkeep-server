@@ -8,6 +8,10 @@ import static com.e2i1.linkeepserver.common.constant.NicknameConst.WORD_NUM;
 import com.e2i1.linkeepserver.common.annotation.Business;
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
+import com.e2i1.linkeepserver.domain.collections.business.CollectionsBusiness;
+import com.e2i1.linkeepserver.domain.collections.dto.CollectionResDTO;
+import com.e2i1.linkeepserver.domain.collections.entity.Access;
+import com.e2i1.linkeepserver.domain.friends.business.FriendsBusiness;
 import com.e2i1.linkeepserver.domain.image.service.S3ImageService;
 import com.e2i1.linkeepserver.domain.links.business.LinksBusiness;
 import com.e2i1.linkeepserver.domain.token.business.TokenBusiness;
@@ -15,7 +19,16 @@ import com.e2i1.linkeepserver.domain.token.dto.TokenResDTO;
 import com.e2i1.linkeepserver.domain.token.entity.BlackList;
 import com.e2i1.linkeepserver.domain.token.service.TokenService;
 import com.e2i1.linkeepserver.domain.users.converter.UsersConverter;
-import com.e2i1.linkeepserver.domain.users.dto.*;
+import com.e2i1.linkeepserver.domain.users.dto.EditProfileReqDTO;
+import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.LoginHomeResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.LoginReqDTO;
+import com.e2i1.linkeepserver.domain.users.dto.LoginResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.NicknameResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.ProfileResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.RecentSearchResDTO;
+import com.e2i1.linkeepserver.domain.users.dto.SignupReqDTO;
+import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.RecentSearchService;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
@@ -35,6 +48,8 @@ public class UsersBusiness {
 
     private final TokenBusiness tokenBusiness;
     private final LinksBusiness linksBusiness;
+    private final FriendsBusiness friendsBusiness;
+    private final CollectionsBusiness collectionsBusiness;
 
     private final S3ImageService s3ImageService;
     private final TokenService tokenService;
@@ -87,7 +102,10 @@ public class UsersBusiness {
         return tokenBusiness.issueToken(newUser);
     }
 
-    public UserHomeResDTO getUserHome(Long lastId, Integer size, UsersEntity user) {
+    /**
+     * 로그인한 유저의 home 화면
+     */
+    public LoginHomeResDTO getHome(Long lastId, Integer size, UsersEntity user) {
         if (lastId == null) {
             lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
         }
@@ -95,15 +113,47 @@ public class UsersBusiness {
         List<LinkHomeResDTO> linkHomeList = linksBusiness.findByUserId(user.getId(), lastId, size);
 
         boolean hasNext = linkHomeList.size() > size;
-        if (hasNext) linkHomeList = linkHomeList.subList(0, size);
+        if (hasNext) {
+            linkHomeList = linkHomeList.subList(0, size);
+        }
 
-        return UserHomeResDTO.builder()
+        return LoginHomeResDTO.builder()
             .nickname(user.getNickname())
             .imgUrl(user.getImgUrl())
             .linkList(linkHomeList)
             .hasNext(hasNext)
             .build();
     }
+
+    /**
+     * 타인의 홈 화면
+     */
+    public UserHomeResDTO getUserHome(Long userId, UsersEntity user) {
+
+        UsersEntity userB = usersService.findById(userId);
+        // user가 userB를 팔로우했는지
+        boolean isFollowing = friendsBusiness.isFollowing(user, userB);
+
+        List<CollectionResDTO> collectionResList;
+        // 팔로우 관계 -> FRIEND, PUBLIC
+        if (isFollowing) {
+            collectionResList = collectionsBusiness.getUserCollection(userB,
+                Access.FRIEND);
+        }
+        // 팔로우 관계 X -> PUBLIC
+        else {
+            collectionResList = collectionsBusiness.getUserCollection(userB,
+                Access.PUBLIC);
+        }
+
+        return UserHomeResDTO.builder()
+            .collectionList(collectionResList)
+            .nickname(userB.getNickname())
+            .imgUrl(userB.getImgUrl())
+            .build();
+
+    }
+
 
     public List<NicknameResDTO> searchNicknames(String search) {
         List<UsersEntity> nicknameList = usersService.searchNicknames(search);
@@ -145,8 +195,7 @@ public class UsersBusiness {
     }
 
     /**
-     * 로그아웃 로직
-     * 현재 유저에게 발급한 token을 blacklist에 저장해서 다시 사용하지 못하도록
+     * 로그아웃 로직 현재 유저에게 발급한 token을 blacklist에 저장해서 다시 사용하지 못하도록
      */
     public void logout(String token, UsersEntity user) {
         Long userID = tokenBusiness.validationAccessToken(token);
@@ -205,8 +254,8 @@ public class UsersBusiness {
 
     public RecentSearchResDTO getRecentSearch(Long userID) {
         return RecentSearchResDTO.builder()
-                .recentSearchList(recentSearchService.getRecentSearch(userID))
-                .build();
+            .recentSearchList(recentSearchService.getRecentSearch(userID))
+            .build();
     }
 
     public void deleteRecentKeyword(Long userId, int index) {
