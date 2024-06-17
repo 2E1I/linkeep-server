@@ -19,8 +19,8 @@ public interface LinksRepository extends JpaRepository<LinksEntity, Long> {
     @Query("SELECT l FROM LinksEntity l "
         + "WHERE (REPLACE(lower(l.title), ' ', '' ) LIKE CONCAT('%', lower(:keyword), '%') "
         + "OR REPLACE(lower(l.description), ' ', '' ) LIKE CONCAT('%', lower(:keyword), '%')) "
-        + "AND (l.numOfViews < :view OR (l.numOfViews = :view AND l.Id > :lastId))"
-        + "ORDER BY l.numOfViews desc, l.Id ASC ")
+        + "AND (l.numOfViews < :view OR (l.numOfViews = :view AND l.id > :lastId))"
+        + "ORDER BY l.numOfViews desc, l.id ASC ")
     List<LinksEntity> findByTitleOrDescriptionContainingKeyword(@Param("keyword") String keyword,
         @Param("view") Long view, @Param("lastId") Long lastId, Pageable pageable);
 
