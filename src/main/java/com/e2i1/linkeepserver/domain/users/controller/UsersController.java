@@ -24,9 +24,20 @@ public class UsersController {
     private final UsersBusiness usersBusiness;
 
     @GetMapping("/home")
-    public ResponseEntity<UserHomeResDTO> getUserHome(@RequestParam(value = "lastId", required = false) Long lastId,
-        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size, @UserSession UsersEntity user) {
-        UserHomeResDTO home = usersBusiness.getUserHome(lastId, size, user);
+    public ResponseEntity<LoginHomeResDTO> getHome(
+        @RequestParam(value = "lastId", required = false) Long lastId,
+        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size,
+        @UserSession UsersEntity user) {
+        LoginHomeResDTO home = usersBusiness.getHome(lastId, size, user);
+
+        return ResponseEntity.ok(home);
+    }
+
+    @GetMapping("/{userId}/home")
+    public ResponseEntity<UserHomeResDTO> getUserHome(
+        @PathVariable Long userId,
+        @UserSession UsersEntity user) {
+        UserHomeResDTO home = usersBusiness.getUserHome(userId, user);
 
         return ResponseEntity.ok(home);
     }
@@ -96,8 +107,8 @@ public class UsersController {
 
     @DeleteMapping("/recent-search")
     public ResponseEntity<String> deleteRecentSearch(
-            @RequestParam int index,
-            @UserSession UsersEntity user) {
+        @RequestParam int index,
+        @UserSession UsersEntity user) {
 
         usersBusiness.deleteRecentKeyword(user.getId(), index);
 
