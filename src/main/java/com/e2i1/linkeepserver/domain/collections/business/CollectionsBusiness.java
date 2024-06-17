@@ -34,13 +34,8 @@ import com.e2i1.linkeepserver.domain.tags.entity.TagsEntity;
 import com.e2i1.linkeepserver.domain.tags.service.TagsService;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
-
-import java.util.Objects;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -183,34 +178,39 @@ public class CollectionsBusiness {
         if (lastId == null) {
             lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
         }
-        
-    Pageable pageable = PageRequest.of(0, size+1);
-    List<CollectionsEntity> collectionList = likeOthersService.findCollectionByUser(lastId,user,pageable);
 
-    List<CollectionResDTO> collectionResList =  collectionList.stream().map(collectionsEntity -> {
-      List<String> tagList = tagsService.findTagNameByCollection(collectionsEntity);
-      List<CollaboratorsEntity> collaboratorList = collaboratorsService.findByCollection(collectionsEntity);
-      List<CollaboratorResDTO> collaboratorRoleList = collaboratorList.stream().map(collaborators -> {
-        return collaboratorsConverter.toCollaboratorResDTO(collaborators, collaborators.getUser());
-      }).toList();
-      boolean isLike = likeOthersService.getIsLike(collectionsEntity,user);
-      return collectionsConverter.toCollectionResDTO(collectionsEntity,isLike,tagList,collaboratorRoleList);
-    }).collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(0, size + 1);
+        List<CollectionsEntity> collectionList = likeOthersService.findCollectionByUser(lastId,
+            user, pageable);
 
-    boolean hasNext = collectionResList.size() > size;
-    if (hasNext) collectionResList = collectionResList.subList(0, size);
-    return collectionsConverter.toCollectionResPagingDTO(collectionResList,hasNext);
-  }
+        List<CollectionResDTO> collectionResList = collectionList.stream()
+            .map(collectionsEntity -> {
+                List<String> tagList = tagsService.findTagNameByCollection(collectionsEntity);
+                List<CollaboratorsEntity> collaboratorList = collaboratorsService.findByCollection(
+                    collectionsEntity);
+                List<CollaboratorResDTO> collaboratorRoleList = collaboratorList.stream()
+                    .map(collaborators -> collaboratorsConverter.toCollaboratorResDTO(collaborators,
+                        collaborators.getUser())).toList();
+                boolean isLike = likeOthersService.getIsLike(collectionsEntity, user);
+                return collectionsConverter.toCollectionResDTO(collectionsEntity, isLike, tagList,
+                    collaboratorRoleList);
+            }).collect(Collectors.toList());
 
-  public void deleteCollection(Long userId, Long collectionId) {
-    Long ownerId = collaboratorsService.findCollectionOwner(collectionId);
-    if(Objects.equals(ownerId, userId)){
-      collectionsService.deleteCollection(collectionId);
-    }
-    else{
-      throw new ApiException(ErrorCode.COLLECTION_UNAUTHORIZED);
+        boolean hasNext = collectionResList.size() > size;
+        if (hasNext) {
+            collectionResList = collectionResList.subList(0, size);
+        }
+        return collectionsConverter.toCollectionResPagingDTO(collectionResList, hasNext);
     }
 
-  }
+    public void deleteCollection(Long userId, Long collectionId) {
+        Long ownerId = collaboratorsService.findCollectionOwner(collectionId);
+        if (Objects.equals(ownerId, userId)) {
+            collectionsService.deleteCollection(collectionId);
+        } else {
+            throw new ApiException(ErrorCode.COLLECTION_UNAUTHORIZED);
+        }
+
+    }
 
 }
