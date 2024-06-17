@@ -3,6 +3,7 @@ package com.e2i1.linkeepserver.domain.collaborators.service;
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
+import com.e2i1.linkeepserver.domain.collaborators.entity.Role;
 import com.e2i1.linkeepserver.domain.collaborators.repository.CollaboratorsRepository;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
@@ -40,9 +41,16 @@ public class CollaboratorsService {
         return collaboratorsRepository.countCollaboratorsEntitiesByUser(user);
     }
 
+
     public List<CollectionsEntity> findCollectionByUserAndLastId(Long lastId, UsersEntity user,
         Pageable pageable) {
         return collaboratorsRepository.findByUserAndCollectionIdLessThanOrderByCollectionIdDesc(user,lastId,pageable)
             .orElseThrow(() -> new ApiException(ErrorCode.COLLABORATOR_NOT_FOUND));
     }
+
+    public Long findCollectionOwner(Long collectionId){
+        return collaboratorsRepository.findCollaboratorsEntityByCollectionIdAndRole(collectionId,
+            Role.OWNER).getUser().getId();
+    }
+
 }

@@ -27,4 +27,9 @@ public class CollectionsService {
   public void insert(CollectionsEntity collection) {
       collectionsRepository.save(collection);
   }
+
+  public void deleteCollection(Long collectionId) {
+      collectionsRepository.deleteById(collectionId);
+
+  }
 }
