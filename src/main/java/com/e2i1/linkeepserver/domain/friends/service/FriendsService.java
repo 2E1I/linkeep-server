@@ -12,22 +12,30 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class FriendsService {
+
     private final FriendsRepository friendsRepository;
 
-  public List<FriendsEntity> getFollowers(UsersEntity user) {
-    return friendsRepository.findByFollowedUserAndIsFollowing(user,true);
-  }
+    public List<FriendsEntity> getFollowers(UsersEntity user) {
+        return friendsRepository.findByFollowedUserAndIsFollowing(user, true);
+    }
 
-  public List<FriendsEntity> getFollowings(UsersEntity user) {
-    return friendsRepository.findByFollowingUserAndIsFollowing(user,true);
-  }
-  public FriendsEntity insertFriend(FriendsEntity friend) {
-    return friendsRepository.save(friend);
-  }
+    public List<FriendsEntity> getFollowings(UsersEntity user) {
+        return friendsRepository.findByFollowingUserAndIsFollowing(user, true);
+    }
 
-  public FriendsEntity findByFollowedUserAndFollowingUser(UsersEntity followee, UsersEntity follower) {
-    return friendsRepository.findByFollowedUserAndFollowingUser(followee,follower).orElseThrow(() -> new ApiException(ErrorCode.FRIENDS_NOT_FOUND));
-  }
+    public FriendsEntity insertFriend(FriendsEntity friend) {
+        return friendsRepository.save(friend);
+    }
+
+    public FriendsEntity findByFollowedUserAndFollowingUser(UsersEntity followee,
+        UsersEntity follower) {
+        return friendsRepository.findByFollowedUserAndFollowingUser(followee, follower)
+            .orElseThrow(() -> new ApiException(ErrorCode.FRIENDS_NOT_FOUND));
+    }
+
+    public boolean isFollowing(UsersEntity followee, UsersEntity follower) {
+        return friendsRepository.findByFollowedUserAndFollowingUser(followee, follower).isPresent();
+    }
 
 
 }

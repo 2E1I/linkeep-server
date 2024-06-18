@@ -6,6 +6,7 @@ import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.links.dto.LinkReqDTO;
 import com.e2i1.linkeepserver.domain.links.dto.LinkResDTO;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkDTO;
+import com.e2i1.linkeepserver.domain.links.entity.LinkDocument;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
@@ -71,6 +72,17 @@ public class LinksConverter {
             .description(link.getDescription())
             .numOfViews(link.getNumOfViews())
             .updatedAt(link.getUpdateAt())
+            .build();
+    }
+
+    public SearchLinkDTO docToSearchLinkDTO(LinkDocument document) {
+        return SearchLinkDTO.builder()
+            .title(document.getTitle())
+            .url(document.getUrl())
+            .description(document.getDescription())
+            .numOfViews(document.getNumOfViews())
+            .linkId(Long.parseLong(document.getId()))
+            .writer(Long.parseLong(document.getUserId()))
             .build();
     }
 

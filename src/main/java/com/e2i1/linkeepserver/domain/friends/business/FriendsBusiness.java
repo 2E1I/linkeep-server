@@ -58,4 +58,13 @@ public class FriendsBusiness {
         friend.updateStatus();
         return friendsConverter.toFriendStatusResDTO(friend.getIsFollowing());
     }
+
+    /**
+     * userA가 userB를 팔로우했는지 여부
+     */
+    public boolean isFollowing(UsersEntity userA, UsersEntity userB) {
+        return friendsService.isFollowing(userA, userB);
+    }
+
+
 }

@@ -1,20 +1,23 @@
 package com.e2i1.linkeepserver.domain.collections.entity;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 import com.e2i1.linkeepserver.common.entity.DateEntity;
-import com.e2i1.linkeepserver.common.entity.StringListToStringConverter;
 import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
+import com.e2i1.linkeepserver.domain.likeothers.entity.LikeOthersEntity;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.tags.entity.TagsEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
-
-import static jakarta.persistence.CascadeType.ALL;
 
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
@@ -33,6 +36,9 @@ public class CollectionsEntity extends DateEntity {
 
     @OneToMany(mappedBy = "collection", cascade = ALL)
     private List<CollaboratorsEntity> collaboratorList;
+
+    @OneToMany(mappedBy = "collection", cascade = ALL)
+    private List<LikeOthersEntity> likeOtherList;
 
     private String title;
 
