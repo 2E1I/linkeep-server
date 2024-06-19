@@ -5,5 +5,6 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 public interface LinkElasticsearchRepository extends ElasticsearchRepository<LinkDocument, String> {
+
     SearchHits<LinkDocument> findByTitle(String title);
 }

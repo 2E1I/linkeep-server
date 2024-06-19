@@ -1,5 +1,6 @@
 package com.e2i1.linkeepserver.domain.links.business;
 
+import static com.e2i1.linkeepserver.common.constant.KafkaConst.LINK_SAVE_TOPIC;
 import static com.e2i1.linkeepserver.common.constant.PageConst.*;
 
 import com.e2i1.linkeepserver.common.annotation.Business;
@@ -18,6 +19,7 @@ import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.service.LinksService;
 import com.e2i1.linkeepserver.domain.users.dto.LinkHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
+import com.e2i1.linkeepserver.kafka.producer.LinkProducer;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -42,6 +44,8 @@ public class LinksBusiness {
 
     private final RecentSearchService recentSearchService;
 
+    private final LinkProducer producer;
+
     // 사전에 정규 표현식 컴파일 해놓고 재사용하기
     final Pattern BLANK_PATTERN = Pattern.compile("\\s+");
 
@@ -59,6 +63,8 @@ public class LinksBusiness {
 
         LinksEntity linkEntity = linksConverter.toEntity(req, collection, user);
         linksService.save(linkEntity);
+
+        producer.save(LINK_SAVE_TOPIC, linkEntity);
     }
 
     @Transactional

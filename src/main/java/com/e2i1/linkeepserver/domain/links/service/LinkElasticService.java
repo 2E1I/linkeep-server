@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +22,26 @@ public class LinkElasticService {
     private final LinkElasticsearchRepository linkRepository;
     private final LinksConverter linkConverter;
 
-    public LinkDocument createDocument(LinkDocument document) {
+    public Iterable<LinkDocument> getLinks() {
+        return linkRepository.findAll();
+    }
+    public LinkDocument insertLink(LinkDocument document) {
         return linkRepository.save(document);
     }
 
-    public Optional<LinkDocument> getDocument(String id) {
+    @Transactional
+    public LinkDocument updateTitle(LinkDocument document, String id) {
+        LinkDocument link = linkRepository.findById(id).get();
+        link.setTitle(document.getTitle());
+
+        return link;
+    }
+
+    public void deleteDocument(String id) {
+        linkRepository.deleteById(id);
+    }
+
+    public Optional<LinkDocument> getLink(String id) {
         return linkRepository.findById(id);
     }
 
@@ -50,11 +66,5 @@ public class LinkElasticService {
 
     }
 
-    public LinkDocument updateDocument(LinkDocument document) {
-        return linkRepository.save(document);
-    }
 
-    public void deleteDocument(String id) {
-        linkRepository.deleteById(id);
-    }
 }
