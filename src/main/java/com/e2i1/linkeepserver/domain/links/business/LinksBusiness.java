@@ -1,5 +1,6 @@
 package com.e2i1.linkeepserver.domain.links.business;
 
+import static com.e2i1.linkeepserver.common.constant.KafkaConst.LINK_EDIT_TOPIC;
 import static com.e2i1.linkeepserver.common.constant.KafkaConst.LINK_SAVE_TOPIC;
 import static com.e2i1.linkeepserver.common.constant.PageConst.*;
 
@@ -73,6 +74,8 @@ public class LinksBusiness {
 
         // editReq 바탕으로 링크 수정하기
         link.editLink(editReq.getTitle(), editReq.getDescription(), editReq.getUrl());
+
+        producer.edit(LINK_EDIT_TOPIC, link);
     }
 
     @Transactional

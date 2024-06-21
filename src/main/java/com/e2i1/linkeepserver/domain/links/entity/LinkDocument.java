@@ -18,7 +18,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 public class LinkDocument {
 
     @Id @GeneratedValue
-    private String id;
+    private Long id;
 
     @Field(type = FieldType.Keyword)
     private String collectionId;

@@ -23,7 +23,7 @@ public class KafkaConsumerConfig {
     private String bootstrapServers;
 
     @Bean
-    public ConsumerFactory<String, LinkDocument> linkSaveConsumerFactory() {
+    public ConsumerFactory<String, LinkDocument> linkConsumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -38,9 +38,9 @@ public class KafkaConsumerConfig {
 
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, LinkDocument> linkSaveKafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, LinkDocument> linkKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, LinkDocument> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(linkSaveConsumerFactory());
+        factory.setConsumerFactory(linkConsumerFactory());
 
         return factory;
     }

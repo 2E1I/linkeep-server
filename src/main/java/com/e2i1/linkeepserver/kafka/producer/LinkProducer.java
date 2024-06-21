@@ -24,4 +24,12 @@ public class LinkProducer {
         linkKafkaTemplate.send(topic, document);
     }
 
+    public void edit(String topic, LinksEntity linkEntity) {
+        log.info("========== link 수정 메시지 발행 link = {}", linkEntity);
+
+        LinkDocument document = linksConverter.toDocument(linkEntity);
+
+        linkKafkaTemplate.send(topic, document);
+    }
+
 }

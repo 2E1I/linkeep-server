@@ -4,49 +4,46 @@ import com.e2i1.linkeepserver.domain.links.converter.LinksConverter;
 import com.e2i1.linkeepserver.domain.links.dto.SearchLinkDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinkDocument;
 import com.e2i1.linkeepserver.domain.links.repository.LinkElasticsearchRepository;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 public class LinkElasticService {
 
-    private final LinkElasticsearchRepository linkRepository;
+    private final LinkElasticsearchRepository linkElasticsearchRepository;
     private final LinksConverter linkConverter;
 
     public Iterable<LinkDocument> getLinks() {
-        return linkRepository.findAll();
+        return linkElasticsearchRepository.findAll();
     }
+
     public LinkDocument insertLink(LinkDocument document) {
-        return linkRepository.save(document);
+        return linkElasticsearchRepository.save(document);
     }
 
     @Transactional
-    public LinkDocument updateTitle(LinkDocument document, String id) {
-        LinkDocument link = linkRepository.findById(id).get();
+    public LinkDocument updateTitle(LinkDocument document, Long id) {
+        LinkDocument link = linkElasticsearchRepository.findById(id).get();
         link.setTitle(document.getTitle());
-
         return link;
     }
 
-    public void deleteDocument(String id) {
-        linkRepository.deleteById(id);
+    public void deleteDocument(Long id) {
+        linkElasticsearchRepository.deleteById(id);
     }
 
-    public Optional<LinkDocument> getLink(String id) {
-        return linkRepository.findById(id);
+    public Optional<LinkDocument> getLink(Long id) {
+        return linkElasticsearchRepository.findById(id);
     }
 
     public Map<String, Object> searchTitle(String title) {
-        SearchHits<LinkDocument> searchHits = linkRepository.findByTitle(title);
+        SearchHits<LinkDocument> searchHits = linkElasticsearchRepository.findByTitle(title);
 
         Map<String, Object> result = new HashMap<>();
 
@@ -67,4 +64,7 @@ public class LinkElasticService {
     }
 
 
+    public void edit(LinkDocument document) {
+
+    }
 }

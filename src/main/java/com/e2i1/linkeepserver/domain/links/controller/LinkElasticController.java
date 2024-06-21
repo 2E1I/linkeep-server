@@ -38,7 +38,7 @@ public class LinkElasticController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<LinkDocument>> getDocument(@PathVariable String id) {
+    public ResponseEntity<Optional<LinkDocument>> getDocument(@PathVariable Long id) {
         return ResponseEntity.ok(linkElasticService.getLink(id));
     }
 
@@ -50,13 +50,13 @@ public class LinkElasticController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LinkDocument> updateTitle(@PathVariable String id, @RequestBody LinkDocument document) {
+    public ResponseEntity<LinkDocument> updateTitle(@PathVariable Long id, @RequestBody LinkDocument document) {
         document.setId(id);
         return ResponseEntity.ok(linkElasticService.updateTitle(document, id));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDocument(@PathVariable String id) {
+    public void deleteDocument(@PathVariable Long id) {
         linkElasticService.deleteDocument(id);
     }
 }
