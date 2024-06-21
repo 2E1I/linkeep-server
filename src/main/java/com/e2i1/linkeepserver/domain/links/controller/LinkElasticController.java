@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,25 +26,33 @@ public class LinkElasticController {
 
     private final LinkElasticService linkElasticService;
 
+
+    @GetMapping("/findAll")
+    public ResponseEntity<Iterable<LinkDocument>> getAllLinks() {
+        return ResponseEntity.ok(linkElasticService.getLinks());
+    }
+
     @PostMapping
-    public LinkDocument createDocument(@RequestBody LinkDocument document) {
-        return linkElasticService.createDocument(document);
+    public ResponseEntity<LinkDocument> createDocument(@RequestBody LinkDocument document) {
+        return ResponseEntity.ok(linkElasticService.insertLink(document));
     }
 
     @GetMapping("/{id}")
-    public Optional<LinkDocument> getDocument(@PathVariable String id) {
-        return linkElasticService.getDocument(id);
+    public ResponseEntity<Optional<LinkDocument>> getDocument(@PathVariable String id) {
+        return ResponseEntity.ok(linkElasticService.getLink(id));
     }
 
+
+
     @GetMapping("/search")
-    public Map<String, Object> searchTitle(@RequestParam String title) {
-        return linkElasticService.searchTitle(title);
+    public ResponseEntity<Map<String, Object>> searchTitle(@RequestParam String title) {
+        return ResponseEntity.ok(linkElasticService.searchTitle(title));
     }
 
     @PutMapping("/{id}")
-    public LinkDocument updateDocument(@PathVariable String id, @RequestBody LinkDocument document) {
+    public ResponseEntity<LinkDocument> updateTitle(@PathVariable String id, @RequestBody LinkDocument document) {
         document.setId(id);
-        return linkElasticService.updateDocument(document);
+        return ResponseEntity.ok(linkElasticService.updateTitle(document, id));
     }
 
     @DeleteMapping("/{id}")
