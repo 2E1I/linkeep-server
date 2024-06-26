@@ -1,7 +1,6 @@
 package com.e2i1.linkeepserver.domain.links.business;
 
-import static com.e2i1.linkeepserver.common.constant.KafkaConst.LINK_EDIT_TOPIC;
-import static com.e2i1.linkeepserver.common.constant.KafkaConst.LINK_SAVE_TOPIC;
+import static com.e2i1.linkeepserver.common.constant.KafkaConst.*;
 import static com.e2i1.linkeepserver.common.constant.PageConst.*;
 
 import com.e2i1.linkeepserver.common.annotation.Business;
@@ -45,7 +44,7 @@ public class LinksBusiness {
 
     private final RecentSearchService recentSearchService;
 
-    private final LinkProducer producer;
+    private final LinkProducer linkProducer;
 
     // 사전에 정규 표현식 컴파일 해놓고 재사용하기
     final Pattern BLANK_PATTERN = Pattern.compile("\\s+");
@@ -65,7 +64,7 @@ public class LinksBusiness {
         LinksEntity linkEntity = linksConverter.toEntity(req, collection, user);
         linksService.save(linkEntity);
 
-        producer.save(LINK_SAVE_TOPIC, linkEntity);
+        linkProducer.save(LINK_SAVE_TOPIC, linkEntity);
     }
 
     @Transactional
@@ -75,7 +74,7 @@ public class LinksBusiness {
         // editReq 바탕으로 링크 수정하기
         link.editLink(editReq.getTitle(), editReq.getDescription(), editReq.getUrl());
 
-        producer.edit(LINK_EDIT_TOPIC, link);
+        linkProducer.edit(LINK_EDIT_TOPIC, link);
     }
 
     @Transactional
@@ -83,6 +82,7 @@ public class LinksBusiness {
         LinksEntity link = validateLinkOwner(userId, linkId);
 
         linksService.deleteLink(link);
+        linkProducer.delete(LINK_DELETE_TOPIC, link);
     }
 
     /**

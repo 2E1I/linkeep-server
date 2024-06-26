@@ -82,15 +82,15 @@ public class LinksConverter {
                 .description(document.getDescription())
                 .numOfViews(document.getNumOfViews())
                 .linkId(document.getId())
-                .writer(Long.parseLong(document.getUserId()))
+                .writer(document.getUserId())
                 .build();
     }
 
     public LinkDocument toDocument(LinksEntity link) {
         return LinkDocument.builder()
                 .id(link.getId())
-                .collectionId(String.valueOf(link.getCollection().getId()))
-                .userId(String.valueOf(link.getUser().getId()))
+                .collectionId(link.getCollection().getId())
+                .userId(link.getUser().getId())
                 .title(link.getTitle())
                 .url(link.getUrl())
                 .description(link.getDescription())

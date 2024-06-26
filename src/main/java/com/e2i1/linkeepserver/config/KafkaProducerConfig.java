@@ -1,8 +1,6 @@
 package com.e2i1.linkeepserver.config;
 
-import com.e2i1.linkeepserver.domain.links.entity.LinkDocument;
-import java.util.HashMap;
-import java.util.Map;
+import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,15 +11,17 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 public class KafkaProducerConfig {
 
     @Value("${kafka.bootstrap.servers}")
     private String bootstrapServers;
 
-
     @Bean
-    public ProducerFactory<String, LinkDocument> linkSaveProducerFactory() {
+    public ProducerFactory<String, LinksEntity> linkProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -31,7 +31,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, LinkDocument> notificationKafkaTemplate() {
-        return new KafkaTemplate<>(linkSaveProducerFactory());
+    public KafkaTemplate<String, LinksEntity> linkKafkaTemplate() {
+        return new KafkaTemplate<>(linkProducerFactory());
     }
 }

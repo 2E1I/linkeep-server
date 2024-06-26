@@ -8,6 +8,8 @@ public class KafkaConst {
 
     public static final String LINK_SAVE_TOPIC = "link_save";
     public static final String LINK_EDIT_TOPIC = "link-edit";
+
+    public static final String LINK_DELETE_TOPIC = "link-delete";
     public static final String LINK_GROUPID = "link";
 
 }

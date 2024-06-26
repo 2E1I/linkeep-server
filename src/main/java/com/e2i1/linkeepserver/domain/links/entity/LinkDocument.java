@@ -1,6 +1,5 @@
 package com.e2i1.linkeepserver.domain.links.entity;
 
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,25 +13,25 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(indexName = "links")
+@Document(indexName = "link")
 public class LinkDocument {
 
-    @Id @GeneratedValue
+    @Id
     private Long id;
 
-    @Field(type = FieldType.Keyword)
-    private String collectionId;
+    @Field(type = FieldType.Long)
+    private Long collectionId;
 
-    @Field(type = FieldType.Keyword)
-    private String userId;
+    @Field(type = FieldType.Long)
+    private Long userId;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "korean_analyzer")
     private String title;
 
     @Field(type = FieldType.Text)
     private String url;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "korean_analyzer")
     private String description;
 
     @Field(type = FieldType.Long)

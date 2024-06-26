@@ -17,13 +17,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
+
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @Entity
 @Table(name = "links")
-public class LinksEntity extends DateEntity {
+public class LinksEntity extends DateEntity implements Serializable {
 
     @Setter
     @ManyToOne(fetch = LAZY)

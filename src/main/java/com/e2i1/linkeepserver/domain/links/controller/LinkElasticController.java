@@ -3,20 +3,13 @@ package com.e2i1.linkeepserver.domain.links.controller;
 
 import com.e2i1.linkeepserver.domain.links.entity.LinkDocument;
 import com.e2i1.linkeepserver.domain.links.service.LinkElasticService;
-import java.util.Map;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,8 +38,8 @@ public class LinkElasticController {
 
 
     @GetMapping("/search")
-    public ResponseEntity<Map<String, Object>> searchTitle(@RequestParam String title) {
-        return ResponseEntity.ok(linkElasticService.searchTitle(title));
+    public ResponseEntity<List<LinkDocument>> searchTitle(@RequestParam String title) {
+        return ResponseEntity.ok(linkElasticService.search(title));
     }
 
     @PutMapping("/{id}")
