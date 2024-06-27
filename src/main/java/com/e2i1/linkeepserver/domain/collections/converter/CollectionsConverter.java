@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CollectionsConverter {
 
-    public CollectionUserResDTO toCollectionUserResDTO(CollectionsEntity collection, List<CollectionLinkDTO> linkList, List<String> tagsList, boolean isLike){
+    public CollectionUserResDTO toCollectionUserResDTO(CollectionsEntity collection, List<CollectionLinkDTO> linkList, List<String> tagsList, boolean isLike, List<CollaboratorResDTO> collaboratorResList){
         return CollectionUserResDTO.builder()
                 .title(collection.getTitle())
                 .imgUrl(collection.getImgURL())
@@ -25,6 +25,7 @@ public class CollectionsConverter {
                 .linkList(linkList)
                 .tagList(tagsList)
                 .isLike(isLike)
+                .collaboratorList(collaboratorResList)
                 .build();
     }
 

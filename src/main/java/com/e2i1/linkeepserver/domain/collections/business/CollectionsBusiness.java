@@ -70,8 +70,13 @@ public class CollectionsBusiness {
         List<TagsEntity> tagList = tagsService.findByCollection(collection);
         List<String> tagDTOList = tagList.stream().map(TagsEntity::getTagName)
             .collect(Collectors.toList());
+        List<CollaboratorsEntity> collaboratorList = collaboratorsService.findByCollection(
+            collection);
+        List<CollaboratorResDTO> collaboratorRoleList = collaboratorList.stream()
+            .map(collaborators -> collaboratorsConverter.toCollaboratorResDTO(collaborators,
+                collaborators.getUser())).toList();
         return collectionsConverter.toCollectionUserResDTO(collection,
-            linkDTOList, tagDTOList, isLike);
+            linkDTOList, tagDTOList, isLike,collaboratorRoleList);
     }
 
     public List<CollectionResDTO> getUserCollection(UsersEntity user) {

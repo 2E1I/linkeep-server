@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CollaboratorResDTO {
+  private Long userId;
   private String name;
   private String role;
+
 }
