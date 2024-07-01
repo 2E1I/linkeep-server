@@ -15,7 +15,7 @@ public interface CollaboratorsRepository extends JpaRepository<CollaboratorsEnti
 
     Optional<CollaboratorsEntity> findByUserIdAndCollectionId(Long userId, Long collectionId);
 
-    @Query("select collection from CollaboratorsEntity where user =:user")
+    @Query("select collection from CollaboratorsEntity where user =:user order by collection.createdAt")
     Optional<List<CollectionsEntity>> findCollectionByUser(@Param("user") UsersEntity user);
 
     @Query("select c.user from CollaboratorsEntity c where c.collection=:collection")
