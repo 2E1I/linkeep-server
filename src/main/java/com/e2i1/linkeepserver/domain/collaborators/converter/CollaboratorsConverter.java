@@ -27,6 +27,7 @@ public class CollaboratorsConverter {
 
   public CollaboratorResDTO toCollaboratorResDTO(CollaboratorsEntity collaborator, UsersEntity user){
     return CollaboratorResDTO.builder()
+        .userId(user.getId())
         .name(user.getNickname())
         .role(collaborator.getRole().getDescription())
         .build();
