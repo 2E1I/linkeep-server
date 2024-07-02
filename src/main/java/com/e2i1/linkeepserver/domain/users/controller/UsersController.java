@@ -49,8 +49,8 @@ public class UsersController {
     }
 
     @GetMapping("/nicknames")
-    public ResponseEntity<List<NicknameResDTO>> getNicknameList(@RequestParam String search) {
-        List<NicknameResDTO> nicknameList = usersBusiness.searchNicknames(search);
+    public ResponseEntity<List<NicknameResDTO>> getNicknameList(@RequestParam String search, @UserSession UsersEntity user) {
+        List<NicknameResDTO> nicknameList = usersBusiness.searchNicknames(search, user.getId());
         return ResponseEntity.ok(nicknameList);
     }
 

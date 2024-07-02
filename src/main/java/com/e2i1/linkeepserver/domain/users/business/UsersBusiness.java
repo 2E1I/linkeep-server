@@ -32,6 +32,7 @@ import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.RecentSearchService;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -156,8 +157,11 @@ public class UsersBusiness {
     }
 
 
-    public List<NicknameResDTO> searchNicknames(String search) {
-        List<UsersEntity> nicknameList = usersService.searchNicknames(search);
+    public List<NicknameResDTO> searchNicknames(String search, Long userId) {
+        if (search == null || search.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<UsersEntity> nicknameList = usersService.searchNicknames(search, userId);
 
         return nicknameList.stream()
             .map(usersConverter::toNicknameResponse)
