@@ -26,6 +26,14 @@ public interface LinksRepository extends JpaRepository<LinksEntity, Long> {
 
     List<LinksEntity> findLinksEntitiesByCollection(CollectionsEntity collectionsEntity);
 
-    List<LinksEntity> findByUserIdAndIdLessThanOrderByIdDesc(Long userId, Long lastId, Pageable pageable);
+    /**
+     * JPQL에서는 LIMIT을 쓰지 못해서 nativeQuery로 만듦
+     */
+    @Query(value = "SELECT l.* FROM links l "
+        + "WHERE l.user_id = :userId "
+        + "AND (:lastId IS NULL OR l.created_at < (SELECT i.created_at FROM links i WHERE i.id = :lastId LIMIT 1)) "
+        + "ORDER BY l.created_at DESC "
+        + "LIMIT :size", nativeQuery = true)
+    List<LinksEntity> findByUserIdAndIdLessThan(@Param("userId") Long userId, @Param("lastId") Long lastId, @Param("size") int size);
 
 }

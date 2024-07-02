@@ -47,8 +47,8 @@ public class LinksService {
         return linksRepository.findByTitleOrDescriptionContainingKeyword(keyword, view, lastId, pageable);
     }
 
-    public List<LinksEntity> findByUserId(Long userId, Long lastId, Pageable pageable) {
-        return linksRepository.findByUserIdAndIdLessThanOrderByIdDesc(userId, lastId, pageable);
+    public List<LinksEntity> findByUserId(Long userId, Long lastId, int size) {
+        return linksRepository.findByUserIdAndIdLessThan(userId, lastId, size);
     }
 
     public void deleteLink(LinksEntity link) {
