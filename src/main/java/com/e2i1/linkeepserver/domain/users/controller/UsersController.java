@@ -23,6 +23,9 @@ public class UsersController {
 
     private final UsersBusiness usersBusiness;
 
+    /**
+     * 로그인한 유저의 home 화면 요청
+     */
     @GetMapping("/home")
     public ResponseEntity<LoginHomeResDTO> getHome(
         @RequestParam(value = "lastId", required = false) Long lastId,
@@ -33,6 +36,9 @@ public class UsersController {
         return ResponseEntity.ok(home);
     }
 
+    /**
+     * userId의 home 화면 요청
+     */
     @GetMapping("/{userId}/home")
     public ResponseEntity<UserHomeResDTO> getUserHome(
         @PathVariable Long userId,

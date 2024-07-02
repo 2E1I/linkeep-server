@@ -118,6 +118,7 @@ public class UsersBusiness {
         }
 
         return LoginHomeResDTO.builder()
+            .userId(user.getId())
             .nickname(user.getNickname())
             .imgUrl(user.getImgUrl())
             .linkList(linkHomeList)
