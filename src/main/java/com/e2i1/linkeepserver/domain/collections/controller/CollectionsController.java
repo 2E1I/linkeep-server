@@ -26,8 +26,9 @@ public class CollectionsController {
     private final CollectionsBusiness collectionsBusiness;
 
     @GetMapping("/collections/search")
-    public ResponseEntity<List<CollectionResDTO>> searchCollection(@RequestParam String search,@UserSession UsersEntity user){
-        return ResponseEntity.ok(null);
+    public ResponseEntity<CollectionResPagingDTO> searchCollection(@RequestParam(value = "lastId", required = false) Long lastId,
+        @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size, @RequestParam String search,@UserSession UsersEntity user){
+        return ResponseEntity.ok(collectionsBusiness.searchCollection(search,user,lastId,size));
 
     }
 
