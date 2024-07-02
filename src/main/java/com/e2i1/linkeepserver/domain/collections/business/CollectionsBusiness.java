@@ -27,6 +27,7 @@ import com.e2i1.linkeepserver.domain.likeothers.converter.LikeOthersConverter;
 import com.e2i1.linkeepserver.domain.likeothers.entity.LikeOthersEntity;
 import com.e2i1.linkeepserver.domain.likeothers.service.LikeOthersService;
 import com.e2i1.linkeepserver.domain.links.converter.LinksConverter;
+import com.e2i1.linkeepserver.domain.links.dto.CollectionEditReqDTO;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
 import com.e2i1.linkeepserver.domain.links.service.LinksService;
 import com.e2i1.linkeepserver.domain.tags.converter.TagsConverter;
@@ -218,4 +219,25 @@ public class CollectionsBusiness {
 
     }
 
+    @Transactional
+    public void editCollection(MultipartFile imgFile, CollectionEditReqDTO editReq, UsersEntity user, Long collectionId) {
+        CollectionsEntity collection = collectionsService.findByIdWithThrow(collectionId);
+        Long ownerId = collaboratorsService.findCollectionOwner(collectionId);
+        if (Objects.equals(ownerId, user.getId())) {
+
+            String imgUrl = user.getImgUrl();
+            if(Boolean.TRUE.equals(editReq.getIsDeletedImg()) && imgUrl !=null){
+                s3ImageService.deleteImageFromS3(user.getImgUrl());
+                imgUrl = null;
+            }
+            if (imgFile != null && !imgFile.isEmpty()) {
+                imgUrl = s3ImageService.upload(imgFile);
+            }
+            collectionsService.editCollection(imgUrl,editReq,collection);
+        } else {
+            throw new ApiException(ErrorCode.COLLECTION_UNAUTHORIZED);
+        }
+
+
+  }
 }
