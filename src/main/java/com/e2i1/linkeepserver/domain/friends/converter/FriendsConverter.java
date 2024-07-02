@@ -21,7 +21,13 @@ public class FriendsConverter {
   }
 
   public FriendsResDTO toFriendsResDTO(UsersEntity user, long cnt) {
-    return FriendsResDTO.builder().nickName(user.getNickname()).userId(user.getId()).numOfCollections(cnt).build();
+    return FriendsResDTO.builder()
+            .nickName(user.getNickname())
+            .userId(user.getId())
+            .numOfCollections(cnt)
+            .imgUrl(user.getImgUrl())
+            .description(user.getDescription())
+            .build();
   }
   public FriendStatusResDTO toFriendStatusResDTO(boolean followStatus){
     return FriendStatusResDTO.builder().followStatus(followStatus).build();

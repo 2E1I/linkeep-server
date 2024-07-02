@@ -8,14 +8,16 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface CollaboratorsRepository extends JpaRepository<CollaboratorsEntity, Long> {
 
     Optional<CollaboratorsEntity> findByUserIdAndCollectionId(Long userId, Long collectionId);
 
-    @Query("select collection from CollaboratorsEntity where user =:user")
+    @Query("select collection from CollaboratorsEntity where user =:user order by collection.createdAt desc")
     Optional<List<CollectionsEntity>> findCollectionByUser(@Param("user") UsersEntity user);
 
     @Query("select c.user from CollaboratorsEntity c where c.collection=:collection")
@@ -32,4 +34,10 @@ public interface CollaboratorsRepository extends JpaRepository<CollaboratorsEnti
 
     @Query("select collection from CollaboratorsEntity where user =:user and collection.id <:lastId order by collection.id desc")
     Optional<List<CollectionsEntity>>  findByUserAndCollectionIdLessThanOrderByCollectionIdDesc(UsersEntity user, Long lastId, Pageable pageable);
+
+    @Modifying
+    @Transactional
+    @Query("delete from CollaboratorsEntity c where c.id.userId in :userIds and c.id.collectionId =:collectionId")
+    void deleteAllByUserIdAndCollectionIdInBatch(List<Long> userIds, Long collectionId);
+
 }
