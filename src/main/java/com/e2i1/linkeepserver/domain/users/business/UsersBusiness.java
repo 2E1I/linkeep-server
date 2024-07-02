@@ -107,9 +107,10 @@ public class UsersBusiness {
      * 로그인한 유저의 home 화면
      */
     public LoginHomeResDTO getHome(Long lastId, Integer size, UsersEntity user) {
-        if (lastId == null) {
-            lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
-        }
+        // null은 쿼리에서 처리
+//        if (lastId == null) {
+//            lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
+//        }
         // lastId부터 size만큼 링크 가져오기
         List<LinkHomeResDTO> linkHomeList = linksBusiness.findByUserId(user.getId(), lastId, size);
 
