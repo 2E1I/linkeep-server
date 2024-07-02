@@ -39,11 +39,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Business
 @RequiredArgsConstructor
 public class CollectionsBusiness {
@@ -240,4 +242,29 @@ public class CollectionsBusiness {
 
 
   }
+
+    public CollectionResPagingDTO searchCollection(String search, UsersEntity user, Long lastId, int size) {
+        search = search.replace(" ", " | ");
+
+        List<CollectionsEntity> collectionList = collectionsService.searchCollection(search, lastId,size+1);
+        log.info("========검색결과 collection 갯수 : "+collectionList.size());
+        List<CollectionResDTO> collectionResList = collectionList.stream()
+            .map(collectionsEntity -> {
+                List<String> tagList = tagsService.findTagNameByCollection(collectionsEntity);
+                List<CollaboratorsEntity> collaboratorList = collaboratorsService.findByCollection(
+                    collectionsEntity);
+                List<CollaboratorResDTO> collaboratorRoleList = collaboratorList.stream()
+                    .map(collaborators -> collaboratorsConverter.toCollaboratorResDTO(collaborators,
+                        collaborators.getUser())).toList();
+                boolean isLike = likeOthersService.getIsLike(collectionsEntity, user);
+                return collectionsConverter.toCollectionResDTO(collectionsEntity, isLike, tagList,
+                    collaboratorRoleList);
+            }).collect(Collectors.toList());
+
+        boolean hasNext = collectionResList.size() > size;
+        if (hasNext) {
+            collectionResList = collectionResList.subList(0, size);
+        }
+        return collectionsConverter.toCollectionResPagingDTO(collectionResList, hasNext);
+    }
 }
