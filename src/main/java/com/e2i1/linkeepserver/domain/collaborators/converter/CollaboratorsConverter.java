@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CollaboratorsConverter {
 
-    private final CollaboratorsBusiness collaboratorsBusiness;
-
   public CollaboratorsEntity toEntity(CollectionsEntity collection, UsersEntity user, Role role) {
     return CollaboratorsEntity.builder()
         .id(new CollaboratorsId(collection.getId(),user.getId()))
