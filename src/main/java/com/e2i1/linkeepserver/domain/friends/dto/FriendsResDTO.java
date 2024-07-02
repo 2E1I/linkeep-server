@@ -12,5 +12,8 @@ import lombok.NoArgsConstructor;
 public class FriendsResDTO {
     private String nickName;
     private Long userId;
+    private String imgUrl;
+    private String description;
     private Long numOfCollections;
+
 }
