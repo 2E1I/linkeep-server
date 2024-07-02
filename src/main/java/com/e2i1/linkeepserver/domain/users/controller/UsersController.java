@@ -23,6 +23,9 @@ public class UsersController {
 
     private final UsersBusiness usersBusiness;
 
+    /**
+     * 로그인한 유저의 home 화면 요청
+     */
     @GetMapping("/home")
     public ResponseEntity<LoginHomeResDTO> getHome(
         @RequestParam(value = "lastId", required = false) Long lastId,
@@ -33,6 +36,9 @@ public class UsersController {
         return ResponseEntity.ok(home);
     }
 
+    /**
+     * userId의 home 화면 요청
+     */
     @GetMapping("/{userId}/home")
     public ResponseEntity<UserHomeResDTO> getUserHome(
         @PathVariable Long userId,
@@ -43,14 +49,21 @@ public class UsersController {
     }
 
     @GetMapping("/nicknames")
-    public ResponseEntity<List<NicknameResDTO>> getNicknameList(@RequestParam String search) {
-        List<NicknameResDTO> nicknameList = usersBusiness.searchNicknames(search);
+    public ResponseEntity<List<NicknameResDTO>> getNicknameList(@RequestParam String search, @UserSession UsersEntity user) {
+        List<NicknameResDTO> nicknameList = usersBusiness.searchNicknames(search, user.getId());
         return ResponseEntity.ok(nicknameList);
     }
 
     @GetMapping("/profile")
     public ResponseEntity<ProfileResDTO> getProfile(@UserSession UsersEntity user) {
         ProfileResDTO profile = usersBusiness.getProfile(user);
+
+        return ResponseEntity.ok(profile);
+    }
+
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<ProfileResDTO> getProfile(@PathVariable Long userId) {
+        ProfileResDTO profile = usersBusiness.getProfile(userId);
 
         return ResponseEntity.ok(profile);
     }

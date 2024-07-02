@@ -32,11 +32,6 @@ public class UsersService {
             .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
     }
 
-    public UsersEntity getUserWithThrow(String email) {
-        return usersRepository.findFirstByEmailAndStatusOrderByIdDesc(email, REGISTERED)
-            .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
-    }
-
     public UsersEntity getUser(String email) {
         return usersRepository.findByEmailAndStatusOrderByIdDesc(email, REGISTERED);
     }
@@ -46,8 +41,8 @@ public class UsersService {
         return  usersRepository.findById(userId).orElseThrow(()-> new ApiException(ErrorCode.USER_NOT_FOUND));
   }
 
-    public List<UsersEntity> searchNicknames(String search) {
-        return usersRepository.findByNicknameContainingAndStatus(search, REGISTERED);
+    public List<UsersEntity> searchNicknames(String search, Long userId) {
+        return usersRepository.findByNicknameContainingAndStatusOrderByNickname(search, userId, REGISTERED);
     }
 
     /**

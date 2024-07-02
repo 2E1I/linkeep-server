@@ -155,8 +155,7 @@ public class LinksBusiness {
      * 최신 순으로 정렬해서
      */
     public List<LinkHomeResDTO> findByUserId(Long userId, Long lastId, int size) {
-        Pageable pageable = PageRequest.of(0, size+1);
-        List<LinksEntity> linkList = linksService.findByUserId(userId, lastId, pageable);
+        List<LinksEntity> linkList = linksService.findByUserId(userId, lastId, size+1);
 
         return linkList.stream()
             .map(linksConverter::toLinkHomeResponse)

@@ -32,6 +32,7 @@ import com.e2i1.linkeepserver.domain.users.dto.UserHomeResDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.RecentSearchService;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -106,9 +107,10 @@ public class UsersBusiness {
      * 로그인한 유저의 home 화면
      */
     public LoginHomeResDTO getHome(Long lastId, Integer size, UsersEntity user) {
-        if (lastId == null) {
-            lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
-        }
+        // null은 쿼리에서 처리
+//        if (lastId == null) {
+//            lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
+//        }
         // lastId부터 size만큼 링크 가져오기
         List<LinkHomeResDTO> linkHomeList = linksBusiness.findByUserId(user.getId(), lastId, size);
 
@@ -118,6 +120,7 @@ public class UsersBusiness {
         }
 
         return LoginHomeResDTO.builder()
+            .userId(user.getId())
             .nickname(user.getNickname())
             .imgUrl(user.getImgUrl())
             .linkList(linkHomeList)
@@ -155,8 +158,11 @@ public class UsersBusiness {
     }
 
 
-    public List<NicknameResDTO> searchNicknames(String search) {
-        List<UsersEntity> nicknameList = usersService.searchNicknames(search);
+    public List<NicknameResDTO> searchNicknames(String search, Long userId) {
+        if (search == null || search.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<UsersEntity> nicknameList = usersService.searchNicknames(search, userId);
 
         return nicknameList.stream()
             .map(usersConverter::toNicknameResponse)
@@ -164,6 +170,16 @@ public class UsersBusiness {
     }
 
     public ProfileResDTO getProfile(UsersEntity user) {
+        return ProfileResDTO.builder()
+            .nickname(user.getNickname())
+            .description(user.getDescription())
+            .imgUrl(user.getImgUrl())
+            .build();
+    }
+
+    public ProfileResDTO getProfile(Long userId) {
+        UsersEntity user = usersService.findById(userId);
+
         return ProfileResDTO.builder()
             .nickname(user.getNickname())
             .description(user.getDescription())

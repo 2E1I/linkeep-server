@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginHomeResDTO {
+    private Long userId;
     private String nickname;
     private String imgUrl;
     private List<LinkHomeResDTO> linkList;
