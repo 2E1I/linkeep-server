@@ -5,6 +5,8 @@ import static com.e2i1.linkeepserver.common.constant.PageConst.DEFAULT_PAGE_SIZE
 import com.e2i1.linkeepserver.common.annotation.UserSession;
 import com.e2i1.linkeepserver.domain.collections.business.CollectionsBusiness;
 import com.e2i1.linkeepserver.domain.collections.dto.*;
+import com.e2i1.linkeepserver.domain.links.dto.CollectionEditReqDTO;
+import com.e2i1.linkeepserver.domain.users.dto.EditProfileReqDTO;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +72,13 @@ public class CollectionsController {
     @DeleteMapping("/collections")
     public ResponseEntity<String> deleteCollection(@UserSession UsersEntity user, @RequestParam Long collectionId){
         collectionsBusiness.deleteCollection(user.getId(),collectionId);
+        return ResponseEntity.ok("success");
+    }
+
+    @PatchMapping("/collections/{collectionId}")
+    public ResponseEntity<String> editCollection(@RequestPart(value = "image", required = false) MultipartFile imgFile, @RequestPart CollectionEditReqDTO editReq,@PathVariable Long collectionId, @UserSession UsersEntity user){
+        log.info("========= 수정할 모음집 정보 : {}", editReq);
+        collectionsBusiness.editCollection(imgFile,editReq,user,collectionId);
         return ResponseEntity.ok("success");
     }
 

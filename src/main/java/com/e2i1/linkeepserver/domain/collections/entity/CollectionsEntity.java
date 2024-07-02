@@ -72,4 +72,16 @@ public class CollectionsEntity extends DateEntity {
     public void deleteLikes() {
         this.numOfLikes -=1L;
     }
+
+  public void update(String imgUrl, String title, int color, Access access, String description) {
+        this.imgURL = imgUrl;
+        if(title != null)
+            this.title = title;
+        if(color != 0)
+            this.color = color;
+        if(access !=null)
+            this.access = access;
+        if(description !=null)
+            this.description = description;
+  }
 }
