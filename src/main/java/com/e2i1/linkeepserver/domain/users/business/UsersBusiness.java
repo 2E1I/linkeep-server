@@ -172,6 +172,16 @@ public class UsersBusiness {
             .build();
     }
 
+    public ProfileResDTO getProfile(Long userId) {
+        UsersEntity user = usersService.findById(userId);
+
+        return ProfileResDTO.builder()
+            .nickname(user.getNickname())
+            .description(user.getDescription())
+            .imgUrl(user.getImgUrl())
+            .build();
+    }
+
     @Transactional
     public void editProfile(MultipartFile imgFile, EditProfileReqDTO editProfile,
         UsersEntity user) {

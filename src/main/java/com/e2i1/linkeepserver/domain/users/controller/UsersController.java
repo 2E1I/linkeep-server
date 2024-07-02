@@ -61,6 +61,13 @@ public class UsersController {
         return ResponseEntity.ok(profile);
     }
 
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<ProfileResDTO> getProfile(@PathVariable Long userId) {
+        ProfileResDTO profile = usersBusiness.getProfile(userId);
+
+        return ResponseEntity.ok(profile);
+    }
+
     @PatchMapping("/profile")
     public ResponseEntity<String> editProfile(
         @RequestPart(value = "image", required = false) MultipartFile imgFile,
