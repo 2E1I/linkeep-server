@@ -2,12 +2,7 @@ package com.e2i1.linkeepserver.domain.collections.converter;
 
 import com.e2i1.linkeepserver.common.annotation.Converter;
 import com.e2i1.linkeepserver.domain.collaborators.dto.CollaboratorResDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionLinkDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionReqDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionResDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionResPagingDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionTitleResDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionUserResDTO;
+import com.e2i1.linkeepserver.domain.collections.dto.*;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import lombok.RequiredArgsConstructor;
 
@@ -63,5 +58,16 @@ public class CollectionsConverter {
 
     public CollectionResPagingDTO toCollectionResPagingDTO(List<CollectionResDTO> collectionResList, Boolean hasNext){
         return CollectionResPagingDTO.builder().collectionResList(collectionResList).hasNext(hasNext).build();
+    }
+
+    public CollectionsEntity toCollectionEntity(CollectionDTO collectionDTO) {
+        return CollectionsEntity.builder()
+                .title(collectionDTO.getTitle())
+                .description(collectionDTO.getDescription())
+                .color(collectionDTO.getColor())
+                .favorite(collectionDTO.getFavorite())
+                .imgURL(collectionDTO.getImgURL())
+                .numOfLikes(collectionDTO.getNumOfLikes())
+                .access(collectionDTO.getAccess()).build();
     }
 }

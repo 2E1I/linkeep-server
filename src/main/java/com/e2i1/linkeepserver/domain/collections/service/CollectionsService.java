@@ -49,4 +49,8 @@ public class CollectionsService {
   public List<CollectionsEntity> searchCollection(String search, Long lastId, int size) {
     return collectionsRepository.searchCollection(search, lastId,size);
   }
+
+    public List<CollectionsEntity> findCollectionByIds(List<Long> collectionIdList) {
+        return collectionsRepository.findByCollectionIds(collectionIdList);
+    }
 }

@@ -40,4 +40,7 @@ public interface CollectionsRepository extends JpaRepository<CollectionsEntity,L
 
     @Lock(LockModeType.OPTIMISTIC)
     Optional<CollectionsEntity> findCollectionsEntityById(Long collectionId);
+
+    @Query("select c from CollectionsEntity c where c.id In :collectionIds")
+    List<CollectionsEntity> findByCollectionIds(List<Long> collectionIds);
 }

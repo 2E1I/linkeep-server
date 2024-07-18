@@ -13,12 +13,7 @@ import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
 import com.e2i1.linkeepserver.domain.collaborators.entity.Role;
 import com.e2i1.linkeepserver.domain.collaborators.service.CollaboratorsService;
 import com.e2i1.linkeepserver.domain.collections.converter.CollectionsConverter;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionLinkDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionReqDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionResDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionResPagingDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionTitleResDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionUserResDTO;
+import com.e2i1.linkeepserver.domain.collections.dto.*;
 import com.e2i1.linkeepserver.domain.collections.entity.Access;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
@@ -183,8 +178,10 @@ public class CollectionsBusiness {
     public CollectionResPagingDTO getUserLikeCollection(Long lastId, Integer size,
         UsersEntity user) {
 
-        List<CollectionsEntity> collectionList = likeOthersService.findCollectionByUser(lastId,
+        List<Long> collectionIdList = likeOthersService.findCollectionIdByUser(lastId,
             user, size+1);
+
+        List<CollectionsEntity> collectionList = collectionsService.findCollectionByIds(collectionIdList);
 
         List<CollectionResDTO> collectionResList = collectionList.stream()
             .map(collectionsEntity -> {
