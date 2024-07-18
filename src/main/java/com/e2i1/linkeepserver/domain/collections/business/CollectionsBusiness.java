@@ -180,13 +180,8 @@ public class CollectionsBusiness {
     public CollectionResPagingDTO getUserLikeCollection(Long lastId, Integer size,
         UsersEntity user) {
 
-        if (lastId == null) {
-            lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
-        }
-
-        Pageable pageable = PageRequest.of(0, size + 1);
         List<CollectionsEntity> collectionList = likeOthersService.findCollectionByUser(lastId,
-            user, pageable);
+            user, size+1);
 
         List<CollectionResDTO> collectionResList = collectionList.stream()
             .map(collectionsEntity -> {

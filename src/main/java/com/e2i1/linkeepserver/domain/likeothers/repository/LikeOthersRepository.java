@@ -18,7 +18,12 @@ public interface LikeOthersRepository extends JpaRepository<LikeOthersEntity,Lon
 
   Optional<LikeOthersEntity> findByUser(UsersEntity user);
 
-  @Query("select l.collection from LikeOthersEntity l where l.user =:user and l.collection.id < :lastId and l.collection.id not in (select c.collection.id from CollaboratorsEntity c where c.user=:user)order by l.collection.id desc")
-  Optional<List<CollectionsEntity>> findCollectionByUser(@Param("lastId") Long lastId,@Param("user") UsersEntity user,
-      Pageable pageable);
+  @Query(value = "SELECT c.* FROM collections c " +
+          "JOIN like_others l ON c.id = l.collection_id " +
+          "WHERE l.user_id = :userId " +
+          "AND (:lastId IS NULL OR l.created_at < (SELECT created_at FROM like_others WHERE id = :lastId)) " +
+          "ORDER BY l.created_at DESC " +
+          "LIMIT :size", nativeQuery = true)
+  List<CollectionsEntity> findCollectionByUser(@Param("lastId") Long lastId,@Param("userId") Long userId,
+      @Param("size") int size );
 }

@@ -26,9 +26,13 @@ public class LikeOthersService {
     likeOthersRepository.save(likeOther);
   }
 
-  public List<CollectionsEntity> findCollectionByUser(Long lastId, UsersEntity user, Pageable pageable) {
-    return likeOthersRepository.findCollectionByUser(lastId,user,pageable).orElseThrow(() -> new ApiException(
-        ErrorCode.COLLABORATOR_NOT_FOUND));
+  public List<CollectionsEntity> findCollectionByUser(Long lastId, UsersEntity user, int size) {
+    List<CollectionsEntity> collectionList = likeOthersRepository.findCollectionByUser(lastId,user.getId(),size);
+    if(collectionList ==null)
+    {
+      throw new ApiException(ErrorCode.COLLABORATOR_NOT_FOUND);
+    }
+    return collectionList;
   }
 
   public void deleteLike(LikeOthersEntity likeOther) {
