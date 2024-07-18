@@ -1,7 +1,6 @@
 package com.e2i1.linkeepserver.domain.collections.entity;
 
 import com.e2i1.linkeepserver.common.entity.DateEntity;
-import com.e2i1.linkeepserver.common.entity.StringListToStringConverter;
 import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
 import com.e2i1.linkeepserver.domain.likeothers.entity.LikeOthersEntity;
 import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;

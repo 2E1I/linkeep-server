@@ -3,6 +3,8 @@ package com.e2i1.linkeepserver.domain.collections.controller;
 import static com.e2i1.linkeepserver.common.constant.PageConst.DEFAULT_PAGE_SIZE;
 
 import com.e2i1.linkeepserver.common.annotation.UserSession;
+import com.e2i1.linkeepserver.common.error.ErrorCode;
+import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.collections.business.CollectionsBusiness;
 import com.e2i1.linkeepserver.domain.collections.dto.*;
 import com.e2i1.linkeepserver.domain.links.dto.CollectionEditReqDTO;
@@ -59,9 +61,21 @@ public class CollectionsController {
     @PostMapping("/collections/like")
     public ResponseEntity<HashMap<String,Long>> countLike(@RequestBody CollectionLikeReqDTO likeCollection,@UserSession UsersEntity user){
         HashMap<String,Long> result = new HashMap<>();
-        Long numOfLikes = collectionsBusiness.updateNumOfLikes(likeCollection.getCollectionId(),user, likeCollection.isFlag());
-        result.put("numOfLikes", numOfLikes);
-        return ResponseEntity.ok(result);
+        while (true){
+            try{
+                Long numOfLikes = collectionsBusiness.updateNumOfLikes(likeCollection.getCollectionId(),user, likeCollection.isFlag());
+                result.put("numOfLikes", numOfLikes);
+                return ResponseEntity.ok(result);
+
+            }catch (Exception e){
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    throw new ApiException(ErrorCode.SERVER_ERROR, ex);
+                }
+            }
+        }
+
     }
 
     @GetMapping("/collections/like")

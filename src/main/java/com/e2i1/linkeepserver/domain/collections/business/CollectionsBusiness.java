@@ -131,7 +131,7 @@ public class CollectionsBusiness {
         return collectionList.stream().map(collectionsConverter::toCollectionTitleResDTO).toList();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long updateNumOfLikes(Long collectionId, UsersEntity user, boolean isFlag) {
         CollectionsEntity collection = collectionsService.findByIdWithThrow(collectionId);
 
@@ -146,7 +146,7 @@ public class CollectionsBusiness {
             collection.deleteLikes();
 
         }
-
+        log.info("=====collection 좋아요 수 "+collection.getNumOfLikes());
         return collection.getNumOfLikes();
     }
 

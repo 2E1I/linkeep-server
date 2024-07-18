@@ -37,21 +37,23 @@ public class CollectionTests {
 
   @Test
   public void 좋아요_업데이트(){
-    int threadCount = 4;
+    int threadCount = 100;
 
     ExecutorService executorService = Executors.newFixedThreadPool(32);
+    UsersEntity user = usersService.findById(2L);
 
     CountDownLatch latch = new CountDownLatch(threadCount);
-//    for (int i = 0; i < threadCount; i++) {
-//
-//      executorService.submit(() -> {
-//        try{
-//          collectionsBusiness.updateNumOfLikes();
-//        } finally {
-//          latch.countDown();
-//        }
-//      });
-//    }
+    for (int i = 0; i < threadCount; i++) {
+
+      executorService.submit(() -> {
+        try{
+
+          System.out.println(collectionsBusiness.updateNumOfLikes(9L,user,false));
+        } finally {
+          latch.countDown();
+        }
+      });
+    }
 
   }
 
