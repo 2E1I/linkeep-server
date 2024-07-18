@@ -17,7 +17,7 @@ public class CollectionsService {
     private final CollectionsRepository collectionsRepository;
 
     public CollectionsEntity findByIdWithThrow(Long collectionId) {
-        return collectionsRepository.findById(collectionId)
+        return collectionsRepository.findCollectionsEntityById(collectionId)
                 .orElseThrow(() -> {
                     log.error("Collection Not Found!! collectionId = {}", collectionId);
                     return new ApiException(ErrorCode.COLLECTION_NOT_FOUND);

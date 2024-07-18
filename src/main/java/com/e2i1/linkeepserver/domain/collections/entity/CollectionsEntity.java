@@ -54,6 +54,9 @@ public class CollectionsEntity extends DateEntity {
 
     private Long numOfLikes;
 
+    @Version
+    private Long version;
+
     // 연관관계 편의 메서드
     public void addLink(LinksEntity link) {
         linkList.add(link);
