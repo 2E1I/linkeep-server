@@ -5,8 +5,12 @@ import com.e2i1.linkeepserver.common.exception.ApiException;
 import com.e2i1.linkeepserver.domain.collaborators.repository.CollaboratorsRepository;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.repository.CollectionsRepository;
+import com.e2i1.linkeepserver.domain.links.dto.CollectionEditReqDTO;
+import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -31,5 +35,18 @@ public class CollectionsService {
   public void deleteCollection(Long collectionId) {
       collectionsRepository.deleteById(collectionId);
 
+  }
+
+  public void editCollection(String imgUrl, CollectionEditReqDTO editReq, CollectionsEntity collection) {
+      collection.update(imgUrl,editReq.getTitle(),editReq.getColor(),editReq.getAccess(),editReq.getDescription());
+
+  }
+
+//  public List<CollectionsEntity> searchCollection(String search, Long likes, Long lastId, int size,  Pageable pageable) {
+//      return collectionsRepository.searchCollection(search,likes, lastId,size, pageable);
+//  }
+
+  public List<CollectionsEntity> searchCollection(String search, Long lastId, int size) {
+    return collectionsRepository.searchCollection(search, lastId,size);
   }
 }

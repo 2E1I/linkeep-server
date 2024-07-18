@@ -49,8 +49,18 @@ public class CollaboratorsService {
     }
 
     public Long findCollectionOwner(Long collectionId){
-        return collaboratorsRepository.findCollaboratorsEntityByCollectionIdAndRole(collectionId,
-            Role.OWNER).getUser().getId();
+        CollaboratorsEntity owner = collaboratorsRepository.findCollaboratorsEntityByCollectionIdAndRole(collectionId,
+            Role.OWNER);
+        if(owner ==null)
+            throw new ApiException(ErrorCode.COLLECTION_UNAUTHORIZED);
+        return owner.getUser().getId();
     }
 
+    public void deleteAllById(List<Long> deleteUsers, Long collectionId) {
+        collaboratorsRepository.deleteAllByUserIdAndCollectionIdInBatch(deleteUsers,collectionId);
+    }
+
+    public void insertAll(List<CollaboratorsEntity> collaborators) {
+        collaboratorsRepository.saveAll(collaborators);
+    }
 }
