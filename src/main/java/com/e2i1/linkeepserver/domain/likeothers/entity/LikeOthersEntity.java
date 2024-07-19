@@ -40,7 +40,7 @@ public class LikeOthersEntity {
     private CollectionsEntity collection;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     public void setUsersEntity(UsersEntity usersEntity) {
