@@ -1,9 +1,5 @@
 package com.e2i1.linkeepserver.domain.collections.business;
 
-import static com.e2i1.linkeepserver.domain.collections.entity.Access.FRIEND;
-import static com.e2i1.linkeepserver.domain.collections.entity.Access.PRIVATE;
-import static com.e2i1.linkeepserver.domain.collections.entity.Access.PUBLIC;
-
 import com.e2i1.linkeepserver.common.annotation.Business;
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
@@ -30,15 +26,16 @@ import com.e2i1.linkeepserver.domain.tags.entity.TagsEntity;
 import com.e2i1.linkeepserver.domain.tags.service.TagsService;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+
+import static com.e2i1.linkeepserver.domain.collections.entity.Access.*;
 
 @Slf4j
 @Business
