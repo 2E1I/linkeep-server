@@ -1,9 +1,5 @@
 package com.e2i1.linkeepserver.domain.collections.business;
 
-import static com.e2i1.linkeepserver.domain.collections.entity.Access.FRIEND;
-import static com.e2i1.linkeepserver.domain.collections.entity.Access.PRIVATE;
-import static com.e2i1.linkeepserver.domain.collections.entity.Access.PUBLIC;
-
 import com.e2i1.linkeepserver.common.annotation.Business;
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
@@ -13,12 +9,7 @@ import com.e2i1.linkeepserver.domain.collaborators.entity.CollaboratorsEntity;
 import com.e2i1.linkeepserver.domain.collaborators.entity.Role;
 import com.e2i1.linkeepserver.domain.collaborators.service.CollaboratorsService;
 import com.e2i1.linkeepserver.domain.collections.converter.CollectionsConverter;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionLinkDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionReqDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionResDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionResPagingDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionTitleResDTO;
-import com.e2i1.linkeepserver.domain.collections.dto.CollectionUserResDTO;
+import com.e2i1.linkeepserver.domain.collections.dto.*;
 import com.e2i1.linkeepserver.domain.collections.entity.Access;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.collections.service.CollectionsService;
@@ -35,15 +26,16 @@ import com.e2i1.linkeepserver.domain.tags.entity.TagsEntity;
 import com.e2i1.linkeepserver.domain.tags.service.TagsService;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
 import com.e2i1.linkeepserver.domain.users.service.UsersService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+
+import static com.e2i1.linkeepserver.domain.collections.entity.Access.*;
 
 @Slf4j
 @Business
@@ -136,7 +128,7 @@ public class CollectionsBusiness {
         return collectionList.stream().map(collectionsConverter::toCollectionTitleResDTO).toList();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long updateNumOfLikes(Long collectionId, UsersEntity user, boolean isFlag) {
         CollectionsEntity collection = collectionsService.findByIdWithThrow(collectionId);
 
@@ -151,7 +143,7 @@ public class CollectionsBusiness {
             collection.deleteLikes();
 
         }
-
+        log.info("=====collection 좋아요 수 "+collection.getNumOfLikes());
         return collection.getNumOfLikes();
     }
 
@@ -183,13 +175,10 @@ public class CollectionsBusiness {
     public CollectionResPagingDTO getUserLikeCollection(Long lastId, Integer size,
         UsersEntity user) {
 
-        if (lastId == null) {
-            lastId = Long.MAX_VALUE; // lastId가 null인 경우 가능한 가장 큰 ID부터 시작
-        }
+        List<Long> collectionIdList = likeOthersService.findCollectionIdByUser(lastId,
+            user, size+1);
 
-        Pageable pageable = PageRequest.of(0, size + 1);
-        List<CollectionsEntity> collectionList = likeOthersService.findCollectionByUser(lastId,
-            user, pageable);
+        List<CollectionsEntity> collectionList = collectionsService.findCollectionByIds(collectionIdList);
 
         List<CollectionResDTO> collectionResList = collectionList.stream()
             .map(collectionsEntity -> {

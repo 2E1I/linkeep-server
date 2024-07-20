@@ -2,6 +2,7 @@ package com.e2i1.linkeepserver.domain.likeothers.service;
 
 import com.e2i1.linkeepserver.common.error.ErrorCode;
 import com.e2i1.linkeepserver.common.exception.ApiException;
+import com.e2i1.linkeepserver.domain.collections.dto.CollectionDTO;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.likeothers.entity.LikeOthersEntity;
 import com.e2i1.linkeepserver.domain.likeothers.repository.LikeOthersRepository;
@@ -26,9 +27,16 @@ public class LikeOthersService {
     likeOthersRepository.save(likeOther);
   }
 
-  public List<CollectionsEntity> findCollectionByUser(Long lastId, UsersEntity user, Pageable pageable) {
-    return likeOthersRepository.findCollectionByUser(lastId,user,pageable).orElseThrow(() -> new ApiException(
-        ErrorCode.COLLABORATOR_NOT_FOUND));
+  public List<Long> findCollectionIdByUser(Long lastId, UsersEntity user, int size) {
+
+    List<Long> collectionIdList = likeOthersRepository.findCollectionByUser(lastId,user.getId(),size);
+
+    if(collectionIdList ==null)
+    {
+      throw new ApiException(ErrorCode.COLLABORATOR_NOT_FOUND);
+    }
+    return collectionIdList;
+
   }
 
   public void deleteLike(LikeOthersEntity likeOther) {
