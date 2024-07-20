@@ -3,18 +3,16 @@ package com.e2i1.linkeepserver.domain.likeothers.entity;
 import com.e2i1.linkeepserver.common.entity.BaseEntity;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import com.e2i1.linkeepserver.domain.users.entity.UsersEntity;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
@@ -40,6 +38,10 @@ public class LikeOthersEntity {
     @MapsId("collectionId")
     @JoinColumn(name = "collection_id")
     private CollectionsEntity collection;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     public void setUsersEntity(UsersEntity usersEntity) {
         this.user = usersEntity;

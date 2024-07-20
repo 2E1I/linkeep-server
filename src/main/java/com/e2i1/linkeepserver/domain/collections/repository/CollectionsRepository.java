@@ -3,9 +3,14 @@ package com.e2i1.linkeepserver.domain.collections.repository;
 import com.e2i1.linkeepserver.domain.collections.entity.CollectionsEntity;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import com.e2i1.linkeepserver.domain.links.entity.LinksEntity;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.Lock;
+
+import java.util.Optional;
 
 public interface CollectionsRepository extends JpaRepository<CollectionsEntity,Long> {
 
@@ -33,4 +38,9 @@ public interface CollectionsRepository extends JpaRepository<CollectionsEntity,L
       nativeQuery = true)
   List<CollectionsEntity> searchCollection(@Param("search") String search, @Param("lastId") Long lastId, @Param("size") int size);
 
+    @Lock(LockModeType.OPTIMISTIC)
+    Optional<CollectionsEntity> findCollectionsEntityById(Long collectionId);
+
+    @Query("select c from CollectionsEntity c where c.id In :collectionIds")
+    List<CollectionsEntity> findByCollectionIds(List<Long> collectionIds);
 }

@@ -21,7 +21,7 @@ public class CollectionsService {
     private final CollectionsRepository collectionsRepository;
 
     public CollectionsEntity findByIdWithThrow(Long collectionId) {
-        return collectionsRepository.findById(collectionId)
+        return collectionsRepository.findCollectionsEntityById(collectionId)
                 .orElseThrow(() -> {
                     log.error("Collection Not Found!! collectionId = {}", collectionId);
                     return new ApiException(ErrorCode.COLLECTION_NOT_FOUND);
@@ -49,4 +49,8 @@ public class CollectionsService {
   public List<CollectionsEntity> searchCollection(String search, Long lastId, int size) {
     return collectionsRepository.searchCollection(search, lastId,size);
   }
+
+    public List<CollectionsEntity> findCollectionByIds(List<Long> collectionIdList) {
+        return collectionsRepository.findByCollectionIds(collectionIdList);
+    }
 }
