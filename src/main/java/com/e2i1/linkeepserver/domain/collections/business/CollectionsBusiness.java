@@ -55,6 +55,7 @@ public class CollectionsBusiness {
     private final LikeOthersConverter likeOthersConverter;
     private final S3ImageService s3ImageService;
 
+    @Transactional(readOnly = true)
     public CollectionUserResDTO getCollection(Long id, UsersEntity user) {
         CollectionsEntity collection = collectionsService.findByIdWithThrow(id);
         List<LinksEntity> linkList = linksService.findByCollections(collection);
