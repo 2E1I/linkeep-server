@@ -24,4 +24,13 @@ public class TagsService {
   public List<String> findTagNameByCollection(CollectionsEntity collection) {
       return tagsRepository.findTagNameByCollection(collection);
   }
+
+  public void deleteAllById(List<String> deleteTags,Long collectionId){
+        tagsRepository.deleteAllByUserIdAndCollectionIdInBatch(deleteTags,collectionId);
+
+  }
+
+    public void insertAll(List<TagsEntity> tags) {
+        tagsRepository.saveAll(tags);
+    }
 }

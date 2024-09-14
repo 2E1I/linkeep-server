@@ -16,4 +16,5 @@ public class CollectionEditReqDTO {
     private int color;
     private Access access;
     private String description;
+
 }
